@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^jovanovic2025\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
