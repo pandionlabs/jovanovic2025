@@ -429,13 +429,13 @@ write.table(meantable, file = "data/derivatives/Abundance_Table_Max2.csv", sep =
 meantable <- aggregate(TreMs[,97], list(TreMs$DeadwoodIdentitiesGrouped),mean)
 write.table(meantable, file = "data/derivatives/Richness_Table_Mean.csv", sep = ",", quote = FALSE, row.names = F)
 
-meantable <- aggregate(TreMs[,97], list(TreMs$TreeIdentities2),mean) # NAS sam
+meantable <- aggregate(TreMs[,97], list(TreMs$TreeIdentities2),mean) # TODO NAS sam
 write.table(meantable, file = "data/derivatives/Richness_Table_Mean2.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,97], list(TreMs$DeadwoodIdentitiesGrouped),sd)
 write.table(meantable, file = "data/derivatives/Richness_Table_SD.csv", sep = ",", quote = FALSE, row.names = F)
 
-meantable <- aggregate(TreMs[,97], list(TreMs$TreeIdentities2),sd)
+meantable <- aggregate(TreMs[,97], list(TreMs$TreeIdentities2),sd) # TODO NAS sam
 write.table(meantable, file = "data/derivatives/Richness_Table_SD2.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,97], list(TreMs$DeadwoodIdentitiesGrouped),max)
@@ -604,27 +604,60 @@ for (i in 1:nrow(TreMs)) {
   else 
   {TreMs[i, last_col] <- "No ID Log"}
 }
-
 TreMs <- TreMs |>
   relocate(DeadwoodIdentities, .before = 8)
 
 #Creating a new data frame with fewer identities 
 IdentitiesTreMs <- TreMs |>
-  filter(DeadwoodIdentities != "No ID Stump" & DeadwoodIdentities != "No ID Log" & DeadwoodIdentities != "No ID Entire Tree"  & DeadwoodIdentities != "Conifer Log" & DeadwoodIdentities != "Conifer Stump"  & DeadwoodIdentities != "Conifer Entire Tree" & DeadwoodIdentities != "Broadleaf Log"  & DeadwoodIdentities != "Broadleaf Stump" & DeadwoodIdentities != "Broadleaf Entire tree")
+  dplyr::filter(DeadwoodIdentities != "No ID Stump" & DeadwoodIdentities != "No ID Log" & DeadwoodIdentities != "No ID Entire Tree"  & DeadwoodIdentities != "Conifer Log" & DeadwoodIdentities != "Conifer Stump"  & DeadwoodIdentities != "Conifer Entire Tree" & DeadwoodIdentities != "Broadleaf Log"  & DeadwoodIdentities != "Broadleaf Stump" & DeadwoodIdentities != "Broadleaf Entire tree")
 
 meantable <-aggregate(IdentitiesTreMs[,c(81:84,86:95)], list(IdentitiesTreMs$DeadwoodIdentities), mean)
 write.table(meantable, file = "data/derivatives/Aggregation.csv", sep = ",", quote = FALSE, row.names = F )
 colnames(IdentitiesTreMs)
 
 #Creating the mean and sum table for decay - decided to use sum instead of mean
-meantable <- aggregate(TreMs[, c(81:84,87:95,98)], #Here including woodpecker cavities and concavities separately 
+meantable <- 
+TreMs |> 
+  dplyr::select(
+    WoodpeckerCavities, 
+    Concavities, 
+    Rotholes, 
+    InsectGalleries, 
+    ExposedHeartwood, 
+    PerennialFungi, 
+    Ephermalfungi, 
+    Epiphytes, 
+    DeadwooodShelter, 
+    StumpStructures, 
+    LogStructures, 
+    WoodyDebris, 
+    ExposedRoots
+    # ExposedSapwoodReduced # TODO this col doesn't exist yet
+  ) |> 
+aggregate(#Here including woodpecker cavities and concavities separately 
                        list(TreMs$Treedata.Tree_Decay), 
                        mean)
 write.table(meantable, file = "data/derivatives/AggregationDecay.csv", sep = ",", quote = FALSE, row.names = F )
 
-
-# Error in `FUN()`:! invalid 'type' (character) of argument Sam
-sumtable <- aggregate(TreMs[, c(81:84,87:95,98)], #Here including woodpecker cavities and concavities separately 
+sumtable <- 
+  TreMs |> 
+  dplyr::select(
+    WoodpeckerCavities, 
+    Concavities, 
+    Rotholes, 
+    InsectGalleries, 
+    ExposedHeartwood, 
+    PerennialFungi, 
+    Ephermalfungi, 
+    Epiphytes, 
+    DeadwooodShelter, 
+    StumpStructures, 
+    LogStructures, 
+    WoodyDebris, 
+    ExposedRoots
+    # ExposedSapwoodReduced # TODO this col doesn't exist yet
+  ) |> 
+  aggregate(#Here including woodpecker cavities and concavities separately 
                        list(TreMs$Treedata.Tree_Decay), 
                        sum)
 write.table(sumtable, file = "data/derivatives/AggregationDecaySum.csv", sep = ",", quote = FALSE, row.names = F )
