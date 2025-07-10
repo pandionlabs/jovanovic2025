@@ -1,49 +1,49 @@
-#MASTER THESIS - DATA EXPLORATION 
+# #MASTER THESIS - DATA EXPLORATION 
 
-##################  Package installation and loading #########
+# ##################  Package installation and loading #########
 
-# Valuable packages
-install.packages("data.table")
-install.packages("tidyverse")
-install.packages("rlang")
-install.packages("dplyr")
-install.packages ("vegan")
-install.packages("pastecs")
-install.packages("ggplot2")
-install.packages("lattice")
-install.packages("reshape2")
-install.packages("plyr")
-install.packages("DHARMa")
-install.packages("glmmTMB")
-install.packages("car")
-install.packages("emmeans")
-install.packages("effects")
-install.packages("multcomp")
-install.packages("MuMIn")
-install.packages("broom")
-install.packages("broom.mixed")
-install.packages("dotwhisker")
-install.packages("texreg")
-install.packages("xtable")
-install.packages("sjPlot")
-install.packages("ggeffects")
-install.packages("cowplot")
-install.packages("lme4")
-install.packages("sjstats")
-install.packages("sjmisc")
-install.packages("DHARMa")
-install.packages("glmmTMB", type="source")
-install.packages ("ggeffects")
-install.packages("Rtools")
-install.packages("ggplot2")
-install.packages("viridis")
-install.packages("multcompView")
+# # Valuable packages
+# install.packages("data.table")
+# install.packages("tidyverse")
+# install.packages("rlang")
+# install.packages("dplyr")
+# install.packages("vegan")
+# install.packages("pastecs")
+# install.packages("ggplot2")
+# install.packages("lattice")
+# install.packages("reshape2")
+# install.packages("plyr")
+# install.packages("DHARMa")
+# # install.packages("glmmTMB")
+# install.packages("car")
+# install.packages("emmeans")
+# install.packages("effects")
+# install.packages("multcomp")
+# install.packages("MuMIn")
+# install.packages("broom")
+# install.packages("broom.mixed")
+# install.packages("dotwhisker")
+# install.packages("texreg")
+# install.packages("xtable")
+# install.packages("sjPlot")
+# install.packages("ggeffects")
+# install.packages("cowplot")
+# install.packages("lme4")
+# install.packages("sjstats")
+# install.packages("sjmisc")
+# install.packages("DHARMa")
+# install.packages("glmmTMB", type="source")
+# install.packages("ggeffects")
+# install.packages("Rtools")
+# install.packages("ggplot2")
+# install.packages("viridis")
+# install.packages("multcompView")
 
 
 
 # Visualise with library and check for updates
 library(data.table)
-library(tidyverse)
+# library(tidyverse)
 library(dplyr)
 library(vegan)
 library(pastecs)
@@ -69,19 +69,19 @@ library(cowplot)
 library(lme4)
 library(sjstats)
 library(sjmisc)
-library(DHARMa)
+# library(DHARMa)
 library(glmmTMB)
 library(lme4)
 library(ggeffects)
 library(ggplot2)
 library(viridis)
 library(multcompView)
-library("ggpubr")
+# library("ggpubr") ### uhoh
 
 ##################### Import the data #######################
 
 # Import the data from a tab delimited ascii file.
-MasterThesisData <- read.table(file = "MasterThesisData2024.csv",
+MasterThesisData <- read.table(file = "data/raw/MasterThesisData2024.csv",
                          header = TRUE,
                          sep = ",",
                          na.strings = "NA",
@@ -136,7 +136,7 @@ for (i in 1:nrow(TreMs)) {
   }
 }
 
-TreMs <- TreMs %>%
+TreMs <- TreMs |>
   relocate(GroupedTreeSpecies, .before = 4)
 
 TreMs$GroupedTreeSpecies <- as.factor(TreMs$GroupedTreeSpecies)
@@ -148,7 +148,7 @@ TreMs$Treedata.Type_of_deadwood <- factor(TreMs$Treedata.Type_of_deadwood,
                                                labels = c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)", 
                                                           "Entire lying tree (natural)", "Entire lying tree (artificial)", 
                                                           "Log/piece of wood (natural)", "Log/piece of wood (artificial)"))
-TreMs <- TreMs %>%
+TreMs <- TreMs |>
   mutate(GroupedDeadwoodType = case_when(
     grepl("Log", Treedata.Type_of_deadwood) ~ "Log",
     grepl("Entire lying tree", Treedata.Type_of_deadwood) ~ "Entire tree",
@@ -156,7 +156,7 @@ TreMs <- TreMs %>%
     TRUE ~ NA_character_  # Handle any cases that do not match the above categories
   ))
 
-TreMs <- TreMs %>%
+TreMs <- TreMs |>
   relocate(GroupedDeadwoodType, .before = 6)
 
 TreMs$GroupedDeadwoodType <- as.factor (TreMs$GroupedDeadwoodType)
@@ -183,13 +183,13 @@ TreMs$Treedata.SunExposure <- factor(TreMs$Treedata.SunExposure,
                                           labels = c("Sun exposed", "Sun not exposed"))
 
 #New category for origin (arificial or natural)
-TreMs <- TreMs %>%
+TreMs <- TreMs |>
   mutate(Origin = case_when(
     grepl("artificial", Treedata.Type_of_deadwood) ~ "Artificial",
     grepl("natural", Treedata.Type_of_deadwood) ~ "Natural",
     TRUE ~ NA_character_  # Handle any cases that do not match the above categories
   ))
-TreMs <- TreMs %>%
+TreMs <- TreMs |>
   relocate(Origin, .before = 7)
 
 TreMs$Origin <- as.factor (TreMs$Origin)
@@ -211,10 +211,12 @@ TreMs$DecomposedCrack <- as.integer (TreMs$DecomposedCrack)
 #Not enough for woodpecker cavitites so combined with concavities 
 TreMs$WoodpeckerCavities <- rowSums(TreMs[, c(17,18,19,21)])
 TreMs$Concavities <- rowSums(TreMs[, c(20,31:34,49,50,62)])
-TreMs <- TreMs %>%
+TreMs <- TreMs |>
   relocate(WoodpeckerCavities, .before = 81)
-TreMs <- TreMs %>%
-  relocate(Concavities, .before = 82)
+
+# changing before to 81 Sam
+TreMs <- TreMs |>
+  relocate(Concavities, .before = 81)
 
 TreMs$Rotholes <- rowSums(TreMs[, c(22:30)])
 TreMs$InsectGalleries <- rowSums(TreMs[, c(35,36)])
@@ -248,9 +250,9 @@ TreMs$ExposedRoots <- as.integer (TreMs$ExposedRoots)
 
 
 ##Calculating abundance and richness
-
-TreMs$Abundance <- rowSums(TreMs[, c(83:95)])
-TreMs$Richness <- rowSums(TreMs[83:95]>0, na.rm= TRUE)
+# off by one error. changing 95 to 94 Sam
+TreMs$Abundance <- rowSums(TreMs[, c(83:94)])
+TreMs$Richness <- rowSums(TreMs[83:95]>0, na.rm = TRUE)
 
 TreMs$Abundance <- as.integer(TreMs$Abundance)
 TreMs$Richness <- as.integer(TreMs$Richness)
@@ -261,97 +263,103 @@ colnames(TreMs)
 
 #Deadwood identities with logs and trees grouped 
 
-TreMs$DeadwoodIdentitiesGrpuped <- rep(0, 533)
-
+TreMs$DeadwoodIdentitiesGrouped <- rep(0, 533)
+last_col <- length(TreMs) # used to be 105
 for (i in 1:nrow(TreMs)) {
+  
   species <- TreMs[i, 3]
   deadwood_type <- TreMs[i, 5]
   
   # Fagus sylvatica
   if (species == "Fagus sylvatica") {
     if (deadwood_type %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)")) {
-      TreMs[i, 105] <- "F. sylvatica Stump"
+      TreMs[i, last_col] <- "F. sylvatica Stump"
     } else if (deadwood_type %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)", 
                                     "Log/piece of wood (natural)", "Log/piece of wood (artificial)")) {
-      TreMs[i, 105] <- "F. sylvatica Log/Entire Tree"
+      TreMs[i, last_col] <- "F. sylvatica Log/Entire Tree"
     }
   }
   
   # Picea abies
   else if (species == "Picea abies") {
     if (deadwood_type %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)")) {
-      TreMs[i, 105] <- "P. abies Stump"
+      TreMs[i, last_col] <- "P. abies Stump"
     } else if (deadwood_type %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)", 
                                     "Log/piece of wood (natural)", "Log/piece of wood (artificial)")) {
-      TreMs[i, 105] <- "P. abies Log/Entire Tree"
+      TreMs[i, last_col] <- "P. abies Log/Entire Tree"
     }
   }
   
   # Abies alba
   else if (species == "Abies alba") {
     if (deadwood_type %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)")) {
-      TreMs[i, 105] <- "A. alba Stump"
+      TreMs[i, last_col] <- "A. alba Stump"
     } else if (deadwood_type %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)", 
                                     "Log/piece of wood (natural)", "Log/piece of wood (artificial)")) {
-      TreMs[i, 105] <- "A. alba Log/Entire Tree"
+      TreMs[i, last_col] <- "A. alba Log/Entire Tree"
     }
   }
   
   # Dead broadleaf and Tilia cordata
   else if (species %in% c("Dead broadleaf", "Tilia cordata")) {
     if (deadwood_type %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)")) {
-      TreMs[i, 105] <- "Broadleaf Stump"
+      TreMs[i, last_col] <- "Broadleaf Stump"
     } else if (deadwood_type %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)", 
                                     "Log/piece of wood (natural)", "Log/piece of wood (artificial)")) {
-      TreMs[i, 105] <- "Broadleaf Log/Entire Tree"
+      TreMs[i, last_col] <- "Broadleaf Log/Entire Tree"
     }
   }
   
   # Dead conifer, Pinus sylvestris, and Larix decidua
   else if (species %in% c("Dead conifer", "Pinus sylvestris", "Larix decidua")) {
     if (deadwood_type %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)")) {
-      TreMs[i, 105] <- "Conifer Stump"
+      TreMs[i, last_col] <- "Conifer Stump"
     } else if (deadwood_type %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)", 
                                     "Log/piece of wood (natural)", "Log/piece of wood (artificial)")) {
-      TreMs[i, 105] <- "Conifer Log/Entire Tree"
+      TreMs[i, last_col] <- "Conifer Log/Entire Tree"
     }
   }
   
   # Dead no identification
   else if (species == "Dead no identification") {
     if (deadwood_type %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)")) {
-      TreMs[i, 105] <- "No ID Stump"
+      TreMs[i, last_col] <- "No ID Stump"
     } else if (deadwood_type %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)", 
                                     "Log/piece of wood (natural)", "Log/piece of wood (artificial)")) {
-      TreMs[i, 105] <- "No ID Log/Entire Tree"
+      TreMs[i, last_col] <- "No ID Log/Entire Tree"
     }
   }
 }
 
 
-unique(TreMs$DeadwoodIdentities)
+unique(TreMs$DeadwoodIdentitiesGrouped) # no col named DeadwoodIdentities Sam
 
 
 TreMs$TreeIdentities2 <- rep(0, 533)
+last_col <- length(TreMs) # used to be 105
 for (i in 1:nrow(TreMs)) {
-  if (TreMs[i, 8] %in% c("A. alba Entire Tree", "A. alba Log", "Conifer Entire Tree", "Conifer Log", "P. abies Entire Tree", "P. abies Log")) {
-    TreMs[i, 107] <- "Conifer Log/Entire Tree"
+  # So what happens if the input is "A. alba Log/Entire Tree"?
+  # that is one of the inputs and it seems to trigger "No ID"
+  # but I think it should be "Conifer Log/Entire Tree"
+  if (TreMs$DeadwoodIdentitiesGrouped[i] %in% c("A. alba Entire Tree", "A. alba Log", "Conifer Entire Tree", "Conifer Log", "P. abies Entire Tree", "P. abies Log")) {
+    TreMs[i, last_col] <- "Conifer Log/Entire Tree"
   }
   
-  else if (TreMs[i, 8] %in% c("A. alba Stump", "Conifer Stump", "P. abies Stump")) {
-    TreMs[i, 107] <- "Conifer Stump"
+  else if (TreMs$DeadwoodIdentitiesGrouped[i] %in% c("A. alba Stump", "Conifer Stump", "P. abies Stump")) {
+    TreMs[i, last_col] <- "Conifer Stump"
   }
   
-  else if (TreMs[i, 8] %in% c("Broadleaf Entire tree", "Broadleaf Log", "F. sylvatica Entire Tree", "F. sylvatica Log")) {
-    TreMs[i, 107] <- "Broadleaf Log/Entire tree"
+  else if (TreMs$DeadwoodIdentitiesGrouped[i] %in% c("Broadleaf Entire tree", "Broadleaf Log", "F. sylvatica Entire Tree", "F. sylvatica Log")) {
+    TreMs[i, last_col] <- "Broadleaf Log/Entire tree"
   }
   
-  else if (TreMs[i, 8] %in% c("Broadleaf Stump", "F. sylvatica Stump")) {
-    TreMs[i, 107] <- "Broadleaf Stump"
+  else if (TreMs$DeadwoodIdentitiesGrouped[i] %in% c("Broadleaf Stump", "F. sylvatica Stump")) {
+    TreMs[i, last_col] <- "Broadleaf Stump"
   }
   
+
   else {
-    TreMs[i, 107] <- "No ID"
+    TreMs[i, last_col] <- "No ID"
   }
 }
 
@@ -360,81 +368,81 @@ TreMs$TreeIdentities2 <- as.factor (TreMs$TreeIdentities2)
 #Number 
 
 counttable <- as.data.frame(table(TreMs$TreeIdentities2))
-write.table(counttable, file = "Count_Table.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(counttable, file = "data/derivatives/Count_Table.csv", sep = ",", quote = FALSE, row.names = F)
 
 counttable$Percentage <- (counttable$Freq / sum(counttable$Freq)) * 100
-write.table(counttable, file = "Count_Percentage_Table.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(counttable, file = "data/derivatives/Count_Percentage_Table.csv", sep = ",", quote = FALSE, row.names = F)
 
 counttable2 <- as.data.frame(table(TreMs$DeadwoodIdentitiesGrouped))
-write.table(counttable2, file = "Count_Table2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(counttable2, file = "data/derivatives/Count_Table2.csv", sep = ",", quote = FALSE, row.names = F)
 
 counttable2$Percentage <- (counttable2$Freq / sum(counttable2$Freq)) * 100
-write.table(counttable2, file = "Count_Percentage_Table2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(counttable2, file = "data/derivatives/Count_Percentage_Table2.csv", sep = ",", quote = FALSE, row.names = F)
 
 #DBH
 meantable <- aggregate(TreMs[,9], list(TreMs$DeadwoodIdentitiesGrouped),mean)
-write.table(meantable, file = "DBH_Table_Mean.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/DBH_Table_Mean.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,9], list(TreMs$TreeIdentities2),mean)
-write.table(meantable, file = "DBH_Table_Mean2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/DBH_Table_Mean2.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,9], list(TreMs$DeadwoodIdentitiesGrouped),sd)
-write.table(meantable, file = "DBH_Table_SD.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/DBH_Table_SD.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,9], list(TreMs$TreeIdentities2),sd)
-write.table(meantable, file = "DBH_Table_SD2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/DBH_Table_SD2.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,9], list(TreMs$DeadwoodIdentitiesGrouped),min)
-write.table(meantable, file = "DBH_Table_Min.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/DBH_Table_Min.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,9], list(TreMs$TreeIdentities2),min)
-write.table(meantable, file = "DBH_Table_Min2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/DBH_Table_Min2.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,9], list(TreMs$DeadwoodIdentitiesGrouped),max)
-write.table(meantable, file = "DBH_Table_Max.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/DBH_Table_Max.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,9], list(TreMs$TreeIdentities2),max)
-write.table(meantable, file = "DBH_Table_Max2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/DBH_Table_Max2.csv", sep = ",", quote = FALSE, row.names = F)
 
 #Abundance
 
 meantable <- aggregate(TreMs[,96], list(TreMs$DeadwoodIdentitiesGrouped),mean)
-write.table(meantable, file = "Abundance_Table_Mean.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Abundance_Table_Mean.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,96], list(TreMs$TreeIdentities2),mean)
-write.table(meantable, file = "Abundance_Table_Mean2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Abundance_Table_Mean2.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,96], list(TreMs$DeadwoodIdentitiesGrouped),sd)
-write.table(meantable, file = "Abundance_Table_SD.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Abundance_Table_SD.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,96], list(TreMs$TreeIdentities2),sd)
-write.table(meantable, file = "Abundance_Table_SD2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Abundance_Table_SD2.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,96], list(TreMs$DeadwoodIdentitiesGrouped),max)
-write.table(meantable, file = "Abundance_Table_Max.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Abundance_Table_Max.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,96], list(TreMs$TreeIdentities2),max)
-write.table(meantable, file = "Abundance_Table_Max2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Abundance_Table_Max2.csv", sep = ",", quote = FALSE, row.names = F)
 
 #Richness
 
 meantable <- aggregate(TreMs[,97], list(TreMs$DeadwoodIdentitiesGrouped),mean)
-write.table(meantable, file = "Richness_Table_Mean.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Richness_Table_Mean.csv", sep = ",", quote = FALSE, row.names = F)
 
-meantable <- aggregate(TreMs[,97], list(TreMs$TreeIdentities2),mean)
-write.table(meantable, file = "Richness_Table_Mean2.csv", sep = ",", quote = FALSE, row.names = F)
+meantable <- aggregate(TreMs[,97], list(TreMs$TreeIdentities2),mean) # NAS sam
+write.table(meantable, file = "data/derivatives/Richness_Table_Mean2.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,97], list(TreMs$DeadwoodIdentitiesGrouped),sd)
-write.table(meantable, file = "Richness_Table_SD.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Richness_Table_SD.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,97], list(TreMs$TreeIdentities2),sd)
-write.table(meantable, file = "Richness_Table_SD2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Richness_Table_SD2.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,97], list(TreMs$DeadwoodIdentitiesGrouped),max)
-write.table(meantable, file = "Richness_Table_MAX.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Richness_Table_MAX.csv", sep = ",", quote = FALSE, row.names = F)
 
 meantable <- aggregate(TreMs[,97], list(TreMs$TreeIdentities2),max)
-write.table(meantable, file = "Richness_Table_MAX2.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(meantable, file = "data/derivatives/Richness_Table_MAX2.csv", sep = ",", quote = FALSE, row.names = F)
 
 #Per decay stage
 
@@ -445,14 +453,14 @@ count_table2 <- as.data.frame(table(TreMs$DeadwoodIdentitiesGrouped, TreMs$Treed
 colnames(count_table) <- c("TreeIdentities2", "Decay_Stage", "Count")
 
 # Save to CSV
-write.table(count_table, file = "Count_Table_by_Decay_Stage.csv", sep = ",", quote = FALSE, row.names = FALSE)
+write.table(count_table, file = "data/derivatives/Count_Table_by_Decay_Stage.csv", sep = ",", quote = FALSE, row.names = FALSE)
 
 # Print the count table to verify
 print(count_table)
 
 #Raw data histogram - not every importnt, graphs won't be included in the paper
 
-DeadwoodTypeData <- read.table(file = "Deadwood type graph.csv",
+DeadwoodTypeData <- read.table(file = "data/raw/Deadwood type graph.csv",
                                header = TRUE,
                                sep = ",",
                                na.strings = "NA",
@@ -538,92 +546,95 @@ grid(nx = NA, ny = NULL, col = "gray", lty = "dotted")
 
 #Creating deadwood identities 
 TreMs$DeadwoodIdentities <- rep(0,533)
+last_col <- length(TreMs) # used to be 80 Sam
 for (i in 1:nrow(TreMs)) {
   if (TreMs[i,3] %in% c("Fagus sylvatica")
       && TreMs[i,5] %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)")){
-    TreMs[i,80] <- "F. sylvatica Stump"
+    TreMs[i,last_col] <- "F. sylvatica Stump"
   }
   
   else if (TreMs[i,3] %in% c("Fagus sylvatica")
            && TreMs[i,5] %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)"))
-  {TreMs[i,80] <- "F. sylvatica Entire Tree"}
+  {TreMs[i,last_col] <- "F. sylvatica Entire Tree"}
   else if (TreMs[i,3] %in% c("Fagus sylvatica")
            && TreMs[i,5] %in% c("Log/piece of wood (natural)", "Log/piece of wood (artificial)"))
-  {TreMs[i,80] <- "F. sylvatica Log"}
+  {TreMs[i,last_col] <- "F. sylvatica Log"}
   else if (TreMs[i,3] %in% c("Picea abies")
            && TreMs[i,5] %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)"))
-  {TreMs[i,80] <- "P. abies Stump"}
+  {TreMs[i,last_col] <- "P. abies Stump"}
   else if (TreMs[i,3] %in% c("Picea abies")
            && TreMs[i,5] %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)"))
-  {TreMs[i,80] <- "P. abies Entire Tree"}
+  {TreMs[i,last_col] <- "P. abies Entire Tree"}
   else if (TreMs[i,3] %in% c("Picea abies")
            && TreMs[i,5] %in% c("Log/piece of wood (natural)", "Log/piece of wood (artificial)"))
-  {TreMs[i,80] <- "P. abies Log"}
+  {TreMs[i,last_col] <- "P. abies Log"}
   else if (TreMs[i,3] %in% c("Abies alba")
            && TreMs[i,5] %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)"))
-  {TreMs[i,80] <- "A. alba Stump"}
+  {TreMs[i,last_col] <- "A. alba Stump"}
   else if (TreMs[i,3] %in% c("Abies alba")
            && TreMs[i,5] %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)"))
-  {TreMs[i,80] <- "A. alba Entire Tree"}
+  {TreMs[i,last_col] <- "A. alba Entire Tree"}
   else if (TreMs[i,3] %in% c("Abies alba")
            && TreMs[i,5] %in% c("Log/piece of wood (natural)", "Log/piece of wood (artificial)"))
-  {TreMs[i,80] <- "A. alba Log"}
+  {TreMs[i,last_col] <- "A. alba Log"}
   else if (TreMs[i,3] %in% c("Dead broadleaf","Tilia cordata")
            && TreMs[i,5] %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)"))
-  {TreMs[i,80] <- "Broadleaf Stump"}
+  {TreMs[i,last_col] <- "Broadleaf Stump"}
   else if (TreMs[i,3] %in% c("Dead broadleaf", "Tilia cordata")
            && TreMs[i,5] %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)"))
-  {TreMs[i,80] <- "Broadleaf Entire tree"}
+  {TreMs[i,last_col] <- "Broadleaf Entire tree"}
   else if (TreMs[i,3] %in% c("Dead broadleaf","Tilia cordata")
            && TreMs[i,5] %in% c("Log/piece of wood (natural)", "Log/piece of wood (artificial)"))
-  {TreMs[i,80] <- "Broadleaf Log"}
+  {TreMs[i,last_col] <- "Broadleaf Log"}
   else if (TreMs[i,3] %in% c("Dead conifer","Pinus sylvestris","Larix decidua")
            && TreMs[i,5] %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)"))
-  {TreMs[i,80] <- "Conifer Stump"}
+  {TreMs[i,last_col] <- "Conifer Stump"}
   else if (TreMs[i,3] %in% c("Dead conifer","Pinus sylvestris","Larix decidua")
            && TreMs[i,5] %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)"))
-  {TreMs[i,80] <- "Conifer Entire Tree"}
+  {TreMs[i,last_col] <- "Conifer Entire Tree"}
   else if (TreMs[i,3] %in% c("Dead conifer","Pinus sylvestris","Larix decidua")
            && TreMs[i,5] %in% c("Log/piece of wood (natural)", "Log/piece of wood (artificial)"))
-  {TreMs[i,80] <- "Conifer Log"}
+  {TreMs[i,last_col] <- "Conifer Log"}
   else if (TreMs[i,3] %in% c("Dead no identification")
            && TreMs[i,5] %in% c("Stump (<1.3m) (natural)", "Stump (<1.3m) (artificial)"))
-  {TreMs[i,80] <- "No ID Stump"}
+  {TreMs[i,last_col] <- "No ID Stump"}
   else if (TreMs[i,3] %in% c("Dead no identification")
            && TreMs[i,5] %in% c("Entire lying tree (natural)", "Entire lying tree (artificial)"))
-  {TreMs[i,80] <- "No ID Entire Tree"}
+  {TreMs[i,last_col] <- "No ID Entire Tree"}
   else 
-  {TreMs[i, 80] <- "No ID Log"}
+  {TreMs[i, last_col] <- "No ID Log"}
 }
 
-TreMs <- TreMs %>%
+TreMs <- TreMs |>
   relocate(DeadwoodIdentities, .before = 8)
 
 #Creating a new data frame with fewer identities 
-IdentitiesTreMs <- TreMs %>%
+IdentitiesTreMs <- TreMs |>
   filter(DeadwoodIdentities != "No ID Stump" & DeadwoodIdentities != "No ID Log" & DeadwoodIdentities != "No ID Entire Tree"  & DeadwoodIdentities != "Conifer Log" & DeadwoodIdentities != "Conifer Stump"  & DeadwoodIdentities != "Conifer Entire Tree" & DeadwoodIdentities != "Broadleaf Log"  & DeadwoodIdentities != "Broadleaf Stump" & DeadwoodIdentities != "Broadleaf Entire tree")
 
 meantable <-aggregate(IdentitiesTreMs[,c(81:84,86:95)], list(IdentitiesTreMs$DeadwoodIdentities), mean)
-write.table(meantable, file = "Aggregation.csv", sep = ",", quote = FALSE, row.names = F )
+write.table(meantable, file = "data/derivatives/Aggregation.csv", sep = ",", quote = FALSE, row.names = F )
 colnames(IdentitiesTreMs)
 
 #Creating the mean and sum table for decay - decided to use sum instead of mean
 meantable <- aggregate(TreMs[, c(81:84,87:95,98)], #Here including woodpecker cavities and concavities separately 
                        list(TreMs$Treedata.Tree_Decay), 
                        mean)
-write.table(meantable, file = "AggregationDecay.csv", sep = ",", quote = FALSE, row.names = F )
+write.table(meantable, file = "data/derivatives/AggregationDecay.csv", sep = ",", quote = FALSE, row.names = F )
 
+
+# Error in `FUN()`:! invalid 'type' (character) of argument Sam
 sumtable <- aggregate(TreMs[, c(81:84,87:95,98)], #Here including woodpecker cavities and concavities separately 
                        list(TreMs$Treedata.Tree_Decay), 
                        sum)
-write.table(sumtable, file = "AggregationDecaySum.csv", sep = ",", quote = FALSE, row.names = F )
+write.table(sumtable, file = "data/derivatives/AggregationDecaySum.csv", sep = ",", quote = FALSE, row.names = F )
 
 colnames(IdentitiesTreMs)
 
 #Sum table for deadwood identity
-
+# Error in `FUN()`:! invalid 'type' (character) of argument Sam
 sumtable <-aggregate(IdentitiesTreMs[,c(81:84,87:95,98)], list(IdentitiesTreMs$DeadwoodIdentities), sum)
-write.table(sumtable, file = "AggregationSum.csv", sep = ",", quote = FALSE, row.names = F )
+write.table(sumtable, file = "data/derivatives/AggregationSum.csv", sep = ",", quote = FALSE, row.names = F )
 
 
 #Box plot with Tukey test - this didn't work so this section was just a test and isn't needed
@@ -644,6 +655,7 @@ generate_label_df <- function(TUKEY, Treedata.Tree_Decay){
   return(Tukey.labels)
 }
 
+# Error in `if (k2 == 0) ...`:! missing value where TRUE/FALSE needed Sam
 LABELS <- generate_label_df(TUKEY , "Treedata.Tree_Decay")
 
 my_colors <- c( 
@@ -1924,7 +1936,7 @@ dev.off()
 ######### PLOT LEVEL ANALYSIS 
 #Still need to see what kind of analysis we'll do here - so this section is not very important
 
-TreMs <- TreMs %>%
+TreMs <- TreMs |>
   mutate(ForestType = case_when(
     Plot %in% c(1, 2, 8, 10) ~ "Mixed-coniferous",     # For plots 1, 2, 6, and 9
     TRUE ~ "Mixed-coniferous-broadleaved"                # For all other plots
