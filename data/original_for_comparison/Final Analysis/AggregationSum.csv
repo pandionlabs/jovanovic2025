@@ -1,0 +1,10 @@
+Group.1,WoodpeckerCavities,Concavities,Rotholes,InsectGalleries,ExposedHeartwood,PerennialFungi,Ephermalfungi,Epiphytes,DeadwooodShelter,StumpStructures,LogStructures,WoodyDebris,ExposedRoots,ExposedSapwoodReduced
+A. alba Entire Tree,0,0,3,4,0,6,1,3,7,0,8,3,1,12
+A. alba Log,2,1,10,10,1,37,3,31,17,0,20,5,0,10
+A. alba Stump,0,2,2,0,0,0,0,12,6,10,0,0,0,0
+F. sylvatica Entire Tree,0,0,1,0,0,59,0,9,4,0,1,0,2,9
+F. sylvatica Log,0,2,20,6,5,32,2,37,14,3,15,6,3,7
+F. sylvatica Stump,0,10,3,1,1,2,3,45,9,50,0,0,0,7
+P. abies Entire Tree,0,0,12,27,6,44,7,46,43,0,57,12,7,74
+P. abies Log,5,0,10,20,6,20,5,84,57,0,33,24,12,57
+P. abies Stump,0,71,7,0,0,12,2,119,41,39,0,2,3,55
