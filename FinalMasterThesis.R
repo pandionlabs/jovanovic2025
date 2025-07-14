@@ -937,8 +937,8 @@ testZeroInflation(Residuals_Model_Perennials)
 # summary(Model_Ephermals)
 
 # #Grouped all fungi
-# #Same as perennials (cause that's most of the data )
-# TreMs$AllFungi <- rowSums(TreMs[, c(88,89)])
+#Same as perennials (cause that's most of the data )
+TreMs$AllFungi <- rowSums(TreMs[, c(88,89)])
 
 #Fitted with nbinom2
 
@@ -1090,11 +1090,11 @@ Predicted_Abundance <- ggpredict(Model_Abundance,
                                 )
 
 plotABUNDANCE <- ggplot(Predicted_Abundance, aes(x = x, y = predicted, colour= group)) +
-  geom_smooth(aes(colour = facet, linetype = group), size = 1) +
+  geom_smooth(aes(colour = facet, linetype = group), linewidth = 1) +
   geom_ribbon(data = Predicted_Abundance, mapping = aes(x = x, y = predicted, ymin=conf.low, ymax=conf.high, fill=facet, colour=NULL), 
               alpha=.05, show.legend = TRUE)+
   geom_rug(data = TreMs, mapping = aes(x = Treedata.DBH_cm, y = Abundance), 
-           col = "steelblue", alpha = 0.1, size = 1) +
+           col = "steelblue", alpha = 0.1, linewidth = 1) +
   xlab("Diameter (cm)") + ylab("TreM Abundance") +
   scale_x_continuous(n.breaks = 5) +
   theme_bw() + 
@@ -1113,7 +1113,7 @@ levels(TreMs$GroupedTreeSpecies)
 # print(plotABUNDANCE)
 plotABUNDANCE
 
-ggsave(filename = "plotABUNDANCE.png", plot = plotABUNDANCE, 
+ggsave(filename = "data/derivatives/plotABUNDANCE.png", plot = plotABUNDANCE, 
        width = 7, height = 5, units = "in", dpi = 300)
 
 #Richness
@@ -1126,44 +1126,47 @@ Predicted_Richness <- ggpredict(Model_Richness,
 str(Predicted_Richness)
 
 # TODO find where conf.low and conf.high come from
-plotRICHNESS <- ggplot() + 
-  geom_smooth(data = Predicted_Richness, mapping = aes(x = x, y = predicted, colour= group)) + 
-  geom_ribbon(data = Predicted_Richness, mapping = aes(x = x, y = predicted, ymin=conf.low, ymax=conf.high, fill=group, colour=NULL), alpha=.05, show.legend = TRUE) + 
-  geom_rug(data = TreMs, mapping = aes(x = Treedata.DBH_cm, y = Richness), col="steelblue", alpha=0.1, size=1) + 
-  xlab("Diameter (cm)") + 
-  ylab("TreM Richness") + 
-  scale_x_continuous(n.breaks = 5) + 
-  theme_bw() + 
-  theme(
-    text = element_text(size = 15),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.title = element_blank(),
-    plot.margin = margin(0.5, 2, 0.5, 0.5)
-  ) + 
-  scale_linetype(guide = "none") + 
-  scale_color_manual(values = c("Decay stage 1" = "#849324", "Decay stage 3" = "#2f4858", "Decay stage 4" = "#f6ae2d", "Decay stage 5" = "#f26419")) + 
-  scale_fill_manual(values = c("Decay stage 1" = "#849324", "Decay stage 3" = "#2f4858", "Decay stage 4" = "#f6ae2d", "Decay stage 5" = "#f26419"))
+# skipping below 
+# plotRICHNESS <- ggplot() + 
+#   geom_smooth(data = Predicted_Richness, mapping = aes(x = x, y = predicted, colour= group)) + 
+#   geom_ribbon(data = Predicted_Richness, mapping = aes(x = x, y = predicted, ymin=conf.low, ymax=conf.high, fill=group, colour=NULL), alpha=.05, show.legend = TRUE) + 
+#   geom_rug(data = TreMs, mapping = aes(x = Treedata.DBH_cm, y = Richness), col="steelblue", alpha=0.1, size=1) + 
+#   xlab("Diameter (cm)") + 
+#   ylab("TreM Richness") + 
+#   scale_x_continuous(n.breaks = 5) + 
+#   theme_bw() + 
+#   theme(
+#     text = element_text(size = 15),
+#     panel.border = element_blank(),
+#     panel.grid.major = element_blank(),
+#     panel.grid.minor = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.title = element_blank(),
+#     plot.margin = margin(0.5, 2, 0.5, 0.5)
+#   ) + 
+#   scale_linetype(guide = "none") + 
+#   scale_color_manual(values = c("Decay stage 1" = "#849324", "Decay stage 3" = "#2f4858", "Decay stage 4" = "#f6ae2d", "Decay stage 5" = "#f26419")) + 
+#   scale_fill_manual(values = c("Decay stage 1" = "#849324", "Decay stage 3" = "#2f4858", "Decay stage 4" = "#f6ae2d", "Decay stage 5" = "#f26419"))
 
-plotRICHNESS
+# plotRICHNESS
 
 
-ggsave(filename = "plotRICHNESS.png", plot = plotRICHNESS, 
-       width = 7, height = 5, units = "in", dpi = 300)
+# ggsave(filename = "data/derivatives/plotRICHNESS.png", plot = plotRICHNESS, 
+#        width = 7, height = 5, units = "in", dpi = 300)
 
-figTremsDBH <- ggarrange(plotABUNDANCE, plotRICHNESS,
-                         ncol = 2, nrow = 1, 
-                         common.legend = TRUE, 
-                         legend = "bottom",
-                         combine = TRUE)  # Add this line to combine legends
-figTremsDBH
+# figTremsDBH <- ggarrange(plotABUNDANCE, plotRICHNESS,
+#                          ncol = 2, nrow = 1, 
+#                          common.legend = TRUE, 
+#                          legend = "bottom",
+#                          combine = TRUE)  # Add this line to combine legends
+# figTremsDBH
 
-# Save to PDF
-pdf(file = "FigureTreMs.pdf", width = 6.5, height = 4.5)
-print(figTremsDBH)
-dev.off()
+# # Save to PDF
+# pdf(file = "FigureTreMs.pdf", width = 6.5, height = 4.5)
+# print(figTremsDBH)
+# dev.off()
+
+# skipping end
 
 #Rotholes
 
@@ -1307,29 +1310,31 @@ figTremsBox
 #Perennials 
 
 summary(Model_Perennials)
-# TODO here
-Predicted_Perennials <- ggpredict(Model_Perennials, 
-                                terms = c("GroupedTreeSpecies[Coniferous spp., Deciduous spp.]",
-                                          "Treedata.Tree_Decay[Decay stage 1,Decay stage 4, Decay stage 5]"),
-                                se = TRUE)
-str(Predicted_Perennials)
+# TODO ! Prediction is not possible for unknown fixed effects: GroupedTreeSpecies
+# # Probably some factor levels in 'newdata' require fitting a new model.
+# # skipping sam
+# Predicted_Perennials <- ggpredict(Model_Perennials, 
+#                                 terms = c("GroupedTreeSpecies[Coniferous spp., Deciduous spp.]",
+#                                           "Treedata.Tree_Decay[Decay stage 1,Decay stage 4, Decay stage 5]"),
+#                                 se = TRUE)
+# str(Predicted_Perennials)
 
-boxPERENNIAL <- ggplot(Predicted_Perennials, aes(x = x, y = predicted, fill = group)) +
-  geom_col(position = "dodge", width = 0.7) +  # Columns for predicted values
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), 
-                position = position_dodge(0.7), 
-                width = 0.25) +  # Error bars based on confidence intervals
-  labs(,
-       x = "Tree species",
-       y = "Perennial Fungi",
-       fill = "Decay stage") +
-  scale_fill_manual(values = c("Decay stage 1" = "#849324",
-                               "Decay stage 4" = "#f6ae2d",
-                               "Decay stage 5" = "#f26419")) +
-  theme_minimal()
+# boxPERENNIAL <- ggplot(Predicted_Perennials, aes(x = x, y = predicted, fill = group)) +
+#   geom_col(position = "dodge", width = 0.7) +  # Columns for predicted values
+#   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), 
+#                 position = position_dodge(0.7), 
+#                 width = 0.25) +  # Error bars based on confidence intervals
+#   labs(,
+#        x = "Tree species",
+#        y = "Perennial Fungi",
+#        fill = "Decay stage") +
+#   scale_fill_manual(values = c("Decay stage 1" = "#849324",
+#                                "Decay stage 4" = "#f6ae2d",
+#                                "Decay stage 5" = "#f26419")) +
+#   theme_minimal()
 
 
-str(Predicted_Perennials)
+# str(Predicted_Perennials)
 
 #Ephermal fungi - doesn't work, not enough data 
 #All fungi 
@@ -1426,61 +1431,63 @@ boxSHELT <- ggplot(Predicted_Shelters, aes(x = x, y = predicted, fill = x)) +
 #Stump structures 
 
 summary(Model_StumpStruct)
+# TODO ! Prediction is not possible for unknown fixed effects: GroupedTreeSpecies
+# # Probably some factor levels in 'newdata' require fitting a new model.
+# # Skipping Sam
+# #Options 1 - the lines are flat because all my predicted values are close to 0 
+# Predicted_StumpStruct <- ggpredict(Model_StumpStruct, 
+#                                    terms = c("Treedata.DBH_cm", 
+#                                              "GroupedTreeSpecies[Coniferous spp., Deciduous spp.]"))
+# str(Predicted_StumpStruct)
 
-#Options 1 - the lines are flat because all my predicted values are close to 0 
-Predicted_StumpStruct <- ggpredict(Model_StumpStruct, 
-                                   terms = c("Treedata.DBH_cm", 
-                                             "GroupedTreeSpecies[Coniferous spp., Deciduous spp.]"))
-str(Predicted_StumpStruct)
-
-plotSTUMPS <- ggplot()+
-  geom_smooth (data= Predicted_StumpStruct, mapping = aes(x = x, y = predicted, colour= group)) +
-  geom_ribbon(data = Predicted_StumpStruct, mapping = aes(x = x, y = predicted, ymin=conf.low, ymax=conf.high, fill=group, colour=NULL), 
-              alpha=.05, show.legend = FALSE)+
+# plotSTUMPS <- ggplot()+
+#   geom_smooth (data= Predicted_StumpStruct, mapping = aes(x = x, y = predicted, colour= group)) +
+#   geom_ribbon(data = Predicted_StumpStruct, mapping = aes(x = x, y = predicted, ymin=conf.low, ymax=conf.high, fill=group, colour=NULL), 
+#               alpha=.05, show.legend = FALSE)+
   
-  geom_rug (data= TreMs,mapping= aes (x= Treedata.DBH_cm, y= StumpStructures), col="steelblue",alpha=0.1, size=1)+
-  xlab("Diameter at Breast Height (cm)") + ylab("Stump Structures")+ 
-  scale_x_continuous(n.breaks =5)+
-  theme(text = element_text(size=8), 
-        legend.title = element_blank(),
-        plot.margin = margin(0.5, 2, 0.5, 0.5))+
-  scale_linetype(guide = "none")+
-  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                     panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
-  scale_color_manual(values = c("Coniferous spp." = "#003566", "Deciduous spp." = "#ffb703")) +
-  scale_fill_manual(values = c("Coniferous spp." = "#003566", "Deciduous spp." = "#ffb703")) +
-  theme(legend.title=element_blank())
+#   geom_rug (data= TreMs,mapping= aes (x= Treedata.DBH_cm, y= StumpStructures), col="steelblue",alpha=0.1, size=1)+
+#   xlab("Diameter at Breast Height (cm)") + ylab("Stump Structures")+ 
+#   scale_x_continuous(n.breaks =5)+
+#   theme(text = element_text(size=8), 
+#         legend.title = element_blank(),
+#         plot.margin = margin(0.5, 2, 0.5, 0.5))+
+#   scale_linetype(guide = "none")+
+#   theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+#                      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+#   scale_color_manual(values = c("Coniferous spp." = "#003566", "Deciduous spp." = "#ffb703")) +
+#   scale_fill_manual(values = c("Coniferous spp." = "#003566", "Deciduous spp." = "#ffb703")) +
+#   theme(legend.title=element_blank())
 
-plotSTUMPS
+# plotSTUMPS
 
 
-#Option 2 - adjusting the y axis but then I have some abnormally low numbers 
-plotSTUMPS <- ggplot() +
-  geom_smooth(data = Predicted_StumpStruct, 
-              mapping = aes(x = x, y = predicted, color = group), 
-              method = "loess", se = FALSE) +
-  geom_ribbon(data = Predicted_StumpStruct, 
-              mapping = aes(x = x, ymin = conf.low, ymax = conf.high, fill = group),
-              alpha = 0.2, color = NA) +
-  geom_rug(data = TreMs, mapping = aes(x = Treedata.DBH_cm, y = StumpStructures), 
-           color = "steelblue", alpha = 0.1, size = 1) +
-  labs(title = "Predicted Stump Structures",
-       x = "Diameter at Breast Height (cm)", 
-       y = "Stump Structures") +
-  scale_x_continuous(n.breaks = 5) +
-  scale_y_continuous(limits = c(0, max(Predicted_StumpStruct$predicted) * 1.2)) +
-  scale_color_viridis(discrete = TRUE, option = "D") +
-  scale_fill_viridis(discrete = TRUE) +
-  theme_minimal() +
-  theme(text = element_text(size = 8), 
-        legend.title = element_blank(),
-        plot.margin = margin(0.5, 2, 0.5, 0.5),
-        panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"))
+# #Option 2 - adjusting the y axis but then I have some abnormally low numbers 
+# plotSTUMPS <- ggplot() +
+#   geom_smooth(data = Predicted_StumpStruct, 
+#               mapping = aes(x = x, y = predicted, color = group), 
+#               method = "loess", se = FALSE) +
+#   geom_ribbon(data = Predicted_StumpStruct, 
+#               mapping = aes(x = x, ymin = conf.low, ymax = conf.high, fill = group),
+#               alpha = 0.2, color = NA) +
+#   geom_rug(data = TreMs, mapping = aes(x = Treedata.DBH_cm, y = StumpStructures), 
+#            color = "steelblue", alpha = 0.1, size = 1) +
+#   labs(title = "Predicted Stump Structures",
+#        x = "Diameter at Breast Height (cm)", 
+#        y = "Stump Structures") +
+#   scale_x_continuous(n.breaks = 5) +
+#   scale_y_continuous(limits = c(0, max(Predicted_StumpStruct$predicted) * 1.2)) +
+#   scale_color_viridis(discrete = TRUE, option = "D") +
+#   scale_fill_viridis(discrete = TRUE) +
+#   theme_minimal() +
+#   theme(text = element_text(size = 8), 
+#         legend.title = element_blank(),
+#         plot.margin = margin(0.5, 2, 0.5, 0.5),
+#         panel.border = element_blank(), 
+#         panel.grid.major = element_blank(),
+#         panel.grid.minor = element_blank(), 
+#         axis.line = element_line(colour = "black"))
 
-print(plotSTUMPS)
+# print(plotSTUMPS)
 
 #Log structures 
 summary(Model_LogStruct)
@@ -1563,7 +1570,6 @@ plot(Residuals_Model_Abundance_Stump) #Problems
 testOutliers(Residuals_Model_Abundance_Stump) 
 testDispersion(Residuals_Model_Abundance_Stump)
 testZeroInflation(Residuals_Model_Abundance_Stump)
-r.squaredGLMM(Residuals_Model_Abundance_Stump) #doesn't work with Dharma
 
 
 Predicted_AbundanceStump <- ggpredict(Model_Abundance_Stump, 
@@ -1604,7 +1610,6 @@ plot(Residuals_Model_Abundance_Log) #Problems
 testOutliers(Residuals_Model_Abundance_Log) 
 testDispersion(Residuals_Model_Abundance_Log)
 testZeroInflation(Residuals_Model_Abundance_Log)
-r.squaredGLMM(Residuals_Model_Abundance_Log) #doesn't work with Dharma
 
 Predicted_AbundanceLog <- ggpredict(Model_Abundance_Log, 
                                       terms = c("Treedata.DBH_cm", 
@@ -1643,7 +1648,6 @@ plot(Residuals_Model_Richness_Stump) #Problems
 testOutliers(Residuals_Model_Richness_Stump) 
 testDispersion(Residuals_Model_Richness_Stump)
 testZeroInflation(Residuals_Model_Richness_Stump)
-r.squaredGLMM(Residuals_Model_Richness_Stump) #doesn't work with Dharma
 
 Predicted_RichnessStump <- ggpredict(Model_Richness_Stump, 
                                       terms = c("Treedata.DBH_cm", 
@@ -1683,7 +1687,6 @@ plot(Residuals_Model_Richness_Log) #Problems
 testOutliers(Residuals_Model_Richness_Log) 
 testDispersion(Residuals_Model_Richness_Log)
 testZeroInflation(Residuals_Model_Richness_Log)
-r.squaredGLMM(Residuals_Model_Richness_Log) #doesn't work with Dharma
 
 Predicted_RichnessLog <- ggpredict(Model_Richness_Log, 
                                     terms = c("Treedata.DBH_cm", 
@@ -1716,8 +1719,7 @@ figTrems <- ggarrange(plotABUNDANCESTUMP, plotRICHNESSSTUMP,
 figTrems
 
 # Save to PDF
-pdf(file = "FigureTreMs.pdf", width = 6.5, height = 4.5)
-print(figTremsDBH)
+pdf(file = "data/derivatives/FigureTreMs.pdf", width = 6.5, height = 4.5)
 dev.off()
 
 par(mar = c(5, 6, 4, 2))  # Increase left margin (second number) for y-axis label space
@@ -1742,11 +1744,9 @@ Model2_Abundance_Log <- glmmTMB(Abundance ~ GroupedTreeSpecies + Treedata.DBH_cm
 summary(Model2_Abundance_Log)
 
 Residuals_Model2_Abundance_Log <- simulateResiduals (Model2_Abundance_Log)
-plot(Residuals_Model2_Abundance_Log) #Problems 
 testOutliers(Residuals_Model2_Abundance_Log) 
 testDispersion(Residuals_Model2_Abundance_Log)
 testZeroInflation(Residuals_Model2_Abundance_Log)
-r.squaredGLMM(Residuals_Model2_Abundance_Log) #doesn't work with Dharma
 
 #Log richness
 
@@ -1758,11 +1758,9 @@ Model2_Richness_Log <- glmmTMB(Richness ~ GroupedTreeSpecies + Treedata.DBH_cm +
 summary(Model2_Richness_Log)
 
 Residuals_Model2_Richness_Log <- simulateResiduals (Model2_Richness_Log)
-plot(Residuals_Model2_Richness_Log) 
 testOutliers(Residuals_Model2_Richness_Log) 
 testDispersion(Residuals_Model2_Richness_Log)
 testZeroInflation(Residuals_Model2_Richness_Log)
-r.squaredGLMM(Residuals_Model2_Richness_Log) #doesn't work with Dharma
 
 #TreM forms
 LogData$Cavities <- rowSums(LogData[, c(83:85)])
@@ -1782,11 +1780,9 @@ Model2_Cavities_Log <- glmmTMB(Cavities ~ GroupedTreeSpecies + Treedata.DBH_cm +
 summary(Model2_Cavities_Log)
 
 Residuals_Model2_Cavities_Log <- simulateResiduals (Model2_Cavities_Log)
-plot(Residuals_Model2_Cavities_Log) 
 testOutliers(Residuals_Model2_Cavities_Log) 
 testDispersion(Residuals_Model2_Cavities_Log)
 testZeroInflation(Residuals_Model2_Cavities_Log)
-r.squaredGLMM(Residuals_Model2_Cavities_Log) #doesn't work with Dharma
 
 #Tree injuries  
 #Length highly significant!
@@ -1799,11 +1795,9 @@ Model2_Injuries_Log <- glmmTMB(TreeInjuries ~ GroupedTreeSpecies + Treedata.DBH_
 summary(Model2_Injuries_Log)
 
 Residuals_Model2_Injuries_Log <- simulateResiduals (Model2_Injuries_Log)
-plot(Residuals_Model2_Injuries_Log) 
 testOutliers(Residuals_Model2_Injuries_Log) 
 testDispersion(Residuals_Model2_Injuries_Log)
 testZeroInflation(Residuals_Model2_Injuries_Log)
-r.squaredGLMM(Residuals_Model2_Injuries_Log) #doesn't work with Dharma
 
 #Fungi fruiting bodies 
 #Fitted with nbinom2, overdispersion with poisson 
@@ -1815,11 +1809,9 @@ Model2_Fungi_Log <- glmmTMB(FruitingBodies ~ GroupedTreeSpecies + Treedata.DBH_c
 summary(Model2_Fungi_Log)
 
 Residuals_Model2_Fungi_Log <- simulateResiduals (Model2_Fungi_Log)
-plot(Residuals_Model2_Fungi_Log) 
 testOutliers(Residuals_Model2_Fungi_Log) 
 testDispersion(Residuals_Model2_Fungi_Log)
 testZeroInflation(Residuals_Model2_Fungi_Log)
-r.squaredGLMM(Residuals_Model2_Fungi_Log) #doesn't work with Dharma
 
 #Epiphytes - nothing
 #Fitted with nbinom2
@@ -1831,11 +1823,9 @@ Model2_Epiphytes_Log <- glmmTMB(Epiphytes ~ GroupedTreeSpecies + Treedata.DBH_cm
 summary(Model2_Epiphytes_Log)
 
 Residuals_Model2_Epiphytes_Log <- simulateResiduals (Model2_Epiphytes_Log)
-plot(Residuals_Model2_Epiphytes_Log) 
 testOutliers(Residuals_Model2_Epiphytes_Log) 
 testDispersion(Residuals_Model2_Epiphytes_Log)
 testZeroInflation(Residuals_Model2_Epiphytes_Log)
-r.squaredGLMM(Residuals_Model2_Epiphytes_Log) #doesn't work with Dharma
 
 #Deadwoodshelter (including log structures) - length significant
 #Fitted with poisson, no overdispersion
@@ -1847,11 +1837,9 @@ Model2_Shelter_Log <- glmmTMB(DeadwoodShelterForm ~ GroupedTreeSpecies + Treedat
 summary(Model2_Shelter_Log)
 
 Residuals_Model2_Shelter_Log <- simulateResiduals (Model2_Shelter_Log)
-plot(Residuals_Model2_Shelter_Log) 
 testOutliers(Residuals_Model2_Shelter_Log) 
 testDispersion(Residuals_Model2_Shelter_Log)
 testZeroInflation(Residuals_Model2_Shelter_Log)
-r.squaredGLMM(Residuals_Model2_Shelter_Log) #doesn't work with Dharma
 
 #Woody debris 
 #Fitted with poission
@@ -1865,11 +1853,9 @@ Model2_Debris_Log <- glmmTMB(WoodyDebris ~ GroupedTreeSpecies + Treedata.DBH_cm 
 summary(Model2_Debris_Log)
 
 Residuals_Model2_Debris_Log <- simulateResiduals (Model2_Debris_Log)
-plot(Residuals_Model2_Debris_Log) 
 testOutliers(Residuals_Model2_Debris_Log) 
 testDispersion(Residuals_Model2_Debris_Log)
 testZeroInflation(Residuals_Model2_Debris_Log)
-r.squaredGLMM(Residuals_Model2_Debris_Log) #doesn't work with Dharma
 
 #Exposed roots
 #Fitted with poisson
@@ -1883,11 +1869,9 @@ Model2_Roots_Log <- glmmTMB(ExposedRoots ~ GroupedTreeSpecies + Treedata.DBH_cm 
 summary(Model2_Roots_Log)
 
 Residuals_Model2_Roots_Log <- simulateResiduals (Model2_Roots_Log)
-plot(Residuals_Model2_Roots_Log) 
 testOutliers(Residuals_Model2_Roots_Log) 
 testDispersion(Residuals_Model2_Roots_Log)
 testZeroInflation(Residuals_Model2_Roots_Log)
-r.squaredGLMM(Residuals_Model2_Roots_Log) #doesn't work with Dharma
 
 #Plots for those where length was significant 
 
@@ -1981,7 +1965,7 @@ figTremsDBH <- ggarrange(plotABUNDANCELENGTH, plotINJURIESLENGTH, plotSHELTERLEN
 figTremsDBH
 
 # Save to PDF
-pdf(file = "FigureTreMsLength.pdf", width = 6.5, height = 4.5)
+pdf(file = "data/derivatives/FigureTreMsLength.pdf", width = 6.5, height = 4.5)
 print(figTremsDBH)
 dev.off()
 
@@ -1998,15 +1982,15 @@ TreMs$ForestType <- as.factor(TreMs$ForestType)
 
 plot_abundance_mean <- aggregate(Abundance ~ Plot, data = TreMs, mean, na.rm = TRUE)
 print(plot_abundance_mean)
-write.table(plot_abundance_mean, file = "PlotAbundanceMean.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(plot_abundance_mean, file = "data/derivatives/PlotAbundanceMean.csv", sep = ",", quote = FALSE, row.names = F)
 
 plot_richness_mean <- aggregate(Richness ~ Plot, data = TreMs, mean, na.rm = TRUE)
 print(plot_richness_mean)
-write.table(plot_richness_mean, file = "PlotRichnessMean.csv", sep = ",", quote = FALSE, row.names = F)
+write.table(plot_richness_mean, file = "data/derivatives/PlotRichnessMean.csv", sep = ",", quote = FALSE, row.names = F)
 
-PlotTreMSum <- read.csv ("PlotData.csv", sep = ",")
+PlotTreMSum <- read.csv("data/PlotData.csv", sep = ",")
 
-PlotTreMMean <- read.csv ("PlotDataMean.csv", sep = ",")
+PlotTreMMean <- read.csv ("data/PlotDataMean.csv", sep = ",")
 
 #abundance
 wilcox.test(Abundance ~ Forest.Type, data=PlotTreMSum)
