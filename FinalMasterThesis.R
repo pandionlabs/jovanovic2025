@@ -76,7 +76,7 @@ library(ggeffects)
 library(ggplot2)
 library(viridis)
 library(multcompView)
-# library("ggpubr") ### uhoh
+library("ggpubr") ### uhoh
 
 ##################### Import the data #######################
 
@@ -642,20 +642,20 @@ write.table(meantable, file = "data/derivatives/AggregationDecay.csv", sep = ","
 sumtable <- 
   TreMs |> 
   dplyr::select(
-    WoodpeckerCavities, 
-    Concavities, 
-    Rotholes, 
-    InsectGalleries, 
-    ExposedHeartwood, 
-    PerennialFungi, 
-    Ephermalfungi, 
-    Epiphytes, 
-    DeadwooodShelter, 
-    StumpStructures, 
-    LogStructures, 
-    WoodyDebris, 
-    ExposedRoots
-    # ExposedSapwoodReduced # TODO this col doesn't exist yet
+    WoodpeckerCavities, # 81
+    Concavities, # 82
+    Rotholes, # 83
+    InsectGalleries, # 84
+    ExposedHeartwood, # 87
+    PerennialFungi, # 88
+    Ephermalfungi, # 89
+    Epiphytes, # 90
+    DeadwooodShelter, # 91
+    StumpStructures, # 92
+    LogStructures, # 93
+    WoodyDebris, # 94
+    ExposedRoots # 95
+    # ExposedSapwoodReduced # 98 # TODO this col doesn't exist yet
   ) |> 
   aggregate(#Here including woodpecker cavities and concavities separately 
                        list(TreMs$Treedata.Tree_Decay), 
@@ -665,8 +665,23 @@ write.table(sumtable, file = "data/derivatives/AggregationDecaySum.csv", sep = "
 colnames(IdentitiesTreMs)
 
 #Sum table for deadwood identity
-# Error in `FUN()`:! invalid 'type' (character) of argument Sam
-sumtable <-aggregate(IdentitiesTreMs[,c(81:84,87:95,98)], list(IdentitiesTreMs$DeadwoodIdentities), sum)
+sumtable <- IdentitiesTreMs |> 
+  dplyr::select(
+    WoodpeckerCavities, # 81
+    Concavities, # 82
+    Rotholes, # 83
+    InsectGalleries, # 84
+    ExposedHeartwood, # 87
+    PerennialFungi, # 88
+    Ephermalfungi, # 89
+    Epiphytes, # 90
+    DeadwooodShelter, # 91
+    StumpStructures, # 92
+    LogStructures, # 93
+    WoodyDebris, # 94
+    ExposedRoots # 95
+    # ExposedSapwoodReduced # 98 # TODO this col doesn't exist yet
+  ) |> aggregate(list(IdentitiesTreMs$DeadwoodIdentities), sum)
 write.table(sumtable, file = "data/derivatives/AggregationSum.csv", sep = ",", quote = FALSE, row.names = F )
 
 
@@ -675,57 +690,57 @@ write.table(sumtable, file = "data/derivatives/AggregationSum.csv", sep = ",", q
 anova_model <- aov(PerennialFungi ~ Treedata.Tree_Decay, data = TreMs)
 TUKEY <- TukeyHSD(anova_model, 'Treedata.Tree_Decay', conf.level=0.95)
 plot(TUKEY , las=1 , col="brown")
-
-generate_label_df <- function(TUKEY, Treedata.Tree_Decay){
+# TODO I've removed this section because it doesn't work
+# generate_label_df <- function(TUKEY, Treedata.Tree_Decay){
   
-  # Extract labels and factor levels from Tukey post-hoc 
-  Tukey.levels <- TUKEY[[Treedata.Tree_Decay]][,4]
-  Tukey.labels <- data.frame(multcompLetters(Tukey.levels)['Letters'])
+#   # Extract labels and factor levels from Tukey post-hoc 
+#   Tukey.levels <- TUKEY[[Treedata.Tree_Decay]][,4]
+#   Tukey.labels <- data.frame(multcompLetters(Tukey.levels)['Letters'])
   
-  #I need to put the labels in the same order as in the boxplot :
-  Tukey.labels$Treedata.Tree_Deay=rownames(Tukey.labels)
-  Tukey.labels=Tukey.labels[order(Tukey.labels$Treedata.Tree_Deay) , ]
-  return(Tukey.labels)
-}
+#   #I need to put the labels in the same order as in the boxplot :
+#   Tukey.labels$Treedata.Tree_Deay=rownames(Tukey.labels)
+#   Tukey.labels=Tukey.labels[order(Tukey.labels$Treedata.Tree_Deay) , ]
+#   return(Tukey.labels)
+# }
 
-# Error in `if (k2 == 0) ...`:! missing value where TRUE/FALSE needed Sam
-LABELS <- generate_label_df(TUKEY , "Treedata.Tree_Decay")
+# # Error in `if (k2 == 0) ...`:! missing value where TRUE/FALSE needed Sam
+# LABELS <- generate_label_df(TUKEY , "Treedata.Tree_Decay")
 
-my_colors <- c( 
-  rgb(143,199,74,maxColorValue = 255),
-  rgb(242,104,34,maxColorValue = 255), 
-  rgb(111,145,202,maxColorValue = 255)
-)
+# my_colors <- c( 
+#   rgb(143,199,74,maxColorValue = 255),
+#   rgb(242,104,34,maxColorValue = 255), 
+#   rgb(111,145,202,maxColorValue = 255)
+# )
 
-a <- boxplot(TreMs$PerennialFungi ~ TreMs$Treedata.Tree_Decay , ylim=c(min(TreMs$PerennialFungi) , 1.1*max(TreMs$PerennialFungi)) , col=my_colors[as.numeric(LABELS[,1])] , ylab="Perennial fungi" , main="")
+# a <- boxplot(TreMs$PerennialFungi ~ TreMs$Treedata.Tree_Decay , ylim=c(min(TreMs$PerennialFungi) , 1.1*max(TreMs$PerennialFungi)) , col=my_colors[as.numeric(LABELS[,1])] , ylab="Perennial fungi" , main="")
 
 # I want to write the letter over each box. Over is how high I want to write it.
-over <- 0.1*max( a$stats[nrow(a$stats),] )
+# over <- 0.1*max( a$stats[nrow(a$stats),] )
 
-text( c(1:nlevels(TreMs$Treedata.Tree_Decay)) , a$stats[nrow(a$stats),]+over , LABELS[,1]  , col=my_colors[as.numeric(LABELS[,1])] )
+# text( c(1:nlevels(TreMs$Treedata.Tree_Decay)) , a$stats[nrow(a$stats),]+over , LABELS[,1]  , col=my_colors[as.numeric(LABELS[,1])] )
 
-tukey_letters <- multcompLetters4(anova_model, tukey_result)
-tukey_letters_df <- as.data.frame.list(tukey_letters$Treedata.Tree_Decay)
-tukey_letters_df$Treedata.Tree_Decay <- rownames(tukey_letters_df)
-colnames(tukey_letters_df) <- c("Letters", "Treedata.Tree_Decay")
+# tukey_letters <- multcompLetters4(anova_model, tukey_result)
+# tukey_letters_df <- as.data.frame.list(tukey_letters$Treedata.Tree_Decay)
+# tukey_letters_df$Treedata.Tree_Decay <- rownames(tukey_letters_df)
+# colnames(tukey_letters_df) <- c("Letters", "Treedata.Tree_Decay")
 
-boxplot_stats <- aggregate(PerennialFungi ~ Treedata.Tree_Decay, data = TreMs, FUN = median, na.rm = TRUE)
-colnames(boxplot_stats) <- c("Treedata.Tree_Decay", "median_TreM")
+# boxplot_stats <- aggregate(PerennialFungi ~ Treedata.Tree_Decay, data = TreMs, FUN = median, na.rm = TRUE)
+# colnames(boxplot_stats) <- c("Treedata.Tree_Decay", "median_TreM")
 
-plot_data <- merge(boxplot_stats, tukey_letters_df, by = "Treedata.Tree_Decay")
+# plot_data <- merge(boxplot_stats, tukey_letters_df, by = "Treedata.Tree_Decay")
 
-str(boxplot_stats)
-str(plot_data)
+# str(boxplot_stats)
+# str(plot_data)
 
-ggplot(TreMs, aes(x = Treedata.Tree_Decay, y = PerennialFungi)) +
-  geom_boxplot(aes(fill = Treedata.Tree_Decay)) +
-  labs(title = "Box Plot of TreM Abundance by Decay Stage with Tukey Test Results",
-       x = "Decay Stage",
-       y = "Rothole Abundance") +
-  theme_minimal() +
-  scale_fill_brewer(palette = "Pastel1") +
-  geom_text(data = plot_data, aes(x = Treedata.Tree_Decay, y = median_TreM + 2, label = Letters), # Adjust "+ 2" for label position
-            color = "black", size = 5)
+# ggplot(TreMs, aes(x = Treedata.Tree_Decay, y = PerennialFungi)) +
+#   geom_boxplot(aes(fill = Treedata.Tree_Decay)) +
+#   labs(title = "Box Plot of TreM Abundance by Decay Stage with Tukey Test Results",
+#        x = "Decay Stage",
+#        y = "Rothole Abundance") +
+#   theme_minimal() +
+#   scale_fill_brewer(palette = "Pastel1") +
+#   geom_text(data = plot_data, aes(x = Treedata.Tree_Decay, y = median_TreM + 2, label = Letters), # Adjust "+ 2" for label position
+#             color = "black", size = 5)
 
 ##############GLMM################## 
 
@@ -755,7 +770,7 @@ plot(Residuals_Model_Abundance) #Problems
 testOutliers(Residuals_Model_Abundance) 
 testDispersion(Residuals_Model_Abundance)
 testZeroInflation(Residuals_Model_Abundance)
-r.squaredGLMM(Residuals_Model_Abundance) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_Abundance) #doesn't work with Dharma
 
 #Richness
 #DBH, decay stages 3, 4 and 5 significant
@@ -772,7 +787,7 @@ plot(Residuals_Model_Richness) #Problems
 testOutliers(Residuals_Model_Richness) 
 testDispersion(Residuals_Model_Richness)
 testZeroInflation(Residuals_Model_Richness)
-r.squaredGLMM(Residuals_Model_Model_Richness) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_Model_Richness) #doesn't work with Dharma
 
 #Rotholes
 #Fitted with poisson since there was no over dispersion
@@ -788,7 +803,7 @@ plot(Residuals_Model_Rotholes) #No problems
 testOutliers(Residuals_Model_Rotholes) 
 testDispersion(Residuals_Model_Rotholes)
 testZeroInflation(Residuals_Model_Rotholes)
-r.squaredGLMM(Residuals_Model_Rotholes) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_Rotholes) #doesn't work with Dharma
 
 #Insect galleries 
 #Fitted with poisson since there was no overdispersion 
@@ -805,7 +820,7 @@ plot(Residuals_Model_InsectGal) #No problems
 testOutliers(Residuals_Model_InsectGal) 
 testDispersion(Residuals_Model_InsectGal)
 testZeroInflation(Residuals_Model_InsectGal)
-r.squaredGLMM(Residuals_Model_InsectGal) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_InsectGal) #doesn't work with Dharma
 
 #WoodpeckerConcavities
 #Fitted with poisson since there was no overdispersion 
@@ -817,13 +832,13 @@ Model_WoodpeckerConcavities <- glmmTMB(WoodpeckerConcavities ~ GroupedTreeSpecie
                           TreMs, family = poisson())
 
 summary(Model_WoodpeckerConcavities)
-
-Residuals_Model_Concavities <- simulateResiduals (Model_Concavities)
+# Changed Model_Concavities to Model_WoodpeckerConcavities Sam
+Residuals_Model_Concavities <- simulateResiduals(Model_WoodpeckerConcavities)
 plot(Residuals_Model_Concavities) #No problems
 testOutliers(Residuals_Model_Concavities) 
 testDispersion(Residuals_Model_Concavities)
 testZeroInflation(Residuals_Model_Concavities)
-r.squaredGLMM(Residuals_Model_Concavities) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_Concavities) #doesn't work with Dharma
 
 #Exposed sapwood
 #Nothing significant - becauase of bark loss
@@ -840,7 +855,7 @@ plot(Residuals_Model_Sapwood)
 testOutliers(Residuals_Model_Sapwood) 
 testDispersion(Residuals_Model_Sapwood)
 testZeroInflation(Residuals_Model_Sapwood)
-r.squaredGLMM(Residuals_Model_Model_Sapwood) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_Model_Sapwood) #doesn't work with Dharma
 
 
 #Exposed sapwood without barkloss
@@ -861,7 +876,7 @@ plot(Residuals_Model_Sapwood_2) #No problems
 testOutliers(Residuals_Model_Sapwood_2) 
 testDispersion(Residuals_Model_Sapwood_2)
 testZeroInflation(Residuals_Model_Sapwood_2)
-r.squaredGLMM(Residuals_Model_Sapwood_2) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_Sapwood_2) #doesn't work with Dharma
 
 
 #Exposed heartwood
@@ -875,8 +890,10 @@ Model_Heartwood <- glmmTMB(ExposedHeartwood ~ GroupedTreeSpecies + Treedata.DBH_
 summary(Model_Heartwood)
 
 #Grouped sapwood and heartwood (withour bark)
-TreMs$GroupedSapwoodHeartwood <- rowSums(TreMs[, c(87,98)])
-
+TreMs$GroupedSapwoodHeartwood <- 
+TreMs |> 
+  dplyr::select(ExposedHeartwood, ExposedSapwoodReduced) |> 
+rowSums()
 #Fitted with nbinom2
 
 Model_HeartSap <- glmmTMB(GroupedSapwoodHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm + 
@@ -891,14 +908,12 @@ plot(Residuals_Model_HeartSap) #No problems
 testOutliers(Residuals_Model_HeartSap) 
 testDispersion(Residuals_Model_HeartSap)
 testZeroInflation(Residuals_Model_HeartSap)
-r.squaredGLMM(Residuals_Model_HeartSap) #doesn't work with Dharma
-
 
 
 #Perennial fungi 
 #Deciduous, decay stage 4 and 5
 #Fitted with nbinom2
-
+# TODO this model doesn't really work
 Model_Perennials <- glmmTMB(PerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm + 
                             Treedata.Tree_Decay +
                             (1|Plot),
@@ -909,22 +924,21 @@ summary(Model_Perennials)
 Residuals_Model_Perennials <- simulateResiduals (Model_Perennials)
 plot(Residuals_Model_Perennials) #No problems
 testOutliers(Residuals_Model_Perennials) 
-testDispersion(Residuals_Model_Perennials)
+# testDispersion(Residuals_Model_Perennials) # TODO this doesn't work
 testZeroInflation(Residuals_Model_Perennials)
-r.squaredGLMM(Residuals_Model_Perennials) #doesn't work with Dharma
 
 #Ephermal fungi
-#Doesn't work 
-Model_Ephermals <- glmmTMB(Ephermalfungi ~ Treedata.DBH_cm + GroupedTreeSpecies +
-                              Treedata.Tree_Decay +
-                              (1|Plot),
-                            TreMs, family = nbinom2)
+# #Doesn't work 
+# Model_Ephermals <- glmmTMB(Ephermalfungi ~ Treedata.DBH_cm + GroupedTreeSpecies +
+#                               Treedata.Tree_Decay +
+#                               (1|Plot),
+#                             TreMs, family = nbinom2)
 
-summary(Model_Ephermals)
+# summary(Model_Ephermals)
 
-#Grouped all fungi
-#Same as perennials (cause that's most of the data )
-TreMs$AllFungi <- rowSums(TreMs[, c(88,89)])
+# #Grouped all fungi
+# #Same as perennials (cause that's most of the data )
+# TreMs$AllFungi <- rowSums(TreMs[, c(88,89)])
 
 #Fitted with nbinom2
 
@@ -936,11 +950,11 @@ Model_AllFungi <- glmmTMB(AllFungi ~ GroupedTreeSpecies + Treedata.DBH_cm +
 summary(Model_AllFungi)
 
 Residuals_Model_AllFungi <- simulateResiduals (Model_AllFungi)
-plot(Residuals_Model_AllFungi) #Some problems
+# plot(Residuals_Model_AllFungi) #Some problems
 testOutliers(Residuals_Model_AllFungi) 
 testDispersion(Residuals_Model_AllFungi)
 testZeroInflation(Residuals_Model_AllFungi)
-r.squaredGLMM(Residuals_Model_AllFungi) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_AllFungi) #doesn't work with Dharma
 
 #Epiphytes
 #Fitted with nbinom2
@@ -956,7 +970,7 @@ plot(Residuals_Model_Epiphytes) #Problems
 testOutliers(Residuals_Model_Epiphytes) 
 testDispersion(Residuals_Model_Epiphytes)
 testZeroInflation(Residuals_Model_Epiphytes)
-r.squaredGLMM(Residuals_Model_Epiphytes) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_Epiphytes) #doesn't work with Dharma
      
 #Deadwood shelter 
 #Fitted with nbinom2
@@ -973,7 +987,7 @@ plot(Residuals_Model_Shelters) #No problems
 testOutliers(Residuals_Model_Shelters) 
 testDispersion(Residuals_Model_Shelters)
 testZeroInflation(Residuals_Model_Shelters)
-r.squaredGLMM(Residuals_Model_Shelters) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_Shelters) #doesn't work with Dharma
 
 #Stump structures 
 #Fitted with poisson
@@ -991,7 +1005,7 @@ plot(Residuals_Model_StumpStruct) #Small problems
 testOutliers(Residuals_Model_StumpStruct) 
 testDispersion(Residuals_Model_StumpStruct)
 testZeroInflation(Residuals_Model_StumpStruct)
-r.squaredGLMM(Residuals_Model_StumpStruct) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_StumpStruct) #doesn't work with Dharma
 
 #Log structures 
 #Fitted with nbinom2
@@ -1008,7 +1022,7 @@ plot(Residuals_Model_LogStruct) #No problems
 testOutliers(Residuals_Model_LogStruct) 
 testDispersion(Residuals_Model_LogStruct)
 testZeroInflation(Residuals_Model_LogStruct)
-r.squaredGLMM(Residuals_Model_LogStruct) #doesn't work with Dharma
+# r.squaredGLMM(Residuals_Model_LogStruct) #doesn't work with Dharma
 
 #Stump and log structures grouped
 #Fitted with nbinom2
@@ -1027,7 +1041,6 @@ plot(Residuals_Model_LogStump) #No problems
 testOutliers(Residuals_Model_LogStump) 
 testDispersion(Residuals_Model_LogStump)
 testZeroInflation(Residuals_Model_LogStump)
-r.squaredGLMM(Residuals_Model_LogStump) #doesn't work with Dharma
 
 #Woody debris 
 #Fitted with poisson, no overdispersion
@@ -1039,12 +1052,12 @@ Model_WoodyDebris <- glmmTMB(WoodyDebris ~ GroupedTreeSpecies + Treedata.DBH_cm 
 
 summary(Model_WoodyDebris)
 
-Residuals_Model_WoodyDebris <- simulateResiduals (Model_WoodyDebris)
+Residuals_Model_WoodyDebris <- simulateResiduals(Model_WoodyDebris)
 plot(Residuals_Model_WoodyDebris) #No problems
 testOutliers(Model_WoodyDebris) 
 testDispersion(Model_WoodyDebris)
 testZeroInflation(Model_WoodyDebris)
-r.squaredGLMM(Model_WoodyDebris) #doesn't work with Dharma
+r.squaredGLMM(Model_WoodyDebris) # This does work
 
 #Exposed roots 
 #Nothing is signficiant with both nbinom and binomial
@@ -1061,7 +1074,7 @@ plot(Residuals_Model_ExposedRoots) #No problems
 testOutliers(Model_ExposedRoots) 
 testDispersion(Model_ExposedRoots)
 testZeroInflation(Model_ExposedRoots)
-r.squaredGLMM(Model_ExposedRoots) #doesn't work with Dharma
+r.squaredGLMM(Model_ExposedRoots) # This does work
 
 #PLOTS
 #Have to check for each model what is group and what is facet so that it doesn't plot wrong!!!! str(predicted dataset)
@@ -1073,7 +1086,8 @@ Predicted_Abundance <- ggpredict(Model_Abundance,
                                  terms = c("Treedata.DBH_cm", 
                                            "GroupedTreeSpecies[Coniferous spp., Broadleaf spp.]", 
                                            "Treedata.Tree_Decay[Decay stage 1, Decay stage 2]"), 
-                                 se = TRUE)
+                                 se = TRUE # TODO This maybe doesn't go anywhere
+                                )
 
 plotABUNDANCE <- ggplot(Predicted_Abundance, aes(x = x, y = predicted, colour= group)) +
   geom_smooth(aes(colour = facet, linetype = group), size = 1) +
@@ -1096,7 +1110,8 @@ plotABUNDANCE <- ggplot(Predicted_Abundance, aes(x = x, y = predicted, colour= g
   scale_linetype_manual(values = c("solid", "dashed"))
 levels(TreMs$GroupedTreeSpecies)
 
-print(plotABUNDANCE)
+# print(plotABUNDANCE)
+plotABUNDANCE
 
 ggsave(filename = "plotABUNDANCE.png", plot = plotABUNDANCE, 
        width = 7, height = 5, units = "in", dpi = 300)
@@ -1110,6 +1125,7 @@ Predicted_Richness <- ggpredict(Model_Richness,
                                            "Treedata.Tree_Decay[Decay stage 1, Decay stage 3, Decay stage 4,Decay stage 5]"))
 str(Predicted_Richness)
 
+# TODO find where conf.low and conf.high come from
 plotRICHNESS <- ggplot() + 
   geom_smooth(data = Predicted_Richness, mapping = aes(x = x, y = predicted, colour= group)) + 
   geom_ribbon(data = Predicted_Richness, mapping = aes(x = x, y = predicted, ymin=conf.low, ymax=conf.high, fill=group, colour=NULL), alpha=.05, show.legend = TRUE) + 
@@ -1171,6 +1187,7 @@ boxplotROTHOLES <- ggplot(Predicted_Rotholes, aes(x = x, y = predicted, fill = g
                                "Decay stage 5" = "#f26419")) +
   theme_minimal()
 
+# TODO out of order boxplotSAPWOOD is created later
 figTremsBox <- ggarrange(boxplotROTHOLES, boxplotSAPWOOD, boxPERENNIAL, boxSHELT,
                           ncol = 2, nrow =2, 
                           common.legend = TRUE, 
@@ -1217,6 +1234,7 @@ plotCONCAV <- ggplot()+
 
 plotCONCAV
 
+# TODO out of order plotEPIPHYTES is created later
 figTremsDBH <- ggarrange(plotCONCAV, plotEPIPHYTES,
                          ncol = 2, nrow = 1, 
                          common.legend = TRUE, 
@@ -1280,6 +1298,7 @@ boxSAPHEART <- ggplot(Predicted_HeartSap, aes(x = x, y = predicted, fill = x)) +
                                "Decay stage 5" = "#f26419")) +
   theme_minimal()
 
+# TODO out of order allfungi created later
 figTremsBox <- ggarrange(boxSAPHEART, allfungi,
                          ncol = 2, nrow =1)
 
@@ -1288,7 +1307,7 @@ figTremsBox
 #Perennials 
 
 summary(Model_Perennials)
-
+# TODO here
 Predicted_Perennials <- ggpredict(Model_Perennials, 
                                 terms = c("GroupedTreeSpecies[Coniferous spp., Deciduous spp.]",
                                           "Treedata.Tree_Decay[Decay stage 1,Decay stage 4, Decay stage 5]"),
