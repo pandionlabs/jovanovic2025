@@ -2868,14 +2868,15 @@
       "Encoding": "UTF-8",
       "RoxygenNote": "7.3.2",
       "Roxygen": "list(markdown = TRUE)",
-      "Author": "Henrik Bengtsson [aut, cre, cph] (ORCID: <https://orcid.org/0000-0002-7579-5165>)",
-      "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "future",
       "RemoteUsername": "futureverse",
       "RemoteRef": "develop",
-      "RemoteSha": "472cc3fa264d3c28e5a127541a8b0fcb8925274a"
+      "RemoteSha": "472cc3fa264d3c28e5a127541a8b0fcb8925274a",
+      "NeedsCompilation": "no",
+      "Author": "Henrik Bengtsson [aut, cre, cph] (<https://orcid.org/0000-0002-7579-5165>)",
+      "Maintainer": "Henrik Bengtsson <henrikb@braju.com>"
     },
     "gap": {
       "Package": "gap",

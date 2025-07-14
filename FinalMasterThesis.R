@@ -1189,18 +1189,7 @@ boxplotROTHOLES <- ggplot(Predicted_Rotholes, aes(x = x, y = predicted, fill = g
   scale_fill_manual(values = c("Decay stage 1" = "#849324", 
                                "Decay stage 5" = "#f26419")) +
   theme_minimal()
-
-# TODO out of order boxplotSAPWOOD is created later
-figTremsBox <- ggarrange(boxplotROTHOLES, boxplotSAPWOOD, boxPERENNIAL, boxSHELT,
-                          ncol = 2, nrow =2, 
-                          common.legend = TRUE, 
-                          legend="bottom")
-
-figTremsBox
-
-pdf(file = "FigureTreMsBox.pdf", width = 6.5, height = 4.5)
-print(figTremsBox)
-dev.off()
+# TODO out of order figTremsBox was from here
 
 str(Predicted_Rotholes)
 
@@ -1218,11 +1207,11 @@ Predicted_Concavities <- ggpredict(Model_WoodpeckerConcavities,
 str(Predicted_Concavities)
 
 plotCONCAV <- ggplot()+
-  geom_smooth (data= Predicted_Concavities, mapping = aes(x = x, y = predicted, colour= group)) +
+  geom_smooth(data= Predicted_Concavities, mapping = aes(x = x, y = predicted, colour= group)) +
   geom_ribbon(data = Predicted_Concavities, mapping = aes(x = x, y = predicted, ymin=conf.low, ymax=conf.high, fill=group, colour=NULL), 
               alpha=.05, show.legend = FALSE)+
   
-  geom_rug (data= TreMs,mapping= aes (x= Treedata.DBH_cm, y= WoodpeckerConcavities), col="steelblue",alpha=0.1, size=1)+
+  geom_rug(data= TreMs,mapping= aes (x= Treedata.DBH_cm, y= WoodpeckerConcavities), col="steelblue",alpha=0.1, linewidth=1)+
   xlab("Diameter (cm)") + ylab("Woodpecker Cavities and Concavities")+ 
   scale_x_continuous(n.breaks =5)+
   theme(text = element_text(size=8), 
@@ -1236,19 +1225,8 @@ plotCONCAV <- ggplot()+
   theme(legend.title=element_blank())
 
 plotCONCAV
+# TODO out of order figTremsDBH is from here
 
-# TODO out of order plotEPIPHYTES is created later
-figTremsDBH <- ggarrange(plotCONCAV, plotEPIPHYTES,
-                         ncol = 2, nrow = 1, 
-                         common.legend = TRUE, 
-                         legend = "bottom",
-                         combine = TRUE)  # Add this line to combine legends
-figTremsDBH
-
-# Save to PDF
-pdf(file = "FigureTreMsDBH2.pdf", width = 6.5, height = 4.5)
-print(figTremsDBH)
-dev.off()
 
 #Exposed sapwood
 
@@ -1277,6 +1255,9 @@ boxplotSAPWOOD <- ggplot(Predicted_Sapwood, aes(x = x, y = predicted, fill = x))
                                "Decay stage 5" = "#f26419")) +
   theme_minimal()
 
+
+
+
 #Grouped heartwood and sapwood (without bark loss)
 #Decay 4 and 5 significant
 
@@ -1301,11 +1282,9 @@ boxSAPHEART <- ggplot(Predicted_HeartSap, aes(x = x, y = predicted, fill = x)) +
                                "Decay stage 5" = "#f26419")) +
   theme_minimal()
 
-# TODO out of order allfungi created later
-figTremsBox <- ggarrange(boxSAPHEART, allfungi,
-                         ncol = 2, nrow =1)
+# TODO out of order allfungi is from here
 
-figTremsBox
+
 
 #Perennials 
 
@@ -1336,6 +1315,20 @@ summary(Model_Perennials)
 
 # str(Predicted_Perennials)
 
+# # TODO out of order boxplotSAPWOOD and boxPERENNIAL are created later
+# figTremsBox <- ggarrange(boxplotROTHOLES, boxplotSAPWOOD, boxPERENNIAL, boxSHELT,
+#   ncol = 2, nrow =2, 
+#   common.legend = TRUE, 
+#   legend="bottom")
+
+# figTremsBox
+
+# pdf(file = "data/derivatives/FigureTreMsBox.pdf", width = 6.5, height = 4.5)
+# print(figTremsBox)
+# dev.off()
+
+# skipping end sam
+
 #Ephermal fungi - doesn't work, not enough data 
 #All fungi 
 summary(Model_AllFungi)
@@ -1363,6 +1356,12 @@ allfungi <- ggplot(Predicted_AllFungi, aes(x = x, y = predicted, fill = group)) 
   theme_minimal()
 
 allfungi
+
+# TODO out of order allfungi created later
+figTremsBox <- ggarrange(boxSAPHEART, allfungi,
+  ncol = 2, nrow =1)
+
+figTremsBox
 
 #Epiphytes
 summary(Model_Epiphytes)
@@ -1401,6 +1400,18 @@ plotEPIPHYTES <- ggplot() +
 
 plotEPIPHYTES
 
+# TODO out of order plotEPIPHYTES is created later
+figTremsDBH <- ggarrange(plotCONCAV, plotEPIPHYTES,
+  ncol = 2, nrow = 1, 
+  common.legend = TRUE, 
+  legend = "bottom",
+  combine = TRUE)  # Add this line to combine legends
+figTremsDBH
+
+# Save to PDF
+pdf(file = "data/derivatives/FigureTreMsDBH2.pdf", width = 6.5, height = 4.5)
+print(figTremsDBH)
+dev.off()
 
 #Deadwood shelter 
 
@@ -1488,6 +1499,8 @@ summary(Model_StumpStruct)
 #         axis.line = element_line(colour = "black"))
 
 # print(plotSTUMPS)
+
+# skipping end sam
 
 #Log structures 
 summary(Model_LogStruct)
@@ -1868,9 +1881,9 @@ Model2_Roots_Log <- glmmTMB(ExposedRoots ~ GroupedTreeSpecies + Treedata.DBH_cm 
 
 summary(Model2_Roots_Log)
 
-Residuals_Model2_Roots_Log <- simulateResiduals (Model2_Roots_Log)
+Residuals_Model2_Roots_Log <- simulateResiduals(Model2_Roots_Log)
 testOutliers(Residuals_Model2_Roots_Log) 
-testDispersion(Residuals_Model2_Roots_Log)
+# testDispersion(Residuals_Model2_Roots_Log)
 testZeroInflation(Residuals_Model2_Roots_Log)
 
 #Plots for those where length was significant 
