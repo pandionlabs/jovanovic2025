@@ -2,7 +2,7 @@ Package: jovanovic2025
 Title: Jovanovic 2025 Thesis Code
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Magdalena", "Jovanovic", role = c("aut", "cre", "cph")),
+    person("Magdalena", "Jovanovic", role = c("aut", "cre", "cph", "mtr")),
     person("Sam", "Herniman", , "sam@pandionlabs.dev", role = c("aut", "com"),
            comment = c(ORCID = "0000-0001-7663-2897")),
     person("Simone", "Massaro", , "simone@pandionlabs.dev", role = c("aut", "com"),

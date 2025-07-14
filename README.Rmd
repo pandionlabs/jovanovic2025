@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/jovanovic2025)](https://CRAN.R-project.org/package=jovanovic2025)
 <!-- badges: end -->
 
-The goal of jovanovic2025 is to ...
+This is the companion code and data to Jovanovic et al. 2025. 
 
 ## Installation
 
@@ -40,10 +40,18 @@ library(jovanovic2025)
 ## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+```{r loaddata}
+# Import the data from a tab delimited ascii file.
+MasterThesisData <- read.table(
+  file = "data/raw/MasterThesisData2024.csv",
+  header = TRUE,
+  sep = ",",
+  na.strings = "NA",
+  stringsAsFactors = TRUE,
+  dec = "."
+)
 
-```{r cars}
-summary(cars)
+TreMs <- clean_data(MasterThesisData)
 ```
 
 You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
