@@ -582,6 +582,8 @@ meantable <-aggregate(IdentitiesTreMs[,c(81:84,86:95)], list(IdentitiesTreMs$Dea
 write.table(meantable, file = "data/derivatives/Aggregation.csv", sep = ",", quote = FALSE, row.names = F )
 colnames(IdentitiesTreMs)
 
+
+TreMs$ExposedSapwoodReduced <- rowSums(TreMs[, c(46:48)])
 #Creating the mean and sum table for decay - decided to use sum instead of mean
 meantable <- 
 TreMs |> 
@@ -605,6 +607,8 @@ aggregate(#Here including woodpecker cavities and concavities separately
                        list(TreMs$Treedata.Tree_Decay), 
                        mean)
 write.table(meantable, file = "data/derivatives/AggregationDecay.csv", sep = ",", quote = FALSE, row.names = F )
+
+
 
 sumtable <- 
   TreMs |> 
@@ -732,7 +736,7 @@ Model_Abundance2 <- glmmTMB(Abundance ~ GroupedTreeSpecies + Treedata.DBH_cm +
 summary(Model_Abundance2)
 
 
-Residuals_Model_Abundance <- simulateResiduals (Model_Abundance)
+Residuals_Model_Abundance <- simulateResiduals(Model_Abundance)
 plot(Residuals_Model_Abundance) #Problems
 testOutliers(Residuals_Model_Abundance) 
 testDispersion(Residuals_Model_Abundance)
@@ -829,7 +833,7 @@ testZeroInflation(Residuals_Model_Sapwood)
 #Decay 5 and 4 significant - that makes more sense!
 #Fitted with nbinom2, data was overdispersed 
 
-TreMs$ExposedSapwoodReduced <- rowSums(TreMs[, c(46:48)])
+#TreMs$ExposedSapwoodReduced <- rowSums(TreMs[, c(46:48)])
 
 Model_Sapwood_2 <- glmmTMB(ExposedSapwoodReduced ~ GroupedTreeSpecies + Treedata.DBH_cm + 
                            Treedata.Tree_Decay +
