@@ -17,8 +17,8 @@
 #' )
 #' TreMs <- clean_data(MasterThesisData)
 #' }
+
 clean_data <- function(x) {
-  x <- MasterThesisData
   TreMs <- subset(x, select = -c(45:49, 52:55, 66:70))
   TreMs <- TreMs[-534, ]
 
