@@ -1,5 +1,6 @@
+library(here)
 MasterThesisData <- read.table(
-  file = "data/raw/MasterThesisData2024.csv",
+  file = here("data/raw/MasterThesisData2024.csv"),
   header = TRUE,
   sep = ",",
   na.strings = "NA",
