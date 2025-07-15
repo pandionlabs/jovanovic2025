@@ -2,10 +2,10 @@ Package: jovanovic2025
 Title: Jovanovic 2025 Thesis Code
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Magdalena", "Jovanovic", role = c("aut", "cre", "cph", "mtr")),
-    person("Sam", "Herniman", , "sam@pandionlabs.dev", role = c("aut", "com"),
+    person("Magdalena", "Jovanovic", role = c("aut", "cph")),
+    person("Sam", "Herniman", email="sam@pandionlabs.dev", role = c("aut", "cre", "com"),
            comment = c(ORCID = "0000-0001-7663-2897")),
-    person("Simone", "Massaro", , "simone@pandionlabs.dev", role = c("aut", "com"),
+    person("Simone", "Massaro", email = "simone@pandionlabs.dev", role = c("aut", "com"),
            comment = c(ORCID = "0009-0005-7459-8935"))
   )
 Description: Corresponding package to Jovanovic 2025. Please read the paper.
@@ -31,6 +31,7 @@ Imports:
     ggplot2,
     ggpubr,
     glmmTMB,
+    here,
     lattice,
     lme4,
     multcomp,
@@ -44,7 +45,11 @@ Imports:
     sjPlot,
     sjstats,
     texreg,
+    tibble,
     tidyverse,
     vegan,
     viridis,
     xtable
+Depends: 
+    R (>= 3.5)
+LazyData: true

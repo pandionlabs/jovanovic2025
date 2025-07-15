@@ -7,15 +7,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' MasterThesisData <- read.table(
-#' file = "data/raw/MasterThesisData2024.csv",
-#' header = TRUE,
-#' sep = ",",
-#' na.strings = "NA",
-#' stringsAsFactors = TRUE,
-#' dec = "."
-#' )
-#' TreMs <- clean_data(MasterThesisData)
+
+#' TreMs <- clean_data(MasterThesisData2024)
 #' }
 
 clean_data <- function(x) {
@@ -35,15 +28,7 @@ clean_data <- function(x) {
 #'
 #' @examples
 #' \dontrun{
-#' MasterThesisData <- read.table(
-#' file = "data/raw/MasterThesisData2024.csv",
-#' header = TRUE,
-#' sep = ",",
-#' na.strings = "NA",
-#' stringsAsFactors = TRUE,
-#' dec = "."
-#' )
-#'   TreMs <- load_data(MasterThesisData)
+#'   TreMs <- load_data(MasterThesisData2024)
 #' }
 load_data <- function(MasterThesisData) {
   TreMs <- subset(MasterThesisData, select = -c(45:49, 52:55, 66:70))
@@ -68,7 +53,7 @@ load_data <- function(MasterThesisData) {
   )
 
   # tree species groups
-  species_grouped_conversion <- tribble(
+  species_grouped_conversion <- tibble::tribble(
 ~Species,                ~GroupedTreeSpecies,
 "Picea abies",           "Coniferous spp.",
 "Abies alba",            "Coniferous spp.",
@@ -181,15 +166,7 @@ load_data <- function(MasterThesisData) {
 #'
 #' @examples
 #' \dontrun{
-#' MasterThesisData <- read.table(
-#' file = "data/raw/MasterThesisData2024.csv",
-#' header = TRUE,
-#' sep = ",",
-#' na.strings = "NA",
-#' stringsAsFactors = TRUE,
-#' dec = "."
-#' )
-#'   TreMs <- load_data(MasterThesisData)
+#'   TreMs <- load_data(MasterThesisData2024)
 #'   TreMs <- summarize_microhabitats(TreMs)
 #' }
 summarize_microhabitats <- function(TreMs) {
@@ -198,19 +175,19 @@ summarize_microhabitats <- function(TreMs) {
   TreMs[c(12, 22, 329, 381, 418), 'Microhabitats.cracksandscars.IN32'] <- 0
 
   TreMs <- TreMs |>
-    rowwise() |>
-    mutate(
-      DecomposedCrack = sum(c_across(c(
+    dplyr::rowwise() |>
+    dplyr::mutate(
+      DecomposedCrack = sum(dplyr::c_across(c(
         Microhabitats.cracksandscars.IN31,
         Microhabitats.cracksandscars.IN32
       ))),
-      WoodpeckerCavities = sum(c_across(c(
+      WoodpeckerCavities = sum(dplyr::c_across(c(
         Microhabitats.Cavities.Woodpeckercavities.CV12,
         Microhabitats.Cavities.Woodpeckercavities.CV13,
         Microhabitats.Cavities.Woodpeckercavities.CV14,
         Microhabitats.Cavities.Trunkmouldcavities.CV21
       ))),
-      Concavities = sum(c_across(c(
+      Concavities = sum(dplyr::c_across(c(
         Microhabitats.Cavities.Woodpeckercavities.CV15,
         Microhabitats.Dendrotelms.CV42,
         Microhabitats.Dendrotelms.CV43,
@@ -220,7 +197,7 @@ summarize_microhabitats <- function(TreMs) {
         Microhabitats.fruitingbodiesfungi.EP11,
         group_ti3vx98.Wood_shelter_decay_3
       ))),
-      Rotholes = sum(c_across(c(
+      Rotholes = sum(dplyr::c_across(c(
         Microhabitats.Cavities.Trunkmouldcavities.CV22,
         Microhabitats.Cavities.Trunkmouldcavities.CV23,
         Microhabitats.Cavities.Trunkmouldcavities.CV24,
@@ -231,11 +208,11 @@ summarize_microhabitats <- function(TreMs) {
         Microhabitats.Branchholes.CV33,
         Microhabitats.Dendrotelms.CV41
       ))),
-      InsectGalleries = sum(c_across(c(
+      InsectGalleries = sum(dplyr::c_across(c(
         Microhabitats.Insectgalleries.Large_bore_hole_2_cm,
         Microhabitats.barkloss.IN11
       ))),
-      WoodpeckerConcavities = sum(c_across(c(
+      WoodpeckerConcavities = sum(dplyr::c_across(c(
         Microhabitats.Cavities.Woodpeckercavities.CV12,
         Microhabitats.Cavities.Woodpeckercavities.CV13,
         Microhabitats.Cavities.Woodpeckercavities.CV14,
@@ -249,14 +226,14 @@ summarize_microhabitats <- function(TreMs) {
         Microhabitats.fruitingbodiesfungi.EP11,
         group_ti3vx98.Wood_shelter_decay_3
       ))),
-      ExposedSapwood = sum(c_across(c(
+      ExposedSapwood = sum(dplyr::c_across(c(
         Microhabitats.barkloss.IN13,
         Microhabitats.Exposedheartwood.IN21,
         Microhabitats.Bark.BA11,
         Microhabitats.Bark.BA12,
         Microhabitats.rootbuttresscavities.GR12
       ))),
-      ExposedHeartwood = sum(c_across(c(
+      ExposedHeartwood = sum(dplyr::c_across(c(
         Microhabitats.Exposedheartwood.IN22,
         Microhabitats.Exposedheartwood.IN23,
         Microhabitats.Exposedheartwood.IN24,
@@ -267,10 +244,10 @@ summarize_microhabitats <- function(TreMs) {
         Log.litter.pool.,
         WoodpeckerCavities
       ))),
-      PerennialFungi = sum(c_across(c(
+      PerennialFungi = sum(dplyr::c_across(c(
         Microhabitats.fruitingbodiesfungi.EP13
       ))),
-      Ephermalfungi = sum(c_across(c(
+      Ephermalfungi = sum(dplyr::c_across(c(
         Microhabitats.fruitingbodiesfungi.EP12,
         Microhabitats.fruitingbodiesfungi.EP14,
         Microhabitats.fruitingbodiesfungi.EP21,
@@ -278,37 +255,37 @@ summarize_microhabitats <- function(TreMs) {
         Decomposed.woodpecker.feeding.cavity.,
         DecomposedCrack
       ))),
-      Epiphytes = sum(c_across(c(
+      Epiphytes = sum(dplyr::c_across(c(
         Microhabitats.epiphyticcryptophanerogmas.Epiphytic_foliose_an_hens_coverage_10_,
         Microhabitats.epiphyticcryptophanerogmas.EP33,
         Microhabitats.epiphyticcryptophanerogmas.EP34,
         Microhabitats.epiphyticcryptophanerogmas.EP35,
         group_ti3vx98.Root_plates.and.exposed.roots
       ))),
-      DeadwooodShelter = sum(c_across(c(
+      DeadwooodShelter = sum(dplyr::c_across(c(
         group_ti3vx98.Wood_shelter_decay_3_001,
         group_ti3vx98.Wood_shelter_tunnel,
         group_ti3vx98.Hollow_stump_hole_i_stump_big_10cm,
         group_ti3vx98.Hole_in_the_top_of_t_stump_small_5cm
       ))),
-      StumpStructures = sum(c_across(c(
+      StumpStructures = sum(dplyr::c_across(c(
         group_ti3vx98.Hole_in_the_top_of_t_stump_small_5cm,
         group_ti3vx98.Fine_woody_debris_decay_3_A4,
         group_ti3vx98.Litter_pool_big_10cm,
         group_ti3vx98.Log_pipe_5cm_diameter
       ))),
-      LogStructures = sum(c_across(c(
+      LogStructures = sum(dplyr::c_across(c(
         group_ti3vx98.Multiple_small_pipes,
         group_ti3vx98.Branch_breakage_hole,
         group_ti3vx98.Multiple_smaller_cracks_in_the_deadwood,
         Other.fungi..corticoid.fungi...others.,
         Fungi.cluster.
       ))),
-      WoodyDebris = sum(c_across(c(
+      WoodyDebris = sum(dplyr::c_across(c(
         group_ti3vx98.Mixed_coarse_and_fin_bris_decay_3_A4,
         group_ti3vx98.Litter_pool_small_5_10cm
       ))),
-      ExposedRoots = sum(c_across(c(
+      ExposedRoots = sum(dplyr::c_across(c(
         group_ti3vx98.Ground_cavity_10_cm_opening
       )))
     )
@@ -333,12 +310,12 @@ summarize_microhabitats <- function(TreMs) {
   )
 
   TreMs <- TreMs |>
-    dplyr::mutate(across(all_of(summary_cols), as.integer))
+    dplyr::mutate(dplyr::across(dplyr::all_of(summary_cols), as.integer))
 
   TreMs <- TreMs |>
     dplyr::mutate(
-      Abundance = sum(c_across(all_of(summary_cols))) |> as.integer(),
-      Richness = sum(c_across(all_of(summary_cols)) > 0, na.rm = TRUE) |>
+      Abundance = sum(dplyr::c_across(dplyr::all_of(summary_cols))) |> as.integer(),
+      Richness = sum(dplyr::c_across(dplyr::all_of(summary_cols)) > 0, na.rm = TRUE) |>
         as.integer()
     )
 
@@ -355,20 +332,12 @@ summarize_microhabitats <- function(TreMs) {
 #'
 #' @examples
 #' \dontrun{
-#' MasterThesisData <- read.table(
-#' file = "data/raw/MasterThesisData2024.csv",
-#' header = TRUE,
-#' sep = ",",
-#' na.strings = "NA",
-#' stringsAsFactors = TRUE,
-#' dec = "."
-#' )
-#'   TreMs <- load_data(MasterThesisData)
+#'   TreMs <- load_data(MasterThesisData2024)
 #'   TreMs <- summarize_microhabitats(TreMs)
 #'   TreMs <- group_data(TreMs)
 #' }
 group_data <- function(TreMs) {
-  species_grouping <- tribble(
+  species_grouping <- tibble::tribble(
   ~species,           ~species_short,  ~species_group,
   "Fagus sylvatica",  "F. sylvatica",  "Conifer",
   "Picea abies",      "P. abies",      "Conifer",
@@ -381,7 +350,7 @@ group_data <- function(TreMs) {
   "Dead no identification", "No ID",    "No ID"
 )
 
-  deadwood_grouping <- tribble(
+  deadwood_grouping <- tibble::tribble(
   ~deadwood_type,                         ~deadwood_group,
   "Stump (<1.3m) (natural)",             "Stump",
   "Stump (<1.3m) (artificial)",          "Stump",
@@ -391,17 +360,17 @@ group_data <- function(TreMs) {
   "Log/piece of wood (artificial)",      "Log/Entire Tree"
 )
   TreMs <- TreMs |>
-    left_join(species_grouping, by = c("Treedata.Treespecies" = "species")) |>
-    left_join(
+    dplyr::left_join(species_grouping, by = c("Treedata.Treespecies" = "species")) |>
+    dplyr::left_join(
       deadwood_grouping,
       by = c("Treedata.Type_of_deadwood" = "deadwood_type")
     ) |>
-    mutate(
+    dplyr::mutate(
       DeadwoodIdentitiesGrouped = paste(species_short, deadwood_group) |>
         factor(),
       TreeIdentities2 = paste(species_group, deadwood_group) |> factor()
     ) |>
-    select(
+    dplyr::select(
       -species_short,
       -species_group,
       -deadwood_group

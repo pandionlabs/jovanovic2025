@@ -17,14 +17,6 @@ Clean raw data for analysis
 }
 \examples{
 \dontrun{
-MasterThesisData <- read.table(
-file = "data/raw/MasterThesisData2024.csv",
-header = TRUE,
-sep = ",",
-na.strings = "NA",
-stringsAsFactors = TRUE,
-dec = "."
-)
-TreMs <- clean_data(MasterThesisData)
+TreMs <- clean_data(MasterThesisData2024)
 }
 }

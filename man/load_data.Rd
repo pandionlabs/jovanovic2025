@@ -17,14 +17,6 @@ Load the data and prepare it for analysis
 }
 \examples{
 \dontrun{
-MasterThesisData <- read.table(
-file = "data/raw/MasterThesisData2024.csv",
-header = TRUE,
-sep = ",",
-na.strings = "NA",
-stringsAsFactors = TRUE,
-dec = "."
-)
-  TreMs <- load_data(MasterThesisData)
+  TreMs <- load_data(MasterThesisData2024)
 }
 }

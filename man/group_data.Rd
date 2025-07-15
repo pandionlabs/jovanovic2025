@@ -17,15 +17,7 @@ Group data by species and deadwood type
 }
 \examples{
 \dontrun{
-MasterThesisData <- read.table(
-file = "data/raw/MasterThesisData2024.csv",
-header = TRUE,
-sep = ",",
-na.strings = "NA",
-stringsAsFactors = TRUE,
-dec = "."
-)
-  TreMs <- load_data(MasterThesisData)
+  TreMs <- load_data(MasterThesisData2024)
   TreMs <- summarize_microhabitats(TreMs)
   TreMs <- group_data(TreMs)
 }
