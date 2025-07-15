@@ -1,3 +1,22 @@
+#' Clean raw data for analysis
+#'
+#' @param x A dataframe probably from MasterThesisData2024.csv
+#'
+#' @returns A dataframe ready for analysis
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' MasterThesisData <- read.table(
+#' file = "data/raw/MasterThesisData2024.csv",
+#' header = TRUE,
+#' sep = ",",
+#' na.strings = "NA",
+#' stringsAsFactors = TRUE,
+#' dec = "."
+#' )
+#' TreMs <- clean_data(MasterThesisData)
+#' }
 clean_data <- function(x) {
   x <- MasterThesisData
   TreMs <- subset(x, select = -c(45:49, 52:55, 66:70))
