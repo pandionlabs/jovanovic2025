@@ -18,16 +18,33 @@
 #' TreMs <- clean_data(MasterThesisData)
 #' }
 
-clean_data <- function(MasterThesisData) {
-  TreMs <- load_data(MasterThesisData)
+clean_data <- function(x) {
+  TreMs <- load_data(x)
   TreMs <- summarize_microhabitats(TreMs)
   TreMs <- group_data(TreMs)
   return(TreMs)
 }
 
 
-#' Loads the data and prepares it for the analysis
-#' Mainly it converts from identifies to actual descriptions
+#' Load the data and prepare it for analysis
+#'
+#' @param MasterThesisData A dataframe probably from MasterThesisData2024.csv
+#'
+#' @returns A dataframe of tree data
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' MasterThesisData <- read.table(
+#' file = "data/raw/MasterThesisData2024.csv",
+#' header = TRUE,
+#' sep = ",",
+#' na.strings = "NA",
+#' stringsAsFactors = TRUE,
+#' dec = "."
+#' )
+#'   TreMs <- load_data(MasterThesisData)
+#' }
 load_data <- function(MasterThesisData) {
   TreMs <- subset(MasterThesisData, select = -c(45:49, 52:55, 66:70))
   TreMs <- TreMs[-534, ]
@@ -152,8 +169,29 @@ load_data <- function(MasterThesisData) {
   TreMs
 }
 
+
 #' Summarizes microhabitats in the TreMs dataset
-#' it combines single type of microhabitat observations into larger groups
+#'
+#' @param TreMs a dataframe from load_data
+#'
+#' @description Combines single type of microhabitat observations into larger groups
+#'
+#' @returns A dataframe of summarized microhabitat data
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' MasterThesisData <- read.table(
+#' file = "data/raw/MasterThesisData2024.csv",
+#' header = TRUE,
+#' sep = ",",
+#' na.strings = "NA",
+#' stringsAsFactors = TRUE,
+#' dec = "."
+#' )
+#'   TreMs <- load_data(MasterThesisData)
+#'   TreMs <- summarize_microhabitats(TreMs)
+#' }
 summarize_microhabitats <- function(TreMs) {
   # Handle NAs?
   TreMs[c(330, 335), 'Microhabitats.cracksandscars.IN31'] <- 0
@@ -307,7 +345,28 @@ summarize_microhabitats <- function(TreMs) {
   TreMs
 }
 
-#' Groups data by species and deadwood type
+
+#' Group data by species and deadwood type
+#'
+#' @param TreMs A dataframe from summarize_microhabitats
+#'
+#' @returns A dataframe
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' MasterThesisData <- read.table(
+#' file = "data/raw/MasterThesisData2024.csv",
+#' header = TRUE,
+#' sep = ",",
+#' na.strings = "NA",
+#' stringsAsFactors = TRUE,
+#' dec = "."
+#' )
+#'   TreMs <- load_data(MasterThesisData)
+#'   TreMs <- summarize_microhabitats(TreMs)
+#'   TreMs <- group_data(TreMs)
+#' }
 group_data <- function(TreMs) {
   species_grouping <- tribble(
   ~species,           ~species_short,  ~species_group,
@@ -347,4 +406,6 @@ group_data <- function(TreMs) {
       -species_group,
       -deadwood_group
     )
+
+  return(TreMs)
 }
