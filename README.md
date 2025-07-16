@@ -9,7 +9,7 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/jovanovic2025)](https://CRAN.R-project.org/package=jovanovic2025)
-[![R-CMD-check](https://github.com/pandionlabs/jovanovic_2025/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pandionlabs/jovanovic_2025/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/pandionlabs/jovanovic2025/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pandionlabs/jovanovic2025/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 This is the companion code and data to Jovanovic et al. 2025.
@@ -21,7 +21,7 @@ You can install the development version of jovanovic2025 from
 
 ``` r
 # install.packages("pak")
-pak::pak("pandionlabs/jovanovic_2025")
+pak::pak("pandionlabs/jovanovic2025")
 ```
 
 ## Example
