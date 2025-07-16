@@ -1,44 +1,5 @@
 # #MASTER THESIS - DATA EXPLORATION 
 
-# ##################  Package installation and loading #########
-
-# # Valuable packages
-# install.packages("data.table")
-# install.packages("tidyverse")
-# install.packages("rlang")
-# install.packages("dplyr")
-# install.packages("vegan")
-# install.packages("pastecs")
-# install.packages("ggplot2")
-# install.packages("lattice")
-# install.packages("reshape2")
-# install.packages("plyr")
-# install.packages("DHARMa")
-# # install.packages("glmmTMB")
-# install.packages("car")
-# install.packages("emmeans")
-# install.packages("effects")
-# install.packages("multcomp")
-# install.packages("MuMIn")
-# install.packages("broom")
-# install.packages("broom.mixed")
-# install.packages("dotwhisker")
-# install.packages("texreg")
-# install.packages("xtable")
-# install.packages("sjPlot")
-# install.packages("ggeffects")
-# install.packages("cowplot")
-# install.packages("lme4")
-# install.packages("sjstats")
-# install.packages("sjmisc")
-# install.packages("DHARMa")
-# install.packages("glmmTMB", type="source")
-# install.packages("ggeffects")
-# install.packages("Rtools")
-# install.packages("ggplot2")
-# install.packages("viridis")
-# install.packages("multcompView")
-
 
 
 # Visualise with library and check for updates
@@ -100,6 +61,9 @@ MasterThesisData <- read.table(file = "data/raw/MasterThesisData2024.csv",
 #Subset without the TreMs I didn't have 
 #Excluded Trems CCrown deadwood - DE11, DE12, DE13, DE14, DE15; Excrescences - GR21, GR22, GR31, GR32; Nests and Microsoils - NE11, OT, 21,OT22; Sap and resin flow - OT11, OT12) 
 colnames(MasterThesisData)
+
+# clean_data -------------------------------------------------------------
+
 TreMs <- subset(MasterThesisData, select = -c(45:49,52:55,66:70))
 TreMs <- TreMs[-534, ]
 
@@ -365,6 +329,9 @@ for (i in 1:nrow(TreMs)) {
 
 TreMs$TreeIdentities2 <- as.factor (TreMs$TreeIdentities2)
 
+# above is in clean_data -------------------------------------------------
+
+
 #Number 
 
 counttable <- as.data.frame(table(TreMs$TreeIdentities2))
@@ -615,6 +582,8 @@ meantable <-aggregate(IdentitiesTreMs[,c(81:84,86:95)], list(IdentitiesTreMs$Dea
 write.table(meantable, file = "data/derivatives/Aggregation.csv", sep = ",", quote = FALSE, row.names = F )
 colnames(IdentitiesTreMs)
 
+
+TreMs$ExposedSapwoodReduced <- rowSums(TreMs[, c(46:48)])
 #Creating the mean and sum table for decay - decided to use sum instead of mean
 meantable <- 
 TreMs |> 
@@ -638,6 +607,8 @@ aggregate(#Here including woodpecker cavities and concavities separately
                        list(TreMs$Treedata.Tree_Decay), 
                        mean)
 write.table(meantable, file = "data/derivatives/AggregationDecay.csv", sep = ",", quote = FALSE, row.names = F )
+
+
 
 sumtable <- 
   TreMs |> 
@@ -765,7 +736,7 @@ Model_Abundance2 <- glmmTMB(Abundance ~ GroupedTreeSpecies + Treedata.DBH_cm +
 summary(Model_Abundance2)
 
 
-Residuals_Model_Abundance <- simulateResiduals (Model_Abundance)
+Residuals_Model_Abundance <- simulateResiduals(Model_Abundance)
 plot(Residuals_Model_Abundance) #Problems
 testOutliers(Residuals_Model_Abundance) 
 testDispersion(Residuals_Model_Abundance)
@@ -862,7 +833,7 @@ testZeroInflation(Residuals_Model_Sapwood)
 #Decay 5 and 4 significant - that makes more sense!
 #Fitted with nbinom2, data was overdispersed 
 
-TreMs$ExposedSapwoodReduced <- rowSums(TreMs[, c(46:48)])
+#TreMs$ExposedSapwoodReduced <- rowSums(TreMs[, c(46:48)])
 
 Model_Sapwood_2 <- glmmTMB(ExposedSapwoodReduced ~ GroupedTreeSpecies + Treedata.DBH_cm + 
                            Treedata.Tree_Decay +
