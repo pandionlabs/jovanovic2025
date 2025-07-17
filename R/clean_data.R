@@ -288,7 +288,8 @@ summarize_microhabitats <- function(TreMs) {
       ExposedRoots = sum(dplyr::c_across(c(
         group_ti3vx98.Ground_cavity_10_cm_opening
       )))
-    )
+    ) |>
+    dplyr::ungroup()
 
   summary_cols <- c(
     "DecomposedCrack",
@@ -314,8 +315,12 @@ summarize_microhabitats <- function(TreMs) {
 
   TreMs <- TreMs |>
     dplyr::mutate(
-      Abundance = sum(dplyr::c_across(dplyr::all_of(summary_cols))) |> as.integer(),
-      Richness = sum(dplyr::c_across(dplyr::all_of(summary_cols)) > 0, na.rm = TRUE) |>
+      Abundance = sum(dplyr::c_across(dplyr::all_of(summary_cols))) |>
+        as.integer(),
+      Richness = sum(
+        dplyr::c_across(dplyr::all_of(summary_cols)) > 0,
+        na.rm = TRUE
+      ) |>
         as.integer()
     )
 
@@ -350,30 +355,36 @@ group_data <- function(TreMs) {
   "Dead no identification", "No ID",    "No ID"
 )
 
+  # difference between deadwood id(edntitiy) grouped and not is that Log/Entire are grouped together or no
   deadwood_grouping <- tibble::tribble(
-  ~deadwood_type,                         ~deadwood_group,
-  "Stump (<1.3m) (natural)",             "Stump",
-  "Stump (<1.3m) (artificial)",          "Stump",
-  "Entire lying tree (natural)",         "Log/Entire Tree",
-  "Entire lying tree (artificial)",      "Log/Entire Tree",
-  "Log/piece of wood (natural)",         "Log/Entire Tree",
-  "Log/piece of wood (artificial)",      "Log/Entire Tree"
+  ~deadwood_type,                         ~deadwood_id_grouped, ~deadwood_id,
+  "Stump (<1.3m) (natural)",             "Stump",               "Stump",  
+  "Stump (<1.3m) (artificial)",          "Stump",               "Stump",
+  "Entire lying tree (natural)",         "Log/Entire Tree",     "Entire Tree", 
+  "Entire lying tree (artificial)",      "Log/Entire Tree",     "Entire Tree",
+  "Log/piece of wood (natural)",         "Log/Entire Tree",     "Log", 
+  "Log/piece of wood (artificial)",      "Log/Entire Tree",     "Log"
 )
   TreMs <- TreMs |>
-    dplyr::left_join(species_grouping, by = c("Treedata.Treespecies" = "species")) |>
+    dplyr::left_join(
+      species_grouping,
+      by = c("Treedata.Treespecies" = "species")
+    ) |>
     dplyr::left_join(
       deadwood_grouping,
       by = c("Treedata.Type_of_deadwood" = "deadwood_type")
     ) |>
     dplyr::mutate(
-      DeadwoodIdentitiesGrouped = paste(species_short, deadwood_group) |>
+      DeadwoodIdentitiesGrouped = paste(species_short, deadwood_id_grouped) |>
         factor(),
-      TreeIdentities2 = paste(species_group, deadwood_group) |> factor()
+      DeadwoodIdenties = paste(species_group, deadwood_id) |> factor(),
+      TreeIdentities2 = paste(species_group, deadwood_id_grouped) |> factor()
     ) |>
     dplyr::select(
       -species_short,
       -species_group,
-      -deadwood_group
+      -deadwood_id_grouped,
+      -deadwood_id
     )
 
   return(TreMs)
