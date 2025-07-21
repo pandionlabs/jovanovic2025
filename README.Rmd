@@ -56,3 +56,8 @@ TreMs <-
   clean_data(MasterThesisData2024) 
 ```
 
+
+```{r}
+make_count_table(TreMs$TreeIdentities2, "data/derivatives/Count_Table.csv")
+
+```
