@@ -170,34 +170,31 @@ load_data <- function(MasterThesisData) {
 #'   TreMs <- summarize_microhabitats(TreMs)
 #' }
 summarize_microhabitats <- function(TreMs) {
-  # Handle NAs?
-  TreMs[c(330, 335), 'Microhabitats.cracksandscars.IN31'] <- 0
-  TreMs[c(12, 22, 329, 381, 418), 'Microhabitats.cracksandscars.IN32'] <- 0
-
   TreMs <- TreMs |>
     dplyr::rowwise() |>
     dplyr::mutate(
-      DecomposedCrack = sum(dplyr::c_across(c(
-        Microhabitats.cracksandscars.IN31,
-        Microhabitats.cracksandscars.IN32
+      DecomposedCrack = sum(dplyr::c_across(c( 
+        Microhabitats.cracksandscars.IN31,    
       ))),
       WoodpeckerCavities = sum(dplyr::c_across(c(
+        Microhabitats.Cavities.Woodpeckercavities.CV11,
         Microhabitats.Cavities.Woodpeckercavities.CV12,
         Microhabitats.Cavities.Woodpeckercavities.CV13,
-        Microhabitats.Cavities.Woodpeckercavities.CV14,
-        Microhabitats.Cavities.Trunkmouldcavities.CV21
+        Microhabitats.Cavities.Woodpeckercavities.CV15
       ))),
       Concavities = sum(dplyr::c_across(c(
-        Microhabitats.Cavities.Woodpeckercavities.CV15,
+        Microhabitats.Cavities.Woodpeckercavities.CV14,
+        Microhabitats.Dendrotelms.CV41,
         Microhabitats.Dendrotelms.CV42,
         Microhabitats.Dendrotelms.CV43,
         Microhabitats.Dendrotelms.CV44,
-        Microhabitats.Insectgalleries.CV51_001,
+        Microhabitats.rootbuttresscavities.GR12,
         Microhabitats.rootbuttresscavities.GR13,
-        Microhabitats.fruitingbodiesfungi.EP11,
-        group_ti3vx98.Wood_shelter_decay_3
+        group_ti3vx98.Ground_cavity_10_cm_opening
       ))),
+      WoodpeckerConcavities = WoodpeckerCavities + Concavities,
       Rotholes = sum(dplyr::c_across(c(
+        Microhabitats.Cavities.Trunkmouldcavities.CV21,
         Microhabitats.Cavities.Trunkmouldcavities.CV22,
         Microhabitats.Cavities.Trunkmouldcavities.CV23,
         Microhabitats.Cavities.Trunkmouldcavities.CV24,
@@ -205,88 +202,72 @@ summarize_microhabitats <- function(TreMs) {
         Microhabitats.Cavities.Trunkmouldcavities.Cv26,
         Microhabitats.Cavities.Trunkmouldcavities._30_cm_open_top_no_ground_contact,
         Microhabitats.Branchholes.CV32,
-        Microhabitats.Branchholes.CV33,
-        Microhabitats.Dendrotelms.CV41
+        Microhabitats.Branchholes.CV33
       ))),
       InsectGalleries = sum(dplyr::c_across(c(
         Microhabitats.Insectgalleries.Large_bore_hole_2_cm,
-        Microhabitats.barkloss.IN11
-      ))),
-      WoodpeckerConcavities = sum(dplyr::c_across(c(
-        Microhabitats.Cavities.Woodpeckercavities.CV12,
-        Microhabitats.Cavities.Woodpeckercavities.CV13,
-        Microhabitats.Cavities.Woodpeckercavities.CV14,
-        Microhabitats.Cavities.Woodpeckercavities.CV15,
-        Microhabitats.Cavities.Trunkmouldcavities.CV21,
-        Microhabitats.Dendrotelms.CV42,
-        Microhabitats.Dendrotelms.CV43,
-        Microhabitats.Dendrotelms.CV44,
-        Microhabitats.Insectgalleries.CV51_001,
-        Microhabitats.rootbuttresscavities.GR13,
-        Microhabitats.fruitingbodiesfungi.EP11,
-        group_ti3vx98.Wood_shelter_decay_3
+        Microhabitats.Insectgalleries.CV51_001
       ))),
       ExposedSapwood = sum(dplyr::c_across(c(
+        Microhabitats.barkloss.IN11,
         Microhabitats.barkloss.IN13,
-        Microhabitats.Exposedheartwood.IN21,
+        Microhabitats.cracksandscars.IN34,
         Microhabitats.Bark.BA11,
         Microhabitats.Bark.BA12,
-        Microhabitats.rootbuttresscavities.GR12
       ))),
       ExposedHeartwood = sum(dplyr::c_across(c(
+        Microhabitats.Exposedheartwood.IN21,
         Microhabitats.Exposedheartwood.IN22,
         Microhabitats.Exposedheartwood.IN23,
         Microhabitats.Exposedheartwood.IN24,
-        Microhabitats.cracksandscars.IN31,
-        Microhabitats.cracksandscars.IN32,
         Microhabitats.cracksandscars.IN33,
-        Microhabitats.cracksandscars.IN34,
-        Log.litter.pool.,
-        WoodpeckerCavities
-      ))),
-      PerennialFungi = sum(dplyr::c_across(c(
-        Microhabitats.fruitingbodiesfungi.EP13
-      ))),
-      Ephermalfungi = sum(dplyr::c_across(c(
-        Microhabitats.fruitingbodiesfungi.EP12,
-        Microhabitats.fruitingbodiesfungi.EP14,
-        Microhabitats.fruitingbodiesfungi.EP21,
-        Microhabitats.epiphyticcryptophanerogmas.Epiphytic_bryophytes_by_mosses_liverworts,
-        Decomposed.woodpecker.feeding.cavity.,
+        group_ti3vx98.Multiple_smaller_cracks_in_the_deadwood,
         DecomposedCrack
       ))),
-      Epiphytes = sum(dplyr::c_across(c(
-        Microhabitats.epiphyticcryptophanerogmas.Epiphytic_foliose_an_hens_coverage_10_,
-        Microhabitats.epiphyticcryptophanerogmas.EP33,
-        Microhabitats.epiphyticcryptophanerogmas.EP34,
-        Microhabitats.epiphyticcryptophanerogmas.EP35,
-        group_ti3vx98.Root_plates.and.exposed.roots
+      ExposedSapwoodHeartwood = ExposedSapwood + ExposedHeartwood,
+      PerennialFungi = sum(dplyr::c_across(c(
+        Microhabitats.fruitingbodiesfungi.EP12
       ))),
-      DeadwooodShelter = sum(dplyr::c_across(c(
-        group_ti3vx98.Wood_shelter_decay_3_001,
-        group_ti3vx98.Wood_shelter_tunnel,
-        group_ti3vx98.Hollow_stump_hole_i_stump_big_10cm,
-        group_ti3vx98.Hole_in_the_top_of_t_stump_small_5cm
-      ))),
-      StumpStructures = sum(dplyr::c_across(c(
-        group_ti3vx98.Hole_in_the_top_of_t_stump_small_5cm,
-        group_ti3vx98.Fine_woody_debris_decay_3_A4,
-        group_ti3vx98.Litter_pool_big_10cm,
-        group_ti3vx98.Log_pipe_5cm_diameter
-      ))),
-      LogStructures = sum(dplyr::c_across(c(
-        group_ti3vx98.Multiple_small_pipes,
-        group_ti3vx98.Branch_breakage_hole,
-        group_ti3vx98.Multiple_smaller_cracks_in_the_deadwood,
+      Ephermalfungi = sum(dplyr::c_across(c(
+        Microhabitats.fruitingbodiesfungi.EP11,
+        Microhabitats.fruitingbodiesfungi.EP13,
+        Microhabitats.fruitingbodiesfungi.EP14,
+        Microhabitats.fruitingbodiesfungi.EP21,
         Other.fungi..corticoid.fungi...others.,
         Fungi.cluster.
       ))),
+      EphrmalPerennialFungi = PerennialFungi + Ephermalfungi,
+      Epiphytes = sum(dplyr::c_across(c(
+        Microhabitats.epiphyticcryptophanerogmas.Epiphytic_bryophytes_by_mosses_liverworts,
+        Microhabitats.epiphyticcryptophanerogmas.Epiphytic_foliose_an_hens_coverage_10_,
+        Microhabitats.epiphyticcryptophanerogmas.EP33,
+        Microhabitats.epiphyticcryptophanerogmas.EP34,
+        Microhabitats.epiphyticcryptophanerogmas.EP35
+      ))),
+      DeadwooodShelter = sum(dplyr::c_across(c(
+        group_ti3vx98.Wood_shelter_decay_3,
+        group_ti3vx98.Wood_shelter_decay_3_001,
+        group_ti3vx98.Wood_shelter_tunnel
+      ))),
+      StumpStructures = sum(dplyr::c_across(c(
+        group_ti3vx98.Hollow_stump_hole_i_stump_big_10cm,
+        group_ti3vx98.Hole_in_the_top_of_t_stump_small_5cm,
+        group_ti3vx98.Litter_pool_small_5_10cm,
+        group_ti3vx98.Litter_pool_big_10cm
+      ))),
+      LogStructures = sum(dplyr::c_across(c(
+        group_ti3vx98.Log_pipe_5cm_diameter,
+        group_ti3vx98.Multiple_small_pipes,
+        Log.litter.pool.,
+        group_ti3vx98.Branch_breakage_hole,
+        Decomposed.woodpecker.feeding.cavity.
+      ))),
       WoodyDebris = sum(dplyr::c_across(c(
         group_ti3vx98.Mixed_coarse_and_fin_bris_decay_3_A4,
-        group_ti3vx98.Litter_pool_small_5_10cm
+        group_ti3vx98.Fine_woody_debris_decay_3_A4
       ))),
       ExposedRoots = sum(dplyr::c_across(c(
-        group_ti3vx98.Ground_cavity_10_cm_opening
+        group_ti3vx98.Root_plates.and.exposed.roots
       )))
     )
 
@@ -294,13 +275,15 @@ summarize_microhabitats <- function(TreMs) {
     "DecomposedCrack",
     "WoodpeckerCavities",
     "Concavities",
+    "WoodpeckerConcavities",
     "Rotholes",
     "InsectGalleries",
-    "WoodpeckerConcavities",
     "ExposedSapwood",
     "ExposedHeartwood",
+    "ExposedSapwoodHeartwood",
     "PerennialFungi",
     "Ephermalfungi",
+    "EphrmalPerennialFungi",
     "Epiphytes",
     "DeadwooodShelter",
     "StumpStructures",
