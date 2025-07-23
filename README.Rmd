@@ -57,54 +57,33 @@ TreMs <- clean_data(MasterThesisData2024)
 
 
 ```{r}
-TreeIdentitiesSummary <- 
-  TreMs |> 
-    dplyr::group_by(TreeIdentities2) |> 
-    dplyr::summarise(
-      Freq = dplyr::n(),
-      Percentage = (Freq/nrow(TreMs))*100,
-      Treedata.DBH_cm.mean = mean(Treedata.DBH_cm),
-      Treedata.DBH_cm.sd = sd(Treedata.DBH_cm),
-      Treedata.DBH_cm.min = min(Treedata.DBH_cm),
-      Treedata.DBH_cm.max = max(Treedata.DBH_cm),
-      Abundance.mean = mean(Abundance),
-      Abundance.sd = sd(Abundance),
-      Abundance.max = max(Abundance),
-      Richness.mean = mean(Richness, na.rm = TRUE),
-      Richness.sd = sd(Richness, na.rm = TRUE),
-      Richness.max = max(Richness)
-    )
 
-# write.table(TreeIdentitiesSummary, file = "data/derivatives/TreeIdentitiesSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
 
-DeadwoodIdentitiesGroupedSummary <- 
-  TreMs |> 
-    dplyr::group_by(DeadwoodIdentitiesGrouped) |> 
-    dplyr::summarise(
-      Freq = dplyr::n(),
-      Percentage = (Freq/nrow(TreMs))*100,
-      Treedata.DBH_cm.mean = mean(Treedata.DBH_cm),
-      Treedata.DBH_cm.sd = sd(Treedata.DBH_cm),
-      Treedata.DBH_cm.min = min(Treedata.DBH_cm),
-      Treedata.DBH_cm.max = max(Treedata.DBH_cm),
-      Abundance.mean = mean(Abundance),
-      Abundance.sd = sd(Abundance),
-      Abundance.max = max(Abundance),
-      Richness.mean = mean(Richness, na.rm = TRUE),
-      Richness.sd = sd(Richness, na.rm = TRUE),
-      Richness.max = max(Richness)
-    )
+TreeIdentitiesSummary <- summarize_identities(
+  TreMs, 
+  grouping_variable = TreeIdentities2
+  )
+
+  # write.table(TreeIdentitiesSummary, file = "data/derivatives/TreeIdentitiesSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
+
+
+DeadwoodIdentitiesGroupedSummary <- summarize_identities(
+  TreMs, 
+  grouping_variable = DeadwoodIdentitiesGrouped
+  )
 
 # write.table(DeadwoodIdentitiesGroupedSummary, file = "data/derivatives/DeadwoodIdentitiesGroupedSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
 ```
 
 ```{r}
+#| echo: false
 #| label: tbl-TreeIdentitiesSummary
 #| tbl-cap: "TreeIdentitiesSummary"
 knitr::kable(TreeIdentitiesSummary)
 ```
 
 ```{r}
+#| echo: false
 #| label: tbl-DeadwoodIdentitiesGroupedSummary
 #| tbl-cap: "DeadwoodIdentitiesGroupedSummary"
 knitr::kable(DeadwoodIdentitiesGroupedSummary)
