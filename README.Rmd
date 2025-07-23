@@ -75,7 +75,7 @@ TreeIdentitiesSummary <-
       Richness.max = max(Richness)
     )
 
-write.table(TreeIdentitiesSummary, file = "data/derivatives/TreeIdentitiesSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
+# write.table(TreeIdentitiesSummary, file = "data/derivatives/TreeIdentitiesSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
 
 DeadwoodIdentitiesGroupedSummary <- 
   TreMs |> 
@@ -95,5 +95,17 @@ DeadwoodIdentitiesGroupedSummary <-
       Richness.max = max(Richness)
     )
 
-write.table(DeadwoodIdentitiesGroupedSummary, file = "data/derivatives/DeadwoodIdentitiesGroupedSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
+# write.table(DeadwoodIdentitiesGroupedSummary, file = "data/derivatives/DeadwoodIdentitiesGroupedSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
+```
+
+```{r}
+#| label: tbl-TreeIdentitiesSummary
+#| tbl-cap: "TreeIdentitiesSummary"
+knitr::kable(TreeIdentitiesSummary)
+```
+
+```{r}
+#| label: tbl-DeadwoodIdentitiesGroupedSummary
+#| tbl-cap: "DeadwoodIdentitiesGroupedSummary"
+knitr::kable(DeadwoodIdentitiesGroupedSummary)
 ```
