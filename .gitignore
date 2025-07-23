@@ -1,6 +1,7 @@
-.Rproj.user
+.Rproj.user/
 .DS_Store
 
 *.pper
 
 .Rhistory
+docs
