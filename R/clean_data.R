@@ -306,7 +306,8 @@ summarize_microhabitats <- function(TreMs) {
         na.rm = TRUE
       ) |>
         as.integer()
-    )
+    ) |> 
+    dplyr::ungroup()
 
   TreMs
 }
