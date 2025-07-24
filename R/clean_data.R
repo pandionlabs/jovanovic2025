@@ -297,6 +297,7 @@ summarize_microhabitats <- function(TreMs) {
     dplyr::mutate(dplyr::across(dplyr::all_of(summary_cols), as.integer))
 
   TreMs <- TreMs |>
+    dplyr::rowwise() |> 
     dplyr::mutate(
       Abundance = sum(dplyr::c_across(dplyr::all_of(summary_cols))) |>
         as.integer(),
@@ -305,7 +306,8 @@ summarize_microhabitats <- function(TreMs) {
         na.rm = TRUE
       ) |>
         as.integer()
-    )
+    ) |> 
+    dplyr::ungroup()
 
   TreMs
 }

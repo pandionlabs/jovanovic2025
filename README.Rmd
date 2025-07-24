@@ -52,7 +52,38 @@ library(jovanovic2025)
 # )
 
 # Import the data with MasterThesisData2024
-TreMs <- 
-  clean_data(MasterThesisData2024) 
+TreMs <- clean_data(MasterThesisData2024) 
 ```
 
+
+```{r}
+
+TreeIdentitiesSummary <- summarize_identities(
+  TreMs, 
+  grouping_variable = TreeIdentities2
+  )
+
+  # write.table(TreeIdentitiesSummary, file = "data/derivatives/TreeIdentitiesSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
+
+
+DeadwoodIdentitiesGroupedSummary <- summarize_identities(
+  TreMs, 
+  grouping_variable = DeadwoodIdentitiesGrouped
+  )
+
+# write.table(DeadwoodIdentitiesGroupedSummary, file = "data/derivatives/DeadwoodIdentitiesGroupedSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
+```
+
+```{r}
+#| echo: false
+#| label: tbl-TreeIdentitiesSummary
+#| tbl-cap: "TreeIdentitiesSummary"
+knitr::kable(TreeIdentitiesSummary)
+```
+
+```{r}
+#| echo: false
+#| label: tbl-DeadwoodIdentitiesGroupedSummary
+#| tbl-cap: "DeadwoodIdentitiesGroupedSummary"
+knitr::kable(DeadwoodIdentitiesGroupedSummary)
+```

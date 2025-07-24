@@ -3,4 +3,6 @@
 export(clean_data)
 export(group_data)
 export(load_data)
+export(summarize_identities)
 export(summarize_microhabitats)
+importFrom(rlang,"!!")
