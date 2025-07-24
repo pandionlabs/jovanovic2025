@@ -58,7 +58,6 @@ TreMs <- clean_data(MasterThesisData2024)
 
 ```{r}
 
-
 TreeIdentitiesSummary <- summarize_identities(
   TreMs, 
   grouping_variable = TreeIdentities2
