@@ -87,3 +87,13 @@ knitr::kable(TreeIdentitiesSummary)
 #| tbl-cap: "DeadwoodIdentitiesGroupedSummary"
 knitr::kable(DeadwoodIdentitiesGroupedSummary)
 ```
+
+## Make a count table by decay stage
+
+
+```{r}
+count_table <- make_count_table_by_decay(
+  TreMs, 
+  save_name = "data/derivatives/Count_Table_by_Decay_Stage.csv"
+)
+```
