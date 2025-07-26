@@ -425,6 +425,8 @@ write.table(count_table, file = "data/derivatives/Count_Table_by_Decay_Stage.csv
 # Print the count table to verify
 print(count_table)
 
+# Skipping this -----------------
+
 #Raw data histogram - not every importnt, graphs won't be included in the paper
 
 DeadwoodTypeData <- read.table(file = "data/raw/Deadwood type graph.csv",
@@ -508,6 +510,8 @@ barplot(tree_percentages$Percentage_with_Richness,
 
 # Optionally add grid lines for better visibility
 grid(nx = NA, ny = NULL, col = "gray", lty = "dotted")
+
+# skipping end -----------------
 
 ###########BIPARTITE NETWORK
 

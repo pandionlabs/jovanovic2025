@@ -3,6 +3,7 @@
 export(clean_data)
 export(group_data)
 export(load_data)
+export(make_count_table_by_decay)
 export(summarize_identities)
 export(summarize_microhabitats)
 importFrom(rlang,"!!")
