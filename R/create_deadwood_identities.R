@@ -4,7 +4,6 @@
 #'
 #' @returns A TreMs dataframe with a DeadwoodIdentities column
 #'
-#' @export
 #' @examples
 #' \dontrun{
 #' TreMs <- create_deadwood_identities(TreMs)
