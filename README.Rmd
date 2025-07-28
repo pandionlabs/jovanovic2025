@@ -97,3 +97,10 @@ count_table <- make_count_table_by_decay(
   save_name = "data/derivatives/Count_Table_by_Decay_Stage.csv"
 )
 ```
+
+## Create the deadwood identities column
+
+
+```{r}
+TreMs <- create_deadwood_identities(TreMs)
+```
