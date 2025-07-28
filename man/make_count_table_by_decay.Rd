@@ -6,7 +6,7 @@
 \usage{
 make_count_table_by_decay(
   TreMs,
-  save_name = "data/derivatives/Count_Table_by_Decay_Stage.csv"
+  save_name = here::here("data/derivatives/Count_Table_by_Decay_Stage.csv")
 )
 }
 \arguments{

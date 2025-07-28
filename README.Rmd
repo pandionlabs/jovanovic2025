@@ -98,9 +98,3 @@ count_table <- make_count_table_by_decay(
 )
 ```
 
-## Create the deadwood identities column
-
-
-```{r}
-TreMs <- create_deadwood_identities(TreMs)
-```
