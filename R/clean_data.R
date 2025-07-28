@@ -173,8 +173,8 @@ summarize_microhabitats <- function(TreMs) {
   TreMs <- TreMs |>
     dplyr::rowwise() |>
     dplyr::mutate(
-      DecomposedCrack = sum(dplyr::c_across(c( 
-        Microhabitats.cracksandscars.IN31,    
+      DecomposedCrack = sum(dplyr::c_across(c(
+        Microhabitats.cracksandscars.IN31,
       ))),
       WoodpeckerCavities = sum(dplyr::c_across(c(
         Microhabitats.Cavities.Woodpeckercavities.CV11,
@@ -255,6 +255,7 @@ summarize_microhabitats <- function(TreMs) {
         group_ti3vx98.Litter_pool_small_5_10cm,
         group_ti3vx98.Litter_pool_big_10cm
       ))),
+      DeadwooodShelterStumpStructures = DeadwooodShelter + StumpStructures,
       LogStructures = sum(dplyr::c_across(c(
         group_ti3vx98.Log_pipe_5cm_diameter,
         group_ti3vx98.Multiple_small_pipes,
@@ -272,7 +273,7 @@ summarize_microhabitats <- function(TreMs) {
     ) |>
     dplyr::ungroup()
 
-  summary_cols <- c(
+summary_cols <- c(
     "DecomposedCrack",
     "WoodpeckerCavities",
     "Concavities",
@@ -288,6 +289,7 @@ summarize_microhabitats <- function(TreMs) {
     "Epiphytes",
     "DeadwooodShelter",
     "StumpStructures",
+    "DeadwooodShelterStumpStructures",
     "LogStructures",
     "WoodyDebris",
     "ExposedRoots"
@@ -306,7 +308,7 @@ summarize_microhabitats <- function(TreMs) {
         na.rm = TRUE
       ) |>
         as.integer()
-    ) |> 
+    ) |>
     dplyr::ungroup()
 
   TreMs
@@ -374,3 +376,4 @@ group_data <- function(TreMs) {
 
   return(TreMs)
 }
+
