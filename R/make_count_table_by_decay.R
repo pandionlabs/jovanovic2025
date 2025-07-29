@@ -16,6 +16,6 @@ make_count_table_by_decay <- function(TreMs, save_name = here::here("data/deriva
   colnames(count_table) <- c("TreeIdentities2", "Decay_Stage", "Count")
 
   # Save to CSV
-  write.table(count_table, file = save_name, sep = ",", quote = FALSE, row.names = FALSE)
+  utils::write.table(count_table, file = save_name, sep = ",", quote = FALSE, row.names = FALSE)
   return(count_table)
 }

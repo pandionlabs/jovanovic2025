@@ -9,6 +9,9 @@
 #' TreMs <- create_deadwood_identities(TreMs)
 #' }
 create_deadwood_identities <- function(TreMs) {
+  Treedata.Treespecies <- Treedata.Type_of_deadwood <- 
+    DeadwoodIdentities_species <- DeadwoodIdentities_type <- 
+    DeadwoodIdentities <- NULL
   #Creating deadwood identities 
   TreMs |> 
     dplyr::mutate(DeadwoodIdentities_species = 
