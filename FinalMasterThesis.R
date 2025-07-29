@@ -425,6 +425,8 @@ write.table(count_table, file = "data/derivatives/Count_Table_by_Decay_Stage.csv
 # Print the count table to verify
 print(count_table)
 
+# Skipping this -----------------
+
 #Raw data histogram - not every importnt, graphs won't be included in the paper
 
 DeadwoodTypeData <- read.table(file = "data/raw/Deadwood type graph.csv",
@@ -509,8 +511,10 @@ barplot(tree_percentages$Percentage_with_Richness,
 # Optionally add grid lines for better visibility
 grid(nx = NA, ny = NULL, col = "gray", lty = "dotted")
 
-###########BIPARTITE NETWORK
+# skipping end -----------------
 
+###########BIPARTITE NETWORK
+# In Clean_data start -----------
 #Creating deadwood identities 
 TreMs$DeadwoodIdentities <- rep(0,533)
 last_col <- length(TreMs) # used to be 80 Sam
@@ -573,10 +577,12 @@ for (i in 1:nrow(TreMs)) {
 }
 TreMs <- TreMs |>
   relocate(DeadwoodIdentities, .before = 8)
+# In Clean_data end -----------
 
 #Creating a new data frame with fewer identities 
 IdentitiesTreMs <- TreMs |>
   dplyr::filter(DeadwoodIdentities != "No ID Stump" & DeadwoodIdentities != "No ID Log" & DeadwoodIdentities != "No ID Entire Tree"  & DeadwoodIdentities != "Conifer Log" & DeadwoodIdentities != "Conifer Stump"  & DeadwoodIdentities != "Conifer Entire Tree" & DeadwoodIdentities != "Broadleaf Log"  & DeadwoodIdentities != "Broadleaf Stump" & DeadwoodIdentities != "Broadleaf Entire tree")
+
 
 meantable <-aggregate(IdentitiesTreMs[,c(81:84,86:95)], list(IdentitiesTreMs$DeadwoodIdentities), mean)
 write.table(meantable, file = "data/derivatives/Aggregation.csv", sep = ",", quote = FALSE, row.names = F )
