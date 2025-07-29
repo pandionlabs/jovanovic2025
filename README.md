@@ -112,29 +112,29 @@ predictor variable and the model family used in each model
 model_parameters <- get_model_cols()
 ```
 
-| variable                        | model_family     |
-|:--------------------------------|:-----------------|
-| DecomposedCrack                 | poisson          |
-| WoodpeckerCavities              | poisson          |
-| Concavities                     | poisson          |
-| WoodpeckerConcavities           | poisson          |
-| Rotholes                        | poisson          |
-| InsectGalleries                 | poisson          |
-| ExposedSapwood                  | glmmTMB::nbinom2 |
-| ExposedHeartwood                | glmmTMB::nbinom2 |
-| ExposedSapwoodHeartwood         | glmmTMB::nbinom2 |
-| PerennialFungi                  | glmmTMB::nbinom2 |
-| Ephermalfungi                   | glmmTMB::nbinom2 |
-| EphrmalPerennialFungi           | glmmTMB::nbinom2 |
-| Epiphytes                       | glmmTMB::nbinom2 |
-| DeadwooodShelter                | glmmTMB::nbinom2 |
-| StumpStructures                 | poisson          |
-| DeadwooodShelterStumpStructures | glmmTMB::nbinom2 |
-| LogStructures                   | glmmTMB::nbinom2 |
-| WoodyDebris                     | glmmTMB::nbinom2 |
-| ExposedRoots                    | glmmTMB::nbinom2 |
-| Abundance                       | glmmTMB::nbinom2 |
-| Richness                        | glmmTMB::nbinom2 |
+| variable | model_family | model_formula |
+|:---|:---|:---|
+| DecomposedCrack | poisson | DecomposedCrack ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| WoodpeckerCavities | poisson | WoodpeckerCavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Concavities | poisson | Concavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| WoodpeckerConcavities | poisson | WoodpeckerConcavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Rotholes | poisson | Rotholes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| InsectGalleries | poisson | InsectGalleries ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| ExposedSapwood | glmmTMB::nbinom2 | ExposedSapwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| ExposedHeartwood | glmmTMB::nbinom2 | ExposedHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| ExposedSapwoodHeartwood | glmmTMB::nbinom2 | ExposedSapwoodHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| PerennialFungi | glmmTMB::nbinom2 | PerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Ephermalfungi | glmmTMB::nbinom2 | Ephermalfungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| EphrmalPerennialFungi | glmmTMB::nbinom2 | EphrmalPerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Epiphytes | glmmTMB::nbinom2 | Epiphytes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| DeadwooodShelter | glmmTMB::nbinom2 | DeadwooodShelter ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| StumpStructures | poisson | StumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| DeadwooodShelterStumpStructures | glmmTMB::nbinom2 | DeadwooodShelterStumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| LogStructures | glmmTMB::nbinom2 | LogStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| WoodyDebris | glmmTMB::nbinom2 | WoodyDebris ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| ExposedRoots | glmmTMB::nbinom2 | ExposedRoots ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Abundance | glmmTMB::nbinom2 | Abundance ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Richness | glmmTMB::nbinom2 | Richness ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 
 The models can be produced with `create_models()` which will create each
 of the models specified in `get_model_cols()` and then save the model

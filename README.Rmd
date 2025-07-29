@@ -136,7 +136,11 @@ model_parameters_tb <-
     "ExposedRoots",              "glmmTMB::nbinom2",
     "Abundance",                 "glmmTMB::nbinom2",
     "Richness",                  "glmmTMB::nbinom2"
-  )
+  ) |> 
+    dplyr::mutate(
+      model_formula = glue::glue("{variable} ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1\\|Plot)")
+      )
+
 knitr::kable(model_parameters_tb)
 ```
 
