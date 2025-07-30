@@ -365,8 +365,16 @@ group_data <- function(TreMs) {
       DeadwoodIdentitiesGrouped = paste(species_short, deadwood_id_grouped) |>
         factor(),
       DeadwoodIdenties = paste(species_group, deadwood_id) |> factor(),
-      TreeIdentities2 = paste(species_group, deadwood_id_grouped) |> factor()
+      TreeIdentities2 = paste(species_group, deadwood_id_grouped) |> factor(),
     ) |>
+    dplyr::rowwise() |> 
+    dplyr::mutate(
+  # TODO make sure these are all the right columns
+      ExposedSapwoodReduced = sum(dplyr::c_across(ExposedSapwood:ExposedSapwoodHeartwood)),
+      GroupedSapwoodHeartwood = sum(dplyr::c_across(c(ExposedHeartwood, ExposedSapwoodReduced))),
+      AllFungi = sum(dplyr::c_across(c(Ephermalfungi, EphrmalPerennialFungi))),
+      GroupedLogStump = sum(dplyr::c_across(c(StumpStructures, DeadwooodShelterStumpStructures)))
+    ) |> 
     dplyr::select(
       -species_short,
       -species_group,

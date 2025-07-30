@@ -44,7 +44,7 @@ create_model <- function(variable, model_family, TreMs) {
                             Treedata.Tree_Decay +
                             (1|Plot)" |>
         glue::glue() |>
-        stats::formula(),
+      stats::formula(),
       TreMs,
       family = model_family
     ))
@@ -72,29 +72,26 @@ create_model <- function(variable, model_family, TreMs) {
 #' @returns A tibble with columns for variable and model_family
 #'
 #' @export
-get_model_cols <- function() {
+  get_model_cols <- function() {
   tibble::tribble(
     ~variable,                ~model_family,
-    "DecomposedCrack",           "poisson",
-    "WoodpeckerCavities",        "poisson",
-    "Concavities",               "poisson",
-    "WoodpeckerConcavities",     "poisson",
-    "Rotholes",                  "poisson",
-    "InsectGalleries",           "poisson",
-    "ExposedSapwood",            glmmTMB::nbinom2,
-    "ExposedHeartwood",          glmmTMB::nbinom2,
-    "ExposedSapwoodHeartwood",   glmmTMB::nbinom2,
-    "PerennialFungi",            glmmTMB::nbinom2,
-    "Ephermalfungi",             glmmTMB::nbinom2,
-    "EphrmalPerennialFungi",     glmmTMB::nbinom2,
-    "Epiphytes",                 glmmTMB::nbinom2,
-    "DeadwooodShelter",          glmmTMB::nbinom2,
-    "StumpStructures",           "poisson",
-    "DeadwooodShelterStumpStructures", glmmTMB::nbinom2,
-    "LogStructures",             glmmTMB::nbinom2,
-    "WoodyDebris",               glmmTMB::nbinom2,
-    "ExposedRoots",              glmmTMB::nbinom2,
-    "Abundance",                 glmmTMB::nbinom2,
-    "Richness",                  glmmTMB::nbinom2
+    "Abundance", glmmTMB::nbinom2,
+    "Richness", glmmTMB::nbinom2,
+    "Rotholes", stats::poisson,
+    "InsectGalleries", stats::poisson,
+    "WoodpeckerConcavities", stats::poisson,
+    "ExposedSapwood", glmmTMB::nbinom2,
+    "ExposedSapwoodReduced", glmmTMB::nbinom2,
+    "ExposedHeartwood", glmmTMB::nbinom2,
+    "GroupedSapwoodHeartwood", glmmTMB::nbinom2,
+    "PerennialFungi", glmmTMB::nbinom2,
+    "AllFungi", glmmTMB::nbinom2,
+    "Epiphytes", glmmTMB::nbinom2,
+    "DeadwooodShelter", glmmTMB::nbinom2,
+    "StumpStructures", stats::poisson,
+    "LogStructures", glmmTMB::nbinom2,
+    "GroupedLogStump", glmmTMB::nbinom2,
+    "WoodyDebris", stats::poisson,
+    "ExposedRoots", stats::poisson
   )
 }
