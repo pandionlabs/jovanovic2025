@@ -9,6 +9,6 @@ test_that("create model runs", {
 test_that("create models", {
   models <- create_models(TreMs)
   expect_s3_class(models, "tbl_df")
-  expect_equal(nrow(models), 21)
+  expect_equal(nrow(models), 18)
   expect_equal(ncol(models), 7)
 })

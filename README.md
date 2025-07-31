@@ -145,3 +145,58 @@ returned as a dataframe.
 ``` r
 mod_df <- create_models(TreMs)
 ```
+
+Access results of those models with the following
+
+``` r
+get_formula(mod_df, 1)
+#> 
+#> ── Formula ─────────────────────────────────────────────────────────────────────
+#> glmmTMB::glmmTMB(formula = Abundance ~ GroupedTreeSpecies + Treedata.DBH_cm +
+#> Treedata.Tree_Decay + (1 | Plot), data = TreMs, family = model_family,
+#> ziformula = ~0, dispformula = ~1)
+get_residuals(mod_df, 1)
+#> 
+#> ── Model residuals ─────────────────────────────────────────────────────────────
+#> Object of Class DHARMa with simulated residuals based on 250 simulations with refit = FALSE . See ?DHARMa::simulateResiduals for help. 
+#>  
+#> Scaled residual values: 0.7912303 1 0.4893398 0.8485854 0.4761171 0.7032537 0.9068723 0.6371255 0.7368038 0.7507995 0.4094349 0.7807432 0.6394948 0.6440536 0.3503489 0.1810665 0.5397676 0.6036395 0.4093583 0.2629009 ...
+get_test_outliers(mod_df, 1)
+#> 
+#> ── Model outliers ──────────────────────────────────────────────────────────────
+#> [[1]]
+#> 
+#>  DHARMa outlier test based on exact binomial test with approximate
+#>  expectations
+#> 
+#> data:  purrr::pluck(mod_residuals, 1)
+#> outliers at both margin(s) = 9, observations = 516, p-value = 0.02436
+#> alternative hypothesis: true probability of success is not equal to 0.007968127
+#> 95 percent confidence interval:
+#>  0.008005764 0.032851009
+#> sample estimates:
+#> frequency of outliers (expected: 0.00796812749003984 ) 
+#>                                             0.01744186
+get_test_dispersion(mod_df, 1)
+#> 
+#> ── Model dispersion ────────────────────────────────────────────────────────────
+#> [[1]]
+#> 
+#>  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+#>  simulated
+#> 
+#> data:  simulationOutput
+#> dispersion = 1.6316, p-value < 2.2e-16
+#> alternative hypothesis: two.sided
+get_test_zero_inflation(mod_df, 1)
+#> 
+#> ── Model zero inflation ────────────────────────────────────────────────────────
+#> [[1]]
+#> 
+#>  DHARMa zero-inflation test via comparison to expected zeros with
+#>  simulation under H0 = fitted model
+#> 
+#> data:  simulationOutput
+#> ratioObsSim = 0.09608, p-value = 0.008
+#> alternative hypothesis: two.sided
+```

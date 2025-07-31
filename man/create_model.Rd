@@ -13,6 +13,9 @@ create_model(variable, model_family, TreMs)
 
 \item{TreMs}{A TreMs dataframe}
 }
+\value{
+A tibble containing a model object and summary statistics
+}
 \description{
 Build a model and return fit statistics
 }

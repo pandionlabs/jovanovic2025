@@ -153,3 +153,14 @@ The models can be produced with `create_models()` which will create each of the 
 #| message: false
 mod_df <- create_models(TreMs)
 ```
+
+Access results of those models with the following
+
+```{r}
+get_formula(mod_df, 1)
+get_residuals(mod_df, 1)
+get_test_outliers(mod_df, 1)
+get_test_dispersion(mod_df, 1)
+get_test_zero_inflation(mod_df, 1)
+
+```
