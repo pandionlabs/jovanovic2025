@@ -120,6 +120,27 @@ model_parameters <- get_model_cols()
 | WoodpeckerConcavities | poisson | WoodpeckerConcavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | Rotholes | poisson | Rotholes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | InsectGalleries | poisson | InsectGalleries ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| ExposedSapwood | poisson | ExposedSapwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| ExposedHeartwood | poisson | ExposedHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| ExposedSapwoodHeartwood | poisson | ExposedSapwoodHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| PerennialFungi | poisson | PerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Ephermalfungi | poisson | Ephermalfungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| EphrmalPerennialFungi | poisson | EphrmalPerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Epiphytes | poisson | Epiphytes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| DeadwooodShelter | poisson | DeadwooodShelter ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| StumpStructures | poisson | StumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| DeadwooodShelterStumpStructures | poisson | DeadwooodShelterStumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| LogStructures | poisson | LogStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| WoodyDebris | poisson | WoodyDebris ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| ExposedRoots | poisson | ExposedRoots ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Abundance | poisson | Abundance ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Richness | poisson | Richness ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| DecomposedCrack | glmmTMB::nbinom2 | DecomposedCrack ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| WoodpeckerCavities | glmmTMB::nbinom2 | WoodpeckerCavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Concavities | glmmTMB::nbinom2 | Concavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| WoodpeckerConcavities | glmmTMB::nbinom2 | WoodpeckerConcavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| Rotholes | glmmTMB::nbinom2 | Rotholes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| InsectGalleries | glmmTMB::nbinom2 | InsectGalleries ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | ExposedSapwood | glmmTMB::nbinom2 | ExposedSapwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | ExposedHeartwood | glmmTMB::nbinom2 | ExposedHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | ExposedSapwoodHeartwood | glmmTMB::nbinom2 | ExposedSapwoodHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
@@ -128,7 +149,7 @@ model_parameters <- get_model_cols()
 | EphrmalPerennialFungi | glmmTMB::nbinom2 | EphrmalPerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | Epiphytes | glmmTMB::nbinom2 | Epiphytes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | DeadwooodShelter | glmmTMB::nbinom2 | DeadwooodShelter ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
-| StumpStructures | poisson | StumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
+| StumpStructures | glmmTMB::nbinom2 | StumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | DeadwooodShelterStumpStructures | glmmTMB::nbinom2 | DeadwooodShelterStumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | LogStructures | glmmTMB::nbinom2 | LogStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
 | WoodyDebris | glmmTMB::nbinom2 | WoodyDebris ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1&#124;Plot) |
@@ -144,4 +165,127 @@ returned as a dataframe.
 
 ``` r
 mod_df <- create_models(TreMs)
+```
+
+Access results of those models with the following
+
+``` r
+get_formula(mod_df, 1)
+#> 
+#> ── Formula ─────────────────────────────────────────────────────────────────────
+#> glmmTMB::glmmTMB(formula = DecomposedCrack ~ GroupedTreeSpecies +
+#> Treedata.DBH_cm + Treedata.Tree_Decay + (1 | Plot), data = TreMs, family =
+#> model_family, ziformula = ~0, dispformula = ~1)
+get_residuals(mod_df, 1)
+#> 
+#> ── Model residuals ─────────────────────────────────────────────────────────────
+#> Object of Class DHARMa with simulated residuals based on 250 simulations with refit = FALSE . See ?DHARMa::simulateResiduals for help. 
+#>  
+#> Scaled residual values: 0.9390666 0.8147907 0.8719091 0.08886054 0.7079871 0.9811869 0.01226094 0.8598661 0.1109746 0.9110544 0.5304764 0.3844352 0.7634829 0.4438318 0.1093142 0.5528625 0.2022903 0.2578379 0.1234604 0.6637486 ...
+get_test_outliers(mod_df, 1)
+#> 
+#> ── Model outliers ──────────────────────────────────────────────────────────────
+#> [[1]]
+#> 
+#>  DHARMa outlier test based on exact binomial test with approximate
+#>  expectations
+#> 
+#> data:  purrr::pluck(mod_residuals, 1)
+#> outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+#> alternative hypothesis: true probability of success is not equal to 0.007968127
+#> 95 percent confidence interval:
+#>  4.906432e-05 1.075005e-02
+#> sample estimates:
+#> frequency of outliers (expected: 0.00796812749003984 ) 
+#>                                            0.001937984
+get_test_dispersion(mod_df, 1)
+#> 
+#> ── Model dispersion ────────────────────────────────────────────────────────────
+#> [[1]]
+#> 
+#>  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+#>  simulated
+#> 
+#> data:  simulationOutput
+#> dispersion = 0.82723, p-value = 0.864
+#> alternative hypothesis: two.sided
+get_test_zero_inflation(mod_df, 1)
+#> 
+#> ── Model zero inflation ────────────────────────────────────────────────────────
+#> [[1]]
+#> 
+#>  DHARMa zero-inflation test via comparison to expected zeros with
+#>  simulation under H0 = fitted model
+#> 
+#> data:  simulationOutput
+#> ratioObsSim = 0.99962, p-value = 1
+#> alternative hypothesis: two.sided
+```
+
+## Get models
+
+We can delve into the model dataframe (`mod_df`) with `get_model_object`
+
+``` r
+# Get a model object by index
+get_model_object(mod_df, 2)
+#> Formula:          
+#> WoodpeckerCavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+#>     (1 | Plot)
+#> Data: TreMs
+#>       AIC       BIC    logLik -2*log(L)  df.resid 
+#>  80.23619 114.20505 -32.11810  64.23619       508 
+#> Random-effects (co)variances:
+#> 
+#> Conditional model:
+#>  Groups Name        Std.Dev.
+#>  Plot   (Intercept) 0.7388  
+#> 
+#> Number of obs: 516 / Conditional model: Plot, 23
+#> 
+#> Fixed Effects:
+#> 
+#> Conditional model:
+#>                       (Intercept)  GroupedTreeSpeciesConiferous spp.  
+#>                         -21.73522                           20.26271  
+#>                   Treedata.DBH_cm   Treedata.Tree_DecayDecay stage 2  
+#>                          -0.03006                           -2.39513  
+#>  Treedata.Tree_DecayDecay stage 3   Treedata.Tree_DecayDecay stage 4  
+#>                          -1.35112                           -2.06083  
+#>  Treedata.Tree_DecayDecay stage 5  
+#>                         -26.27206
+
+# Or get a model object using filter 
+
+mod_df |> 
+  dplyr::filter(
+    variable == "Rotholes",
+    model_family == "poisson"
+    ) |> 
+  get_model_object()
+#> Formula:          
+#> Rotholes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+#>     (1 | Plot)
+#> Data: TreMs
+#>       AIC       BIC    logLik -2*log(L)  df.resid 
+#>  469.8742  503.8431 -226.9371  453.8742       508 
+#> Random-effects (co)variances:
+#> 
+#> Conditional model:
+#>  Groups Name        Std.Dev.
+#>  Plot   (Intercept) 0.7648  
+#> 
+#> Number of obs: 516 / Conditional model: Plot, 23
+#> 
+#> Fixed Effects:
+#> 
+#> Conditional model:
+#>                       (Intercept)  GroupedTreeSpeciesConiferous spp.  
+#>                          -0.28891                           -0.72677  
+#>                   Treedata.DBH_cm   Treedata.Tree_DecayDecay stage 2  
+#>                          -0.01155                           -0.85454  
+#>  Treedata.Tree_DecayDecay stage 3   Treedata.Tree_DecayDecay stage 4  
+#>                          -0.44195                           -0.97527  
+#>  Treedata.Tree_DecayDecay stage 5  
+#>                          -1.32795
 ```

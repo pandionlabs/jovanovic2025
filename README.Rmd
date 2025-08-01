@@ -121,6 +121,27 @@ model_parameters_tb <-
     "WoodpeckerConcavities",     "poisson",
     "Rotholes",                  "poisson",
     "InsectGalleries",           "poisson",
+    "ExposedSapwood",            "poisson",
+    "ExposedHeartwood",          "poisson",
+    "ExposedSapwoodHeartwood",   "poisson",
+    "PerennialFungi",            "poisson",
+    "Ephermalfungi",             "poisson",
+    "EphrmalPerennialFungi",     "poisson",
+    "Epiphytes",                 "poisson",
+    "DeadwooodShelter",          "poisson",
+    "StumpStructures",           "poisson",
+    "DeadwooodShelterStumpStructures", "poisson",
+    "LogStructures",             "poisson",
+    "WoodyDebris",               "poisson",
+    "ExposedRoots",              "poisson",
+    "Abundance",                 "poisson",
+    "Richness",                  "poisson",
+    "DecomposedCrack",           "glmmTMB::nbinom2",
+    "WoodpeckerCavities",        "glmmTMB::nbinom2",
+    "Concavities",               "glmmTMB::nbinom2",
+    "WoodpeckerConcavities",     "glmmTMB::nbinom2",
+    "Rotholes",                  "glmmTMB::nbinom2",
+    "InsectGalleries",           "glmmTMB::nbinom2",
     "ExposedSapwood",            "glmmTMB::nbinom2",
     "ExposedHeartwood",          "glmmTMB::nbinom2",
     "ExposedSapwoodHeartwood",   "glmmTMB::nbinom2",
@@ -129,7 +150,7 @@ model_parameters_tb <-
     "EphrmalPerennialFungi",     "glmmTMB::nbinom2",
     "Epiphytes",                 "glmmTMB::nbinom2",
     "DeadwooodShelter",          "glmmTMB::nbinom2",
-    "StumpStructures",           "poisson",
+    "StumpStructures",           "glmmTMB::nbinom2",
     "DeadwooodShelterStumpStructures", "glmmTMB::nbinom2",
     "LogStructures",             "glmmTMB::nbinom2",
     "WoodyDebris",               "glmmTMB::nbinom2",
@@ -156,10 +177,6 @@ mod_df <- create_models(TreMs)
 
 Access results of those models with the following
 
-
-
-
-
 ```{r}
 get_formula(mod_df, 1)
 get_residuals(mod_df, 1)
@@ -178,6 +195,9 @@ get_model_object(mod_df, 2)
 # Or get a model object using filter 
 
 mod_df |> 
-  dplyr::filter(variable == "Rotholes") |> 
+  dplyr::filter(
+    variable == "Rotholes",
+    model_family == "poisson"
+    ) |> 
   get_model_object()
 ```
