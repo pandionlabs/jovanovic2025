@@ -112,7 +112,7 @@ get_model_cols <- function() {
     "Epiphytes",                  glmmTMB::nbinom2,                 
     "DeadwoodShelter",                  glmmTMB::nbinom2,          
     "StumpStructures",                  glmmTMB::nbinom2,           
-    "DeadwooodShelterStumpStructures",                  glmmTMB::nbinom2, 
+    "DeadwoodShelterStumpStructures",                  glmmTMB::nbinom2, 
     "LogStructures",                  glmmTMB::nbinom2,             
     "WoodyDebris",                  glmmTMB::nbinom2,               
     "ExposedRoots",                  glmmTMB::nbinom2,              

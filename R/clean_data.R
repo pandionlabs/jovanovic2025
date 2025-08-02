@@ -292,7 +292,7 @@ summary_cols <- c(
     "Epiphytes",
     "DeadwoodShelter",
     "StumpStructures",
-    "DeadwooodShelterStumpStructures",
+    "DeadwoodShelterStumpStructures",
     "LogStructures",
     "WoodyDebris",
     "ExposedRoots"
