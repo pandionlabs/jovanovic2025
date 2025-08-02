@@ -289,3 +289,84 @@ mod_df |>
 #>  Treedata.Tree_DecayDecay stage 5  
 #>                          -1.32795
 ```
+
+## Make a graph
+
+Use ggeffects to predict on a model and then graph it with ggplot.
+
+``` r
+Predicted_RichnessStump <- 
+mod_df |> 
+  dplyr::filter(
+    variable == "Richness",
+    model_family == "nbinom2"
+    ) |> 
+  get_model_object() |> 
+  ggeffects::ggpredict(
+    terms = c("Treedata.DBH_cm", "Treedata.Tree_Decay[Decay stage 1, Decay stage 5]"),
+    interval = "confidence",
+    full.data = TRUE,
+    bias_correction = TRUE,
+    ci_level = 0.95
+  )
+#> Warning: Can't compute random effect variances. Some variance components equal
+#>   zero. Your model may suffer from singularity (see `?lme4::isSingular`
+#>   and `?performance::check_singularity`).
+#>   Decrease the `tolerance` level to force the calculation of random effect
+#>   variances, or impose priors on your random effects parameters (using
+#>   packages like `brms` or `glmmTMB`).
+#> Warning: Can't calculate model's distribution-specific variance. Results are not
+#>   reliable.
+#>   A reason can be that the null model could not be computed manually. Try
+#>   to fit the null model manually and pass it to `null_model`.
+#> Warning in check_dots(..., .action = "warning"): unknown arguments: full.data
+#> Warning: Can't compute random effect variances. Some variance components equal
+#>   zero. Your model may suffer from singularity (see `?lme4::isSingular`
+#>   and `?performance::check_singularity`).
+#>   Decrease the `tolerance` level to force the calculation of random effect
+#>   variances, or impose priors on your random effects parameters (using
+#>   packages like `brms` or `glmmTMB`).
+#> Warning: Can't calculate model's distribution-specific variance. Results are not
+#>   reliable.
+#>   A reason can be that the null model could not be computed manually. Try
+#>   to fit the null model manually and pass it to `null_model`.
+
+library(ggplot2)
+ggplot() +
+  geom_smooth(
+    data = Predicted_RichnessStump, 
+    mapping = aes(x = x, y = predicted, colour = group)
+    ) +
+  geom_rug(
+    data = TreMs, 
+    mapping = aes(x = Treedata.DBH_cm, y = Richness), 
+    col = "steelblue",
+    alpha=0.1, 
+    size=1
+    ) +
+  xlab("Diameter (cm)") + ylab("TreM Richness on Stumps")+ 
+  scale_x_continuous(n.breaks = 5) +
+  theme_bw() +
+  theme(
+    text = element_text(size=15), 
+    legend.title = element_blank(),
+    plot.margin = margin(0.5, 2, 0.5, 0.5),
+    panel.border = element_blank(), 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), 
+    axis.line = element_line(colour = "black")
+    ) +
+  scale_linetype(guide = "none") +
+  scale_color_manual(values = c("Decay stage 1" = "#849324", "Decay stage 5" = "#f26419")) +
+  scale_fill_manual(values = c("Decay stage 1" = "#849324", "Decay stage 5" = "#f26419"))
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+#> Warning: No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
+```
+
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
