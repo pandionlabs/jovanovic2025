@@ -31,6 +31,9 @@ clean_data <- function(x) {
 #'   TreMs <- load_data(MasterThesisData2024)
 #' }
 load_data <- function(MasterThesisData) {
+  GroupedTreeSpecies <- Treedata.Type_of_deadwood <- GroupedDeadwoodType <- 
+    Treedata.Tree_Decay <- Treedata.GroundContact <- Treedata.LitterCoverage <- 
+    Treedata.SunExposure <- Origin <- NULL
   TreMs <- subset(MasterThesisData, select = -c(45:49, 52:55, 66:70))
   TreMs <- TreMs[-534, ]
 
@@ -174,7 +177,7 @@ summarize_microhabitats <- function(TreMs) {
     dplyr::rowwise() |>
     dplyr::mutate(
       DecomposedCrack = sum(dplyr::c_across(c(
-        Microhabitats.cracksandscars.IN31,
+        Microhabitats.cracksandscars.IN31
       ))),
       WoodpeckerCavities = sum(dplyr::c_across(c(
         Microhabitats.Cavities.Woodpeckercavities.CV11,
@@ -213,7 +216,7 @@ summarize_microhabitats <- function(TreMs) {
         Microhabitats.barkloss.IN13,
         Microhabitats.cracksandscars.IN34,
         Microhabitats.Bark.BA11,
-        Microhabitats.Bark.BA12,
+        Microhabitats.Bark.BA12
       ))),
       ExposedHeartwood = sum(dplyr::c_across(c(
         Microhabitats.Exposedheartwood.IN21,
@@ -329,6 +332,8 @@ summary_cols <- c(
 #'   TreMs <- group_data(TreMs)
 #' }
 group_data <- function(TreMs) {
+  species_short <- deadwood_id_grouped <- species_group <- 
+    deadwood_id <- NULL
   species_grouping <- tibble::tribble(
   ~species,           ~species_short,  ~species_group,
   "Fagus sylvatica",  "F. sylvatica",  "Conifer",

@@ -26,7 +26,7 @@ create_models <- function(TreMs) {
 #' \{variable\} ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1|Plot)
 #' Where the Y variable is selected from the available columns in TreMs
 #'
-#' @returns
+#' @returns A tibble containing a model and statistics
 #'
 #' @export
 #' @examples
