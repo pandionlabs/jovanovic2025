@@ -11,48 +11,23 @@ Authors@R: c(
 Description: Corresponding package to Jovanovic 2025. Please read the paper.
 License: MIT + file LICENSE
 Suggests: 
+    ggeffects,
+    ggplot2,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
-    broom,
-    broom.mixed,
-    car,
     cli,
-    cowplot,
-    data.table,
     DHARMa,
-    dotwhisker,
     dplyr,
-    effects,
-    emmeans,
-    ggeffects,
-    ggplot2,
-    ggpubr,
     glmmTMB,
     glue,
     here,
-    lattice,
-    lme4,
-    multcomp,
-    multcompView,
-    MuMIn,
-    pastecs,
-    plyr,
     purrr,
-    reshape2,
     rlang,
-    sjmisc,
-    sjPlot,
-    sjstats,
-    texreg,
-    tibble,
-    tidyverse,
-    vegan,
-    viridis,
-    xtable
+    tibble
 Depends: 
     R (>= 3.5)
 LazyData: true
