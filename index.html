@@ -795,6 +795,85 @@
 <span><span class="co">#&gt;  Treedata.Tree_DecayDecay stage 5  </span></span>
 <span><span class="co">#&gt;                          -1.32795</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="make-a-graph">Make a graph<a class="anchor" aria-label="anchor" href="#make-a-graph"></a>
+</h2>
+<p>Use ggeffects to predict on a model and then graph it with ggplot.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Predicted_RichnessStump</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">mod_df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">variable</span> <span class="op">==</span> <span class="st">"Richness"</span>,</span>
+<span>    <span class="va">model_family</span> <span class="op">==</span> <span class="st">"nbinom2"</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="reference/get_model_object.html">get_model_object</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ggeffects</span><span class="fu">::</span><span class="fu"><a href="https://strengejacke.github.io/ggeffects/reference/ggpredict.html" class="external-link">ggpredict</a></span><span class="op">(</span></span>
+<span>    terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treedata.DBH_cm"</span>, <span class="st">"Treedata.Tree_Decay[Decay stage 1, Decay stage 5]"</span><span class="op">)</span>,</span>
+<span>    interval <span class="op">=</span> <span class="st">"confidence"</span>,</span>
+<span>    full.data <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    bias_correction <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    ci_level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Can't compute random effect variances. Some variance components equal</span></span>
+<span><span class="co">#&gt;   zero. Your model may suffer from singularity (see `?lme4::isSingular`</span></span>
+<span><span class="co">#&gt;   and `?performance::check_singularity`).</span></span>
+<span><span class="co">#&gt;   Decrease the `tolerance` level to force the calculation of random effect</span></span>
+<span><span class="co">#&gt;   variances, or impose priors on your random effects parameters (using</span></span>
+<span><span class="co">#&gt;   packages like `brms` or `glmmTMB`).</span></span>
+<span><span class="co">#&gt; Warning: Can't calculate model's distribution-specific variance. Results are not</span></span>
+<span><span class="co">#&gt;   reliable.</span></span>
+<span><span class="co">#&gt;   A reason can be that the null model could not be computed manually. Try</span></span>
+<span><span class="co">#&gt;   to fit the null model manually and pass it to `null_model`.</span></span>
+<span><span class="co">#&gt; Warning in check_dots(..., .action = "warning"): unknown arguments: full.data</span></span>
+<span><span class="co">#&gt; Warning: Can't compute random effect variances. Some variance components equal</span></span>
+<span><span class="co">#&gt;   zero. Your model may suffer from singularity (see `?lme4::isSingular`</span></span>
+<span><span class="co">#&gt;   and `?performance::check_singularity`).</span></span>
+<span><span class="co">#&gt;   Decrease the `tolerance` level to force the calculation of random effect</span></span>
+<span><span class="co">#&gt;   variances, or impose priors on your random effects parameters (using</span></span>
+<span><span class="co">#&gt;   packages like `brms` or `glmmTMB`).</span></span>
+<span><span class="co">#&gt; Warning: Can't calculate model's distribution-specific variance. Results are not</span></span>
+<span><span class="co">#&gt;   reliable.</span></span>
+<span><span class="co">#&gt;   A reason can be that the null model could not be computed manually. Try</span></span>
+<span><span class="co">#&gt;   to fit the null model manually and pass it to `null_model`.</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">Predicted_RichnessStump</span>, </span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">predicted</span>, colour <span class="op">=</span> <span class="va">group</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html" class="external-link">geom_rug</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">TreMs</span>, </span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Treedata.DBH_cm</span>, y <span class="op">=</span> <span class="va">Richness</span><span class="op">)</span>, </span>
+<span>    col <span class="op">=</span> <span class="st">"steelblue"</span>,</span>
+<span>    alpha<span class="op">=</span><span class="fl">0.1</span>, </span>
+<span>    size<span class="op">=</span><span class="fl">1</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Diameter (cm)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"TreM Richness on Stumps"</span><span class="op">)</span><span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>n.breaks <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">15</span><span class="op">)</span>, </span>
+<span>    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    plot.margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">margin</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">2</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    panel.border <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>    panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>    axis.line <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_linetype.html" class="external-link">scale_linetype</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Decay stage 1"</span> <span class="op">=</span> <span class="st">"#849324"</span>, <span class="st">"Decay stage 5"</span> <span class="op">=</span> <span class="st">"#f26419"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Decay stage 1"</span> <span class="op">=</span> <span class="st">"#849324"</span>, <span class="st">"Decay stage 5"</span> <span class="op">=</span> <span class="st">"#f26419"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; ℹ Please use `linewidth` instead.</span></span>
+<span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
+<span><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
+<span><span class="co">#&gt; generated.</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span>
+<span><span class="co">#&gt; Warning: No shared levels found between `names(values)` of the manual scale and the</span></span>
+<span><span class="co">#&gt; data's fill values.</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
