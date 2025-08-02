@@ -98,3 +98,156 @@ count_table <- make_count_table_by_decay(
 )
 ```
 
+## Create models
+
+In the create models section, we build a series of models associating various predictor (y) variables with three varialbes: `GroupedTreeSpecies, Treedata.DBH_cm, and Treedata.Tree_Decay`. The modelling family for each model is either poisson or glmmTMB::nbinom2.
+
+The `get_model_cols()` function creates a tibble that specifies each predictor variable and the model family used in each model
+
+
+```{r}
+model_parameters <- get_model_cols()
+```
+
+
+```{r}
+#| echo: false
+model_parameters_tb <- 
+  tibble::tribble(
+    ~variable,                ~model_family,
+    "DecomposedCrack",           "poisson",
+    "WoodpeckerCavities",        "poisson",
+    "Concavities",               "poisson",
+    "WoodpeckerConcavities",     "poisson",
+    "Rotholes",                  "poisson",
+    "InsectGalleries",           "poisson",
+    "ExposedSapwood",            "poisson",
+    "ExposedHeartwood",          "poisson",
+    "ExposedSapwoodHeartwood",   "poisson",
+    "PerennialFungi",            "poisson",
+    "Ephermalfungi",             "poisson",
+    "EphrmalPerennialFungi",     "poisson",
+    "Epiphytes",                 "poisson",
+    "DeadwooodShelter",          "poisson",
+    "StumpStructures",           "poisson",
+    "DeadwooodShelterStumpStructures", "poisson",
+    "LogStructures",             "poisson",
+    "WoodyDebris",               "poisson",
+    "ExposedRoots",              "poisson",
+    "Abundance",                 "poisson",
+    "Richness",                  "poisson",
+    "DecomposedCrack",           "glmmTMB::nbinom2",
+    "WoodpeckerCavities",        "glmmTMB::nbinom2",
+    "Concavities",               "glmmTMB::nbinom2",
+    "WoodpeckerConcavities",     "glmmTMB::nbinom2",
+    "Rotholes",                  "glmmTMB::nbinom2",
+    "InsectGalleries",           "glmmTMB::nbinom2",
+    "ExposedSapwood",            "glmmTMB::nbinom2",
+    "ExposedHeartwood",          "glmmTMB::nbinom2",
+    "ExposedSapwoodHeartwood",   "glmmTMB::nbinom2",
+    "PerennialFungi",            "glmmTMB::nbinom2",
+    "Ephermalfungi",             "glmmTMB::nbinom2",
+    "EphrmalPerennialFungi",     "glmmTMB::nbinom2",
+    "Epiphytes",                 "glmmTMB::nbinom2",
+    "DeadwooodShelter",          "glmmTMB::nbinom2",
+    "StumpStructures",           "glmmTMB::nbinom2",
+    "DeadwooodShelterStumpStructures", "glmmTMB::nbinom2",
+    "LogStructures",             "glmmTMB::nbinom2",
+    "WoodyDebris",               "glmmTMB::nbinom2",
+    "ExposedRoots",              "glmmTMB::nbinom2",
+    "Abundance",                 "glmmTMB::nbinom2",
+    "Richness",                  "glmmTMB::nbinom2"
+  ) |> 
+    dplyr::mutate(
+      model_formula = glue::glue("{variable} ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1\\|Plot)")
+      )
+
+knitr::kable(model_parameters_tb)
+```
+
+The models can be produced with `create_models()` which will create each of the models specified in `get_model_cols()` and then save the model summary, residuals, and results from three tests of outliers, dispersion, and zero inflation. All these models are results are returned as a dataframe.
+
+```{r}
+#| echo: true
+#| warning: false
+#| output: false
+#| message: false
+mod_df <- create_models(TreMs)
+```
+
+Access results of those models with the following
+
+```{r}
+get_formula(mod_df, 1)
+get_residuals(mod_df, 1)
+get_test_outliers(mod_df, 1)
+get_test_dispersion(mod_df, 1)
+get_test_zero_inflation(mod_df, 1)
+```
+
+## Get models
+
+We can delve into the model dataframe (`mod_df`) with `get_model_object`
+```{r}
+# Get a model object by index
+get_model_object(mod_df, 2)
+
+# Or get a model object using filter 
+
+mod_df |> 
+  dplyr::filter(
+    variable == "Rotholes",
+    model_family == "poisson"
+    ) |> 
+  get_model_object()
+```
+
+## Make a graph
+
+Use ggeffects to predict on a model and then graph it with ggplot.
+
+```{r}
+Predicted_RichnessStump <- 
+mod_df |> 
+  dplyr::filter(
+    variable == "Richness",
+    model_family == "nbinom2"
+    ) |> 
+  get_model_object() |> 
+  ggeffects::ggpredict(
+    terms = c("Treedata.DBH_cm", "Treedata.Tree_Decay[Decay stage 1, Decay stage 5]"),
+    interval = "confidence",
+    full.data = TRUE,
+    bias_correction = TRUE,
+    ci_level = 0.95
+  )
+
+library(ggplot2)
+ggplot() +
+  geom_smooth(
+    data = Predicted_RichnessStump, 
+    mapping = aes(x = x, y = predicted, colour = group)
+    ) +
+  geom_rug(
+    data = TreMs, 
+    mapping = aes(x = Treedata.DBH_cm, y = Richness), 
+    col = "steelblue",
+    alpha=0.1, 
+    size=1
+    ) +
+  xlab("Diameter (cm)") + ylab("TreM Richness on Stumps")+ 
+  scale_x_continuous(n.breaks = 5) +
+  theme_bw() +
+  theme(
+    text = element_text(size=15), 
+    legend.title = element_blank(),
+    plot.margin = margin(0.5, 2, 0.5, 0.5),
+    panel.border = element_blank(), 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), 
+    axis.line = element_line(colour = "black")
+    ) +
+  scale_linetype(guide = "none") +
+  scale_color_manual(values = c("Decay stage 1" = "#849324", "Decay stage 5" = "#f26419")) +
+  scale_fill_manual(values = c("Decay stage 1" = "#849324", "Decay stage 5" = "#f26419"))
+```
