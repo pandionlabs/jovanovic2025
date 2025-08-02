@@ -1,17 +1,19 @@
 ---
-title: "all_plots"
-output: 
-  rmarkdown::html_document:
-    toc: true
-    self_contained: true
-vignette: >
-  %\VignetteIndexEntry{all_plots}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+title: "All plots"
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = ""
+)
+```
 
 ```{r setup}
+#| echo: true
+#| warning: false
+#| output: false
+#| message: false
 library(jovanovic2025)
 library(ggplot2)
 library(ggeffects)
@@ -23,6 +25,7 @@ mod_df <- create_models(TreMs)
 
 
 
+
 ```{r}
 (plotROTHOLES <-
   mod_df |>
@@ -30,7 +33,7 @@ mod_df <- create_models(TreMs)
     variable == "Rotholes",
     model_family == "nbinom2"
   ) |>
-  get_model_object() |> 
+  get_model_object() |>
   ggpredict(
     terms = c(
       "GroupedTreeSpecies[Coniferous spp., Broadleaf spp.]",
@@ -63,12 +66,12 @@ mod_df <- create_models(TreMs)
     variable == "WoodpeckerConcavities",
     model_family == "nbinom2"
   ) |>
-  get_model_object() |> 
+  get_model_object() |>
   ggpredict(
     terms = c(
       "Treedata.DBH_cm",
       "Treedata.Tree_Decay[Decay stage 1, Decay stage 2]"
-    ),
+    )
   ) |>
   ggplot() +
   geom_smooth(mapping = aes(x = x, y = predicted, colour = group)) +
@@ -116,6 +119,7 @@ mod_df <- create_models(TreMs)
   ) +
   theme(legend.title = element_blank()))
 ```
+
 ```{r}
 (plotSAPWOOD <-
   mod_df |>
@@ -125,7 +129,7 @@ mod_df <- create_models(TreMs)
   ) |>
   get_model_object() |> 
   ggpredict(
-    terms = c("Treedata.Tree_Decay[Decay stage 1,Decay stage 4, Decay stage 5]"),
+    terms = c("Treedata.Tree_Decay[Decay stage 1,Decay stage 4, Decay stage 5]")
   ) |>
   ggplot(aes(x = x, y = predicted, fill = x)) +
   geom_col(position = "dodge", width = 0.7) +
@@ -140,6 +144,8 @@ mod_df <- create_models(TreMs)
                                "Decay stage 5" = "#f26419")) +
   theme_minimal())
 ```
+
+
 ```{r}
 (plot_allfungi <-
   mod_df |>
@@ -147,23 +153,33 @@ mod_df <- create_models(TreMs)
     variable == "EphrmalPerennialFungi",
     model_family == "nbinom2"
   ) |>
-  get_model_object() |> 
+  get_model_object() |>
   ggpredict(
-    terms = c("GroupedTreeSpecies[Coniferous spp., Broadleaf spp.]",
-              "Treedata.Tree_Decay[Decay stage 1,Decay stage 4, Decay stage 5]"),
+    terms = c(
+      "GroupedTreeSpecies[Coniferous spp., Broadleaf spp.]",
+      "Treedata.Tree_Decay[Decay stage 1,Decay stage 4, Decay stage 5]"
+    ),
   ) |>
   ggplot(aes(x = x, y = predicted, fill = group)) +
-  geom_col(position = "dodge", width = 0.7) +  # Columns for predicted values
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), 
-                position = position_dodge(0.7), 
-                width = 0.25) +  # Error bars based on confidence intervals
-  labs(title = "Perennial and Ephemeral fungi",
-       x = "Tree species",
-       y = "Perennial and Ephemeral fungi",
-       fill = "Decay stage") +
-  scale_fill_manual(values = c("Decay stage 1" = "#849324",
-                               "Decay stage 4" = "#f6ae2d",
-                               "Decay stage 5" = "#f26419")) +
+  geom_col(position = "dodge", width = 0.7) + # Columns for predicted values
+  geom_errorbar(
+    aes(ymin = conf.low, ymax = conf.high),
+    position = position_dodge(0.7),
+    width = 0.25
+  ) + # Error bars based on confidence intervals
+  labs(
+    title = "Perennial and Ephemeral fungi",
+    x = "Tree species",
+    y = "Perennial and Ephemeral fungi",
+    fill = "Decay stage"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Decay stage 1" = "#849324",
+      "Decay stage 4" = "#f6ae2d",
+      "Decay stage 5" = "#f26419"
+    )
+  ) +
   theme_minimal())
 ```
 
@@ -175,42 +191,56 @@ mod_df <- create_models(TreMs)
     variable == "Epiphytes",
     model_family == "nbinom2"
   ) |>
-  get_model_object() |> 
+  get_model_object() |>
   ggpredict(
-    terms = c("Treedata.DBH_cm"),
+    terms = c("Treedata.DBH_cm")
   ) |>
   ggplot() +
-  geom_smooth(aes(x = x, y = predicted), 
-              colour = "black") +  # Set the line color to black
-  geom_ribbon(aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high, colour = NULL), 
-              alpha = .05, show.legend = FALSE) +
-  geom_rug(data = TreMs, 
-           mapping = aes(x = Treedata.DBH_cm, y = Epiphytes), 
-           col = "steelblue", alpha = 0.1, size = 1) +
-  xlab("Diameter (cm)") + 
-  ylab("Epiphytes") + 
+  geom_smooth(aes(x = x, y = predicted), colour = "black") + # Set the line color to black
+  geom_ribbon(
+    aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high, colour = NULL),
+    alpha = .05,
+    show.legend = FALSE
+  ) +
+  geom_rug(
+    data = TreMs,
+    mapping = aes(x = Treedata.DBH_cm, y = Epiphytes),
+    col = "steelblue",
+    alpha = 0.1,
+    size = 1
+  ) +
+  xlab("Diameter (cm)") +
+  ylab("Epiphytes") +
   scale_x_continuous(n.breaks = 5) +
-  theme(text = element_text(size = 8),  
-        legend.title = element_blank(), 
-        plot.margin = margin(0.5, 2, 0.5, 0.5)) +
+  theme(
+    text = element_text(size = 8),
+    legend.title = element_blank(),
+    plot.margin = margin(0.5, 2, 0.5, 0.5)
+  ) +
   scale_linetype(guide = "none") +
-  theme_bw() + 
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black")) +
-  scale_color_viridis_d() + 
+  theme_bw() +
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black")
+  ) +
+  scale_color_viridis_d() +
   scale_fill_viridis_d() +
   theme(legend.title = element_blank()))
 ```
 
 
 ```{r}
-(figTremsDBH <- ggpubr::ggarrange(plotCONCAV, plot_epiphytes,
-  ncol = 2, nrow = 1, 
-  common.legend = TRUE, 
+(figTremsDBH <- ggpubr::ggarrange(
+  plotCONCAV,
+  plot_epiphytes,
+  ncol = 2,
+  nrow = 1,
+  common.legend = TRUE,
   legend = "bottom",
-  combine = TRUE))
+  combine = TRUE
+))
 ```
 
 
@@ -221,24 +251,32 @@ mod_df <- create_models(TreMs)
     variable == "DeadwoodShelter",
     model_family == "nbinom2"
   ) |>
-  get_model_object() |> 
+  get_model_object() |>
   ggpredict(
-    terms = c("Treedata.Tree_Decay[Decay stage 1,Decay stage 3, Decay stage 4, Decay stage 5]"),
-    se = TRUE
+    terms = c(
+      "Treedata.Tree_Decay[Decay stage 1,Decay stage 3, Decay stage 4, Decay stage 5]"
+    )
   ) |>
   ggplot(aes(x = x, y = predicted, fill = x)) +
-  geom_col(position = "dodge", width = 0.7) +  # Columns for predicted values
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), 
-                position = position_dodge(0.7), 
-                width = 0.25) +  # Error bars based on confidence intervals
+  geom_col(position = "dodge", width = 0.7) + # Columns for predicted values
+  geom_errorbar(
+    aes(ymin = conf.low, ymax = conf.high),
+    position = position_dodge(0.7),
+    width = 0.25
+  ) + # Error bars based on confidence intervals
   labs(
-       x = "Decay stage",
-       y = "Deadwood shelters", 
-       fill = "Decay stage") +
-  scale_fill_manual(values = c("Decay stage 1" = "#849324",
-                               "Decay stage 3" = "#2f4858",
-                               "Decay stage 4" = "#f6ae2d",
-                               "Decay stage 5" = "#f26419")) +
+    x = "Decay stage",
+    y = "Deadwood shelters",
+    fill = "Decay stage"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Decay stage 1" = "#849324",
+      "Decay stage 3" = "#2f4858",
+      "Decay stage 4" = "#f6ae2d",
+      "Decay stage 5" = "#f26419"
+    )
+  ) +
   theme_minimal())
 ```
 
@@ -251,28 +289,40 @@ mod_df <- create_models(TreMs)
     variable == "WoodyDebris",
     model_family == "nbinom2"
   ) |>
-  get_model_object() |> 
+  get_model_object() |>
   ggpredict(
-    terms = c("Treedata.DBH_cm"),
+    terms = c("Treedata.DBH_cm")
   ) |>
   ggplot() +
   geom_smooth(aes(x = x, y = predicted)) +
-  geom_ribbon(aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high, colour = NULL), 
-              alpha = .05, show.legend = FALSE) +
-  geom_rug(data = TreMs, mapping = aes(x = Treedata.DBH_cm, y = WoodyDebris), 
-           col = "steelblue", alpha = 0.1, size = 1) +
-  xlab("Diameter at Breast Height (cm)") + 
-  ylab("Woody Debris") + 
+  geom_ribbon(
+    aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high, colour = NULL),
+    alpha = .05,
+    show.legend = FALSE
+  ) +
+  geom_rug(
+    data = TreMs,
+    mapping = aes(x = Treedata.DBH_cm, y = WoodyDebris),
+    col = "steelblue",
+    alpha = 0.1,
+    size = 1
+  ) +
+  xlab("Diameter at Breast Height (cm)") +
+  ylab("Woody Debris") +
   scale_x_continuous(n.breaks = 5) +
-  theme(text = element_text(size = 8), 
-        legend.title = element_blank(),
-        plot.margin = margin(0.5, 2, 0.5, 0.5)) +
+  theme(
+    text = element_text(size = 8),
+    legend.title = element_blank(),
+    plot.margin = margin(0.5, 2, 0.5, 0.5)
+  ) +
   scale_linetype(guide = "none") +
-  theme_bw() + 
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black")) +
+  theme_bw() +
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black")
+  ) +
   scale_color_viridis_d() +
   scale_fill_viridis_d() +
   theme(legend.title = element_blank()))

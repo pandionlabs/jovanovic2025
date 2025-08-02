@@ -14,6 +14,7 @@ Suggests:
     ggeffects,
     ggplot2,
     knitr,
+    ggpubr,
     rmarkdown,
     testthat (>= 3.0.0),
     utils
@@ -25,10 +26,9 @@ Imports:
     cli,
     DHARMa,
     dplyr,
-    ggpubr,
     glmmTMB,
     glue,
-    here,
+    here (>= 1.0.1),
     purrr,
     rlang,
     tibble
@@ -37,3 +37,6 @@ Depends:
 LazyData: true
 URL: https://pandionlabs.github.io/jovanovic2025/
 VignetteBuilder: knitr
+Config/Needs/website: rmarkdown
+Remotes:  
+    r-lib/here
