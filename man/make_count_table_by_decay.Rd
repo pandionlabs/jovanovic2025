@@ -4,10 +4,7 @@
 \alias{make_count_table_by_decay}
 \title{Make a count table by decay stage}
 \usage{
-make_count_table_by_decay(
-  TreMs,
-  save_name = here::here("data/derivatives/Count_Table_by_Decay_Stage.csv")
-)
+make_count_table_by_decay(TreMs, save_name = FALSE)
 }
 \arguments{
 \item{TreMs}{A TreMs dataframe}

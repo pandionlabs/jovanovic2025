@@ -10,12 +10,21 @@
 #' \dontrun{
 #' make_count_table_by_decay(TreMs, save_name = "Count_Table_by_Decay_Stage.csv")
 #' }
-make_count_table_by_decay <- function(TreMs, save_name = here::here("data/derivatives/Count_Table_by_Decay_Stage.csv")) {
+make_count_table_by_decay <- function(TreMs, save_name = FALSE) {
   count_table <- as.data.frame(table(TreMs$TreeIdentities2, TreMs$Treedata.Tree_Decay))
   # Rename columns for clarity
   colnames(count_table) <- c("TreeIdentities2", "Decay_Stage", "Count")
 
-  # Save to CSV
-  utils::write.table(count_table, file = save_name, sep = ",", quote = FALSE, row.names = FALSE)
+  if (!isFALSE(save_name)) {
+      # Save to CSV
+      utils::write.table(
+        count_table, 
+        file = save_name, 
+        sep = ",", 
+        quote = FALSE, 
+        row.names = FALSE
+      )
+  }
+
   return(count_table)
 }
