@@ -243,40 +243,6 @@ mod_df <- create_models(TreMs)
 ```
 
 
-```{r}
-(plot_logstump <-
-  mod_df |>
-  dplyr::filter(
-    variable == "LogStump",
-    model_family == "nbinom2"
-  ) |>
-  pluck("model", 1) |> 
-  ggpredict(
-    terms = c("Treedata.DBH_cm"),
-    se = TRUE
-  ) |>
-  ggplot() +
-  geom_smooth(aes(x = x, y = predicted)) +
-  geom_ribbon(aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high, colour = NULL), 
-              alpha = .05, show.legend = FALSE) +
-  geom_rug(data = TreMs, mapping = aes(x = Treedata.DBH_cm, y = GroupedLogStump), 
-           col = "steelblue", alpha = 0.1, size = 1) +
-  xlab("Diameter at Breast Height (cm)") + 
-  ylab("Log and Stump structures") + 
-  scale_x_continuous(n.breaks = 5) +
-  theme(text = element_text(size = 8), 
-        legend.title = element_blank(),
-        plot.margin = margin(0.5, 2, 0.5, 0.5)) +
-  scale_linetype(guide = "none") +
-  theme_bw() + 
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black")) +
-  scale_color_viridis_d() +
-  scale_fill_viridis_d() +
-  theme(legend.title = element_blank()))
-```
 
 ```{r}
 (plot_woodydebris <-
