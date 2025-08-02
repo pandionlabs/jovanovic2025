@@ -719,6 +719,10 @@ plot(TUKEY , las=1 , col="brown")
 #   geom_text(data = plot_data, aes(x = Treedata.Tree_Decay, y = median_TreM + 2, label = Letters), # Adjust "+ 2" for label position
 #             color = "black", size = 5)
 
+
+# Create models start ----------------------------------------------------
+
+
 ##############GLMM################## 
 
 #Main model: Tree species + DBH + Decay
@@ -1052,6 +1056,11 @@ testOutliers(Model_ExposedRoots)
 testDispersion(Model_ExposedRoots)
 testZeroInflation(Model_ExposedRoots)
 r.squaredGLMM(Model_ExposedRoots) # This does work
+
+
+# create models end ------------------------------------------------------
+
+
 
 #PLOTS
 #Have to check for each model what is group and what is facet so that it doesn't plot wrong!!!! str(predicted dataset)

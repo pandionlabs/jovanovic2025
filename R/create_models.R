@@ -26,7 +26,7 @@ create_models <- function(TreMs) {
 #' \{variable\} ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay + (1|Plot)
 #' Where the Y variable is selected from the available columns in TreMs
 #'
-#' @returns
+#' @returns A tibble containing a model and statistics
 #'
 #' @export
 #' @examples
@@ -50,6 +50,7 @@ create_model <- function(variable, model_family, TreMs) {
     ))
   ) |>
     dplyr::mutate(
+      model_family = model[[1]]$modelInfo$family$family,
       mod_summary = model |> purrr::pluck(1) |> summary() |> list(),
       mod_residuals = model |> purrr::pluck(1) |> DHARMa::simulateResiduals() |> list(),
       mod_outliers = mod_residuals |>
@@ -73,28 +74,49 @@ create_model <- function(variable, model_family, TreMs) {
 #'
 #' @export
 get_model_cols <- function() {
-  tibble::tribble(
-    ~variable,                ~model_family,
-    "DecomposedCrack",           "poisson",
-    "WoodpeckerCavities",        "poisson",
-    "Concavities",               "poisson",
-    "WoodpeckerConcavities",     "poisson",
-    "Rotholes",                  "poisson",
-    "InsectGalleries",           "poisson",
-    "ExposedSapwood",            glmmTMB::nbinom2,
-    "ExposedHeartwood",          glmmTMB::nbinom2,
-    "ExposedSapwoodHeartwood",   glmmTMB::nbinom2,
-    "PerennialFungi",            glmmTMB::nbinom2,
-    "Ephermalfungi",             glmmTMB::nbinom2,
-    "EphrmalPerennialFungi",     glmmTMB::nbinom2,
-    "Epiphytes",                 glmmTMB::nbinom2,
-    "DeadwooodShelter",          glmmTMB::nbinom2,
-    "StumpStructures",           "poisson",
-    "DeadwooodShelterStumpStructures", glmmTMB::nbinom2,
-    "LogStructures",             glmmTMB::nbinom2,
-    "WoodyDebris",               glmmTMB::nbinom2,
-    "ExposedRoots",              glmmTMB::nbinom2,
-    "Abundance",                 glmmTMB::nbinom2,
-    "Richness",                  glmmTMB::nbinom2
+  tibble::tribble(  
+    ~variable,                   ~model_family,             
+    "DecomposedCrack",                  stats::poisson,           
+    "WoodpeckerCavities",                  stats::poisson,        
+    "Concavities",                  stats::poisson,               
+    "WoodpeckerConcavities",                  stats::poisson,     
+    "Rotholes",                  stats::poisson,                  
+    "InsectGalleries",                  stats::poisson,           
+    "ExposedSapwood",                  stats::poisson,            
+    "ExposedHeartwood",                  stats::poisson,          
+    "ExposedSapwoodHeartwood",                  stats::poisson,   
+    "PerennialFungi",                  stats::poisson,            
+    "Ephermalfungi",                  stats::poisson,             
+    "EphrmalPerennialFungi",                  stats::poisson,     
+    "Epiphytes",                  stats::poisson,                 
+    "DeadwooodShelter",                  stats::poisson,          
+    "StumpStructures",                  stats::poisson,           
+    "DeadwooodShelterStumpStructures",                  stats::poisson, 
+    "LogStructures",                  stats::poisson,             
+    "WoodyDebris",                  stats::poisson,               
+    "ExposedRoots",                  stats::poisson,              
+    "Abundance",                  stats::poisson,                 
+    "Richness",                   stats::poisson,
+    "DecomposedCrack",                  glmmTMB::nbinom2,           
+    "WoodpeckerCavities",                  glmmTMB::nbinom2,        
+    "Concavities",                  glmmTMB::nbinom2,               
+    "WoodpeckerConcavities",                  glmmTMB::nbinom2,     
+    "Rotholes",                  glmmTMB::nbinom2,                  
+    "InsectGalleries",                  glmmTMB::nbinom2,           
+    "ExposedSapwood",                  glmmTMB::nbinom2,            
+    "ExposedHeartwood",                  glmmTMB::nbinom2,          
+    "ExposedSapwoodHeartwood",                  glmmTMB::nbinom2,   
+    "PerennialFungi",                  glmmTMB::nbinom2,            
+    "Ephermalfungi",                  glmmTMB::nbinom2,             
+    "EphrmalPerennialFungi",                  glmmTMB::nbinom2,     
+    "Epiphytes",                  glmmTMB::nbinom2,                 
+    "DeadwooodShelter",                  glmmTMB::nbinom2,          
+    "StumpStructures",                  glmmTMB::nbinom2,           
+    "DeadwooodShelterStumpStructures",                  glmmTMB::nbinom2, 
+    "LogStructures",                  glmmTMB::nbinom2,             
+    "WoodyDebris",                  glmmTMB::nbinom2,               
+    "ExposedRoots",                  glmmTMB::nbinom2,              
+    "Abundance",                  glmmTMB::nbinom2,                 
+    "Richness",                   glmmTMB::nbinom2
   )
 }
