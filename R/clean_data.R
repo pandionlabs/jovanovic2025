@@ -247,7 +247,7 @@ summarize_microhabitats <- function(TreMs) {
         Microhabitats.epiphyticcryptophanerogmas.EP34,
         Microhabitats.epiphyticcryptophanerogmas.EP35
       ))),
-      DeadwooodShelter = sum(dplyr::c_across(c(
+      DeadwoodShelter = sum(dplyr::c_across(c(
         group_ti3vx98.Wood_shelter_decay_3,
         group_ti3vx98.Wood_shelter_decay_3_001,
         group_ti3vx98.Wood_shelter_tunnel
@@ -258,7 +258,7 @@ summarize_microhabitats <- function(TreMs) {
         group_ti3vx98.Litter_pool_small_5_10cm,
         group_ti3vx98.Litter_pool_big_10cm
       ))),
-      DeadwooodShelterStumpStructures = DeadwooodShelter + StumpStructures,
+      DeadwoodShelterStumpStructures = DeadwoodShelter + StumpStructures,
       LogStructures = sum(dplyr::c_across(c(
         group_ti3vx98.Log_pipe_5cm_diameter,
         group_ti3vx98.Multiple_small_pipes,
@@ -290,7 +290,7 @@ summary_cols <- c(
     "Ephermalfungi",
     "EphrmalPerennialFungi",
     "Epiphytes",
-    "DeadwooodShelter",
+    "DeadwoodShelter",
     "StumpStructures",
     "DeadwooodShelterStumpStructures",
     "LogStructures",

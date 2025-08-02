@@ -110,7 +110,7 @@ get_model_cols <- function() {
     "Ephermalfungi",                  glmmTMB::nbinom2,             
     "EphrmalPerennialFungi",                  glmmTMB::nbinom2,     
     "Epiphytes",                  glmmTMB::nbinom2,                 
-    "DeadwooodShelter",                  glmmTMB::nbinom2,          
+    "DeadwoodShelter",                  glmmTMB::nbinom2,          
     "StumpStructures",                  glmmTMB::nbinom2,           
     "DeadwooodShelterStumpStructures",                  glmmTMB::nbinom2, 
     "LogStructures",                  glmmTMB::nbinom2,             
