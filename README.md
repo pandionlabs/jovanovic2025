@@ -36,8 +36,11 @@ library(jovanovic2025)
 
 Import the data used for these analyses with `MasterThesisData2024`.
 `MasterThesisData2024` gives easy access to the table stored in
-`data-raw/MasterThesisData2024.csv`. `clean_data()` organizes
-`MasterThesisData2024` to be ready for analysis.
+`data-raw/MasterThesisData2024.csv`.
+
+`clean_data()` organizes `MasterThesisData2024` to be ready for
+analysis. An important step is to aggregate columns into microhabitat
+categories.
 
 ``` r
 TreMs <- clean_data(MasterThesisData2024) 
@@ -407,3 +410,10 @@ ggplot() +
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+
+## Explore results
+
+check those pages for raw output from [all the
+models](https://pandionlabs.github.io/jovanovic2025/articles/all_models.html)
+and [all the
+plots](https://pandionlabs.github.io/jovanovic2025/articles/all_plots.html).

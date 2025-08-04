@@ -41,7 +41,9 @@ library(jovanovic2025)
 ```
 
 Import the data used for these analyses with `MasterThesisData2024`.
-`MasterThesisData2024` gives easy access to the table stored in `data-raw/MasterThesisData2024.csv`. `clean_data()` organizes `MasterThesisData2024` to be ready for analysis.
+`MasterThesisData2024` gives easy access to the table stored in `data-raw/MasterThesisData2024.csv`.
+
+`clean_data()` organizes `MasterThesisData2024` to be ready for analysis. An important step is to aggregate columns into microhabitat categories.
 
 ```{r loaddata}
 TreMs <- clean_data(MasterThesisData2024) 
@@ -261,3 +263,7 @@ ggplot() +
   scale_color_manual(values = c("Decay stage 1" = "#849324", "Decay stage 5" = "#f26419")) +
   scale_fill_manual(values = c("Decay stage 1" = "#849324", "Decay stage 5" = "#f26419"))
 ```
+
+## Explore results
+
+check those pages for raw output from [all the models](https://pandionlabs.github.io/jovanovic2025/articles/all_models.html) and [all the plots](https://pandionlabs.github.io/jovanovic2025/articles/all_plots.html).
