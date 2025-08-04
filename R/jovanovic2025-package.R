@@ -71,7 +71,7 @@ utils::globalVariables(c(
   'group_ti3vx98.Litter_pool_small_5_10cm',
   'group_ti3vx98.Litter_pool_big_10cm',
   'group_ti3vx98.Fine_woody_debris_decay_3_A4',
-  'DeadwooodShelter',
+  'DeadwoodShelter',
   'StumpStructures',
   'group_ti3vx98.Log_pipe_5cm_diameter',
   'group_ti3vx98.Multiple_small_pipes',

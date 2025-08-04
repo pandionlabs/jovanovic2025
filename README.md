@@ -12,7 +12,9 @@ status](https://www.r-pkg.org/badges/version/jovanovic2025)](https://CRAN.R-proj
 [![R-CMD-check](https://github.com/pandionlabs/jovanovic2025/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pandionlabs/jovanovic2025/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This is the companion code and data to Jovanovic et al. 2025.
+This is the companion code and data to *Identifying and Predicting Tree
+Related Microhabitats on Downed Deadwood and Stumps* a thesis by
+Magdalena Jovanović submitted October 2024.
 
 ## Installation
 
@@ -32,20 +34,38 @@ Load the package like this:
 library(jovanovic2025)
 ```
 
+Import the data used for these analyses with `MasterThesisData2024`.
+`MasterThesisData2024` gives easy access to the table stored in
+`data-raw/MasterThesisData2024.csv`.
+
+`clean_data()` organizes `MasterThesisData2024` to be ready for
+analysis. An important step is to aggregate columns into microhabitat
+categories.
+
 ``` r
-# Import the data from a tab delimited ascii file.
-# MasterThesisData <- read.table(
-#   file = "data/raw/MasterThesisData2024.csv",
+TreMs <- clean_data(MasterThesisData2024) 
+```
+
+If you would prefer to substitute your own data, import it with the
+following
+
+``` r
+# Import the data from a comma delimited ascii file.
+# TreMs <- read.table(
+#   file = "put/a/path/to/your/data/here.csv",
 #   header = TRUE,
 #   sep = ",",
 #   na.strings = "NA",
 #   stringsAsFactors = TRUE,
 #   dec = "."
-# )
-
-# Import the data with MasterThesisData2024
-TreMs <- clean_data(MasterThesisData2024) 
+# ) |> 
+# clean_data()
 ```
+
+## Summary tables
+
+`summarize_identities` produces tables that look at the variation in the
+data by species and type.
 
 ``` r
 
@@ -54,7 +74,8 @@ TreeIdentitiesSummary <- summarize_identities(
   grouping_variable = TreeIdentities2
   )
 
-  # write.table(TreeIdentitiesSummary, file = "data/derivatives/TreeIdentitiesSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
+# If you wish to save the table, use write.table
+# write.table(TreeIdentitiesSummary, file = "data/derivatives/TreeIdentitiesSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
 
 
 DeadwoodIdentitiesGroupedSummary <- summarize_identities(
@@ -62,6 +83,7 @@ DeadwoodIdentitiesGroupedSummary <- summarize_identities(
   grouping_variable = DeadwoodIdentitiesGrouped
   )
 
+# If you wish to save the table, use write.table
 # write.table(DeadwoodIdentitiesGroupedSummary, file = "data/derivatives/DeadwoodIdentitiesGroupedSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
 ```
 
@@ -94,14 +116,51 @@ DeadwoodIdentitiesGroupedSummary <- summarize_identities(
 ``` r
 count_table <- make_count_table_by_decay(
   TreMs, 
-  save_name = "data/derivatives/Count_Table_by_Decay_Stage.csv"
+  # save_name = "data/derivatives/Count_Table_by_Decay_Stage.csv"
 )
 ```
+
+``` r
+knitr::kable(count_table)
+```
+
+| TreeIdentities2           | Decay_Stage   | Count |
+|:--------------------------|:--------------|------:|
+| Broadleaf Log/Entire Tree | Decay stage 1 |     2 |
+| Broadleaf Stump           | Decay stage 1 |     0 |
+| Conifer Log/Entire Tree   | Decay stage 1 |    11 |
+| Conifer Stump             | Decay stage 1 |    12 |
+| No ID Log/Entire Tree     | Decay stage 1 |     0 |
+| No ID Stump               | Decay stage 1 |     0 |
+| Broadleaf Log/Entire Tree | Decay stage 2 |     1 |
+| Broadleaf Stump           | Decay stage 2 |     0 |
+| Conifer Log/Entire Tree   | Decay stage 2 |    95 |
+| Conifer Stump             | Decay stage 2 |    32 |
+| No ID Log/Entire Tree     | Decay stage 2 |     0 |
+| No ID Stump               | Decay stage 2 |     0 |
+| Broadleaf Log/Entire Tree | Decay stage 3 |     1 |
+| Broadleaf Stump           | Decay stage 3 |     0 |
+| Conifer Log/Entire Tree   | Decay stage 3 |   114 |
+| Conifer Stump             | Decay stage 3 |    40 |
+| No ID Log/Entire Tree     | Decay stage 3 |     2 |
+| No ID Stump               | Decay stage 3 |     0 |
+| Broadleaf Log/Entire Tree | Decay stage 4 |     2 |
+| Broadleaf Stump           | Decay stage 4 |     2 |
+| Conifer Log/Entire Tree   | Decay stage 4 |    54 |
+| Conifer Stump             | Decay stage 4 |    48 |
+| No ID Log/Entire Tree     | Decay stage 4 |     2 |
+| No ID Stump               | Decay stage 4 |     3 |
+| Broadleaf Log/Entire Tree | Decay stage 5 |     1 |
+| Broadleaf Stump           | Decay stage 5 |     0 |
+| Conifer Log/Entire Tree   | Decay stage 5 |    39 |
+| Conifer Stump             | Decay stage 5 |    62 |
+| No ID Log/Entire Tree     | Decay stage 5 |     1 |
+| No ID Stump               | Decay stage 5 |     9 |
 
 ## Create models
 
 In the create models section, we build a series of models associating
-various predictor (y) variables with three varialbes:
+various predictor (y) variables with three variables:
 `GroupedTreeSpecies, Treedata.DBH_cm, and Treedata.Tree_Decay`. The
 modelling family for each model is either poisson or glmmTMB::nbinom2.
 
@@ -160,29 +219,30 @@ model_parameters <- get_model_cols()
 The models can be produced with `create_models()` which will create each
 of the models specified in `get_model_cols()` and then save the model
 summary, residuals, and results from three tests of outliers,
-dispersion, and zero inflation. All these models are results are
-returned as a dataframe.
+dispersion, and zero inflation. All these model results are returned as
+a dataframe.
 
 ``` r
 mod_df <- create_models(TreMs)
 ```
 
-Access results of those models with the following
+Access results of those models with the following where model_index is
+the row number of the model you wish to inspect.
 
 ``` r
-get_formula(mod_df, 1)
+get_formula(mod_df, model_index = 1)
 #> 
 #> ── Formula ─────────────────────────────────────────────────────────────────────
 #> glmmTMB::glmmTMB(formula = DecomposedCrack ~ GroupedTreeSpecies +
 #> Treedata.DBH_cm + Treedata.Tree_Decay + (1 | Plot), data = TreMs, family =
 #> model_family, ziformula = ~0, dispformula = ~1)
-get_residuals(mod_df, 1)
+get_residuals(mod_df, model_index = 1)
 #> 
 #> ── Model residuals ─────────────────────────────────────────────────────────────
 #> Object of Class DHARMa with simulated residuals based on 250 simulations with refit = FALSE . See ?DHARMa::simulateResiduals for help. 
 #>  
 #> Scaled residual values: 0.9390666 0.8147907 0.8719091 0.08886054 0.7079871 0.9811869 0.01226094 0.8598661 0.1109746 0.9110544 0.5304764 0.3844352 0.7634829 0.4438318 0.1093142 0.5528625 0.2022903 0.2578379 0.1234604 0.6637486 ...
-get_test_outliers(mod_df, 1)
+get_test_outliers(mod_df, model_index = 1)
 #> 
 #> ── Model outliers ──────────────────────────────────────────────────────────────
 #> [[1]]
@@ -198,7 +258,7 @@ get_test_outliers(mod_df, 1)
 #> sample estimates:
 #> frequency of outliers (expected: 0.00796812749003984 ) 
 #>                                            0.001937984
-get_test_dispersion(mod_df, 1)
+get_test_dispersion(mod_df, model_index = 1)
 #> 
 #> ── Model dispersion ────────────────────────────────────────────────────────────
 #> [[1]]
@@ -209,7 +269,7 @@ get_test_dispersion(mod_df, 1)
 #> data:  simulationOutput
 #> dispersion = 0.82723, p-value = 0.864
 #> alternative hypothesis: two.sided
-get_test_zero_inflation(mod_df, 1)
+get_test_zero_inflation(mod_df, model_index = 1)
 #> 
 #> ── Model zero inflation ────────────────────────────────────────────────────────
 #> [[1]]
@@ -303,33 +363,13 @@ mod_df |>
     ) |> 
   get_model_object() |> 
   ggeffects::ggpredict(
-    terms = c("Treedata.DBH_cm", "Treedata.Tree_Decay[Decay stage 1, Decay stage 5]"),
-    interval = "confidence",
-    full.data = TRUE,
-    bias_correction = TRUE,
-    ci_level = 0.95
+    terms = c("Treedata.DBH_cm", "Treedata.Tree_Decay[Decay stage 1, Decay stage 5]")
   )
-#> Warning: Can't compute random effect variances. Some variance components equal
-#>   zero. Your model may suffer from singularity (see `?lme4::isSingular`
-#>   and `?performance::check_singularity`).
-#>   Decrease the `tolerance` level to force the calculation of random effect
-#>   variances, or impose priors on your random effects parameters (using
-#>   packages like `brms` or `glmmTMB`).
-#> Warning: Can't calculate model's distribution-specific variance. Results are not
-#>   reliable.
-#>   A reason can be that the null model could not be computed manually. Try
-#>   to fit the null model manually and pass it to `null_model`.
-#> Warning in check_dots(..., .action = "warning"): unknown arguments: full.data
-#> Warning: Can't compute random effect variances. Some variance components equal
-#>   zero. Your model may suffer from singularity (see `?lme4::isSingular`
-#>   and `?performance::check_singularity`).
-#>   Decrease the `tolerance` level to force the calculation of random effect
-#>   variances, or impose priors on your random effects parameters (using
-#>   packages like `brms` or `glmmTMB`).
-#> Warning: Can't calculate model's distribution-specific variance. Results are not
-#>   reliable.
-#>   A reason can be that the null model could not be computed manually. Try
-#>   to fit the null model manually and pass it to `null_model`.
+#> You are calculating adjusted predictions on the population-level (i.e.
+#>   `type = "fixed"`) for a *generalized* linear mixed model.
+#>   This may produce biased estimates due to Jensen's inequality. Consider
+#>   setting `bias_correction = TRUE` to correct for this bias.
+#>   See also the documentation of the `bias_correction` argument.
 
 library(ggplot2)
 ggplot() +
@@ -344,7 +384,7 @@ ggplot() +
     alpha=0.1, 
     size=1
     ) +
-  xlab("Diameter (cm)") + ylab("TreM Richness on Stumps")+ 
+  xlab("Diameter (cm)") + ylab("TreM Richness on Stumps") + 
   scale_x_continuous(n.breaks = 5) +
   theme_bw() +
   theme(
@@ -369,4 +409,11 @@ ggplot() +
 #> data's fill values.
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+
+## Explore results
+
+check those pages for raw output from [all the
+models](https://pandionlabs.github.io/jovanovic2025/articles/all_models.html)
+and [all the
+plots](https://pandionlabs.github.io/jovanovic2025/articles/all_plots.html).

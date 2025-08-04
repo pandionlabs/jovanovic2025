@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/pandionlabs/jovanovic2025/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pandionlabs/jovanovic2025/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This is the companion code and data to Jovanovic et al. 2025.
+This is the companion code and data to _Identifying and Predicting Tree Related Microhabitats on Downed Deadwood and Stumps_ a thesis by Magdalena Jovanović submitted October 2024.
 
 ## Installation
 
@@ -40,22 +40,32 @@ Load the package like this:
 library(jovanovic2025)
 ```
 
+Import the data used for these analyses with `MasterThesisData2024`.
+`MasterThesisData2024` gives easy access to the table stored in `data-raw/MasterThesisData2024.csv`.
+
+`clean_data()` organizes `MasterThesisData2024` to be ready for analysis. An important step is to aggregate columns into microhabitat categories.
+
 ```{r loaddata}
-# Import the data from a tab delimited ascii file.
-# MasterThesisData <- read.table(
-#   file = "data/raw/MasterThesisData2024.csv",
+TreMs <- clean_data(MasterThesisData2024) 
+```
+
+If you would prefer to substitute your own data, import it with the following
+```{r}
+# Import the data from a comma delimited ascii file.
+# TreMs <- read.table(
+#   file = "put/a/path/to/your/data/here.csv",
 #   header = TRUE,
 #   sep = ",",
 #   na.strings = "NA",
 #   stringsAsFactors = TRUE,
 #   dec = "."
-# )
-
-# Import the data with MasterThesisData2024
-TreMs <- clean_data(MasterThesisData2024) 
+# ) |> 
+# clean_data()
 ```
 
+## Summary tables
 
+`summarize_identities` produces tables that look at the variation in the data by species and type.
 ```{r}
 
 TreeIdentitiesSummary <- summarize_identities(
@@ -63,7 +73,8 @@ TreeIdentitiesSummary <- summarize_identities(
   grouping_variable = TreeIdentities2
   )
 
-  # write.table(TreeIdentitiesSummary, file = "data/derivatives/TreeIdentitiesSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
+# If you wish to save the table, use write.table
+# write.table(TreeIdentitiesSummary, file = "data/derivatives/TreeIdentitiesSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
 
 
 DeadwoodIdentitiesGroupedSummary <- summarize_identities(
@@ -71,6 +82,7 @@ DeadwoodIdentitiesGroupedSummary <- summarize_identities(
   grouping_variable = DeadwoodIdentitiesGrouped
   )
 
+# If you wish to save the table, use write.table
 # write.table(DeadwoodIdentitiesGroupedSummary, file = "data/derivatives/DeadwoodIdentitiesGroupedSummary.csv", sep = ",", quote = FALSE, row.names = FALSE)
 ```
 
@@ -94,13 +106,17 @@ knitr::kable(DeadwoodIdentitiesGroupedSummary)
 ```{r}
 count_table <- make_count_table_by_decay(
   TreMs, 
-  save_name = "data/derivatives/Count_Table_by_Decay_Stage.csv"
+  # save_name = "data/derivatives/Count_Table_by_Decay_Stage.csv"
 )
+```
+
+```{r}
+knitr::kable(count_table)
 ```
 
 ## Create models
 
-In the create models section, we build a series of models associating various predictor (y) variables with three varialbes: `GroupedTreeSpecies, Treedata.DBH_cm, and Treedata.Tree_Decay`. The modelling family for each model is either poisson or glmmTMB::nbinom2.
+In the create models section, we build a series of models associating various predictor (y) variables with three variables: `GroupedTreeSpecies, Treedata.DBH_cm, and Treedata.Tree_Decay`. The modelling family for each model is either poisson or glmmTMB::nbinom2.
 
 The `get_model_cols()` function creates a tibble that specifies each predictor variable and the model family used in each model
 
@@ -149,9 +165,9 @@ model_parameters_tb <-
     "Ephermalfungi",             "glmmTMB::nbinom2",
     "EphrmalPerennialFungi",     "glmmTMB::nbinom2",
     "Epiphytes",                 "glmmTMB::nbinom2",
-    "DeadwooodShelter",          "glmmTMB::nbinom2",
+    "DeadwoodShelter",          "glmmTMB::nbinom2",
     "StumpStructures",           "glmmTMB::nbinom2",
-    "DeadwooodShelterStumpStructures", "glmmTMB::nbinom2",
+    "DeadwoodShelterStumpStructures", "glmmTMB::nbinom2",
     "LogStructures",             "glmmTMB::nbinom2",
     "WoodyDebris",               "glmmTMB::nbinom2",
     "ExposedRoots",              "glmmTMB::nbinom2",
@@ -165,7 +181,7 @@ model_parameters_tb <-
 knitr::kable(model_parameters_tb)
 ```
 
-The models can be produced with `create_models()` which will create each of the models specified in `get_model_cols()` and then save the model summary, residuals, and results from three tests of outliers, dispersion, and zero inflation. All these models are results are returned as a dataframe.
+The models can be produced with `create_models()` which will create each of the models specified in `get_model_cols()` and then save the model summary, residuals, and results from three tests of outliers, dispersion, and zero inflation. All these model results are returned as a dataframe.
 
 ```{r}
 #| echo: true
@@ -175,14 +191,14 @@ The models can be produced with `create_models()` which will create each of the 
 mod_df <- create_models(TreMs)
 ```
 
-Access results of those models with the following
+Access results of those models with the following where model_index is the row number of the model you wish to inspect.
 
 ```{r}
-get_formula(mod_df, 1)
-get_residuals(mod_df, 1)
-get_test_outliers(mod_df, 1)
-get_test_dispersion(mod_df, 1)
-get_test_zero_inflation(mod_df, 1)
+get_formula(mod_df, model_index = 1)
+get_residuals(mod_df, model_index = 1)
+get_test_outliers(mod_df, model_index = 1)
+get_test_dispersion(mod_df, model_index = 1)
+get_test_zero_inflation(mod_df, model_index = 1)
 ```
 
 ## Get models
@@ -215,11 +231,7 @@ mod_df |>
     ) |> 
   get_model_object() |> 
   ggeffects::ggpredict(
-    terms = c("Treedata.DBH_cm", "Treedata.Tree_Decay[Decay stage 1, Decay stage 5]"),
-    interval = "confidence",
-    full.data = TRUE,
-    bias_correction = TRUE,
-    ci_level = 0.95
+    terms = c("Treedata.DBH_cm", "Treedata.Tree_Decay[Decay stage 1, Decay stage 5]")
   )
 
 library(ggplot2)
@@ -235,7 +247,7 @@ ggplot() +
     alpha=0.1, 
     size=1
     ) +
-  xlab("Diameter (cm)") + ylab("TreM Richness on Stumps")+ 
+  xlab("Diameter (cm)") + ylab("TreM Richness on Stumps") + 
   scale_x_continuous(n.breaks = 5) +
   theme_bw() +
   theme(
@@ -251,3 +263,7 @@ ggplot() +
   scale_color_manual(values = c("Decay stage 1" = "#849324", "Decay stage 5" = "#f26419")) +
   scale_fill_manual(values = c("Decay stage 1" = "#849324", "Decay stage 5" = "#f26419"))
 ```
+
+## Explore results
+
+check those pages for raw output from [all the models](https://pandionlabs.github.io/jovanovic2025/articles/all_models.html) and [all the plots](https://pandionlabs.github.io/jovanovic2025/articles/all_plots.html).
