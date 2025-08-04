@@ -1,0 +1,50 @@
+
+# {{variable}} - {{model_family}} model
+
+
+```{r}
+#| label: setup-{{variable}}-{{model_family}}
+#| echo: false
+model_row <- mod_df |> 
+  dplyr::filter(
+    variable == "{{variable}}",
+    model_family == "{{model_family}}"
+    )
+```
+
+
+## summary
+
+```{r}
+#| label: summary-{{variable}}-{{model_family}}
+#| echo: false
+model_row$mod_summary[[1]]
+```
+
+## test outliers
+
+```{r}
+#| echo: false
+model_row$mod_outliers[[1]]
+```
+
+## test dispersion
+
+```{r}
+#| echo: false
+model_row$mod_dispersion[[1]]
+```
+
+## test zero inflation
+
+```{r}
+#| echo: false
+model_row$mod_zero_inflation[[1]]
+```
+
+## plot
+
+```{r}
+#| echo: false
+plot(model_row$mod_residuals[[1]])
+```
