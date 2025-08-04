@@ -27,7 +27,7 @@ This is the companion code and data to Jovanovic et al. 2025.
 
 You can install the development version of jovanovic2025 from [GitHub](https://github.com/) with:
 
-``` r
+``` {r}
 # install.packages("pak")
 pak::pak("pandionlabs/jovanovic2025")
 ```
