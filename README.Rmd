@@ -104,13 +104,17 @@ knitr::kable(DeadwoodIdentitiesGroupedSummary)
 ```{r}
 count_table <- make_count_table_by_decay(
   TreMs, 
-  save_name = "data/derivatives/Count_Table_by_Decay_Stage.csv"
+  # save_name = "data/derivatives/Count_Table_by_Decay_Stage.csv"
 )
+```
+
+```{r}
+knitr::kable(count_table)
 ```
 
 ## Create models
 
-In the create models section, we build a series of models associating various predictor (y) variables with three varialbes: `GroupedTreeSpecies, Treedata.DBH_cm, and Treedata.Tree_Decay`. The modelling family for each model is either poisson or glmmTMB::nbinom2.
+In the create models section, we build a series of models associating various predictor (y) variables with three variables: `GroupedTreeSpecies, Treedata.DBH_cm, and Treedata.Tree_Decay`. The modelling family for each model is either poisson or glmmTMB::nbinom2.
 
 The `get_model_cols()` function creates a tibble that specifies each predictor variable and the model family used in each model
 
@@ -175,7 +179,7 @@ model_parameters_tb <-
 knitr::kable(model_parameters_tb)
 ```
 
-The models can be produced with `create_models()` which will create each of the models specified in `get_model_cols()` and then save the model summary, residuals, and results from three tests of outliers, dispersion, and zero inflation. All these models are results are returned as a dataframe.
+The models can be produced with `create_models()` which will create each of the models specified in `get_model_cols()` and then save the model summary, residuals, and results from three tests of outliers, dispersion, and zero inflation. All these model results are returned as a dataframe.
 
 ```{r}
 #| echo: true
@@ -185,14 +189,14 @@ The models can be produced with `create_models()` which will create each of the 
 mod_df <- create_models(TreMs)
 ```
 
-Access results of those models with the following
+Access results of those models with the following where model_index is the row number of the model you wish to inspect.
 
 ```{r}
-get_formula(mod_df, 1)
-get_residuals(mod_df, 1)
-get_test_outliers(mod_df, 1)
-get_test_dispersion(mod_df, 1)
-get_test_zero_inflation(mod_df, 1)
+get_formula(mod_df, model_index = 1)
+get_residuals(mod_df, model_index = 1)
+get_test_outliers(mod_df, model_index = 1)
+get_test_dispersion(mod_df, model_index = 1)
+get_test_zero_inflation(mod_df, model_index = 1)
 ```
 
 ## Get models
