@@ -24,7 +24,7 @@ summarize_identities <- function(x, grouping_variable) {
       Treedata.DBH_cm.mean = mean(Treedata.DBH_cm),
       Treedata.DBH_cm.sd = stats::sd(Treedata.DBH_cm),
       Treedata.DBH_cm.min = min(Treedata.DBH_cm),
-      Treedata.DBH_cm.max = max(Treedata.DBH_cm),
+      # Treedata.DBH_cm.max = max(Treedata.DBH_cm),
       Abundance.mean = mean(Abundance),
       Abundance.sd = stats::sd(Abundance),
       Abundance.max = max(Abundance),
