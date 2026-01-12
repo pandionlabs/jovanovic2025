@@ -1,0 +1,2917 @@
+# All models
+
+``` r
+library(jovanovic2025)
+```
+
+dump the output of all the models that are relevant for the package.
+This is meant to be used as a reference and not to be read from top to
+bottom.
+
+``` r
+TreMs <- clean_data(MasterThesisData2024)
+mod_df <- create_models(TreMs)
+```
+
+``` r
+src <- mod_df |> dplyr::select(variable, model_family) |> purrr::pmap(\(variable, model_family) {
+  knitr::knit_expand(
+    here::here('vignettes/articles/_model_template.Rmd'), variable = variable, model_family = model_family
+  )
+})
+res <- knitr::knit_child(text = unlist(src), quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+## DecomposedCrack - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    DecomposedCrack ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+         26.4      60.3      -5.2      10.4       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance  Std.Dev. 
+     Plot   (Intercept) 1.694e-10 1.301e-05
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                      Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -27.7540        NaN     NaN      NaN
+    GroupedTreeSpeciesConiferous spp. -33.4061        NaN     NaN      NaN
+    Treedata.DBH_cm                     0.1182        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 2  -10.3954        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 3  -17.2959        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 4  -13.1316        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 5   19.3396        NaN     NaN      NaN
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     4.906432e-05 1.075005e-02
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.001937984 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.82723, p-value = 0.864
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99962, p-value = 1
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-11-1.png)
+
+## WoodpeckerCavities - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    WoodpeckerCavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+         80.2     114.2     -32.1      64.2       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.5458   0.7388  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -2.174e+01  1.889e+04  -0.001    0.999
+    GroupedTreeSpeciesConiferous spp.  2.026e+01  1.889e+04   0.001    0.999
+    Treedata.DBH_cm                   -3.006e-02  3.181e-02  -0.945    0.345
+    Treedata.Tree_DecayDecay stage 2  -2.395e+00  1.489e+00  -1.609    0.108
+    Treedata.Tree_DecayDecay stage 3  -1.351e+00  1.301e+00  -1.039    0.299
+    Treedata.Tree_DecayDecay stage 4  -2.061e+00  1.508e+00  -1.366    0.172
+    Treedata.Tree_DecayDecay stage 5  -2.627e+01  1.801e+05   0.000    1.000
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 2, observations = 516, p-value = 0.453
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.000469743 0.013930627
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.003875969 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.92493, p-value = 0.984
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99965, p-value = 0.992
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-15-1.png)
+
+## Concavities - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    Concavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        484.5     518.5    -234.2     468.5       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.8172   0.904   
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -4.219704   0.688014  -6.133 8.61e-10 ***
+    GroupedTreeSpeciesConiferous spp. -0.155606   0.367686  -0.423   0.6721    
+    Treedata.DBH_cm                    0.049239   0.005759   8.550  < 2e-16 ***
+    Treedata.Tree_DecayDecay stage 2  -1.272324   0.540380  -2.355   0.0185 *  
+    Treedata.Tree_DecayDecay stage 3  -0.357285   0.561697  -0.636   0.5247    
+    Treedata.Tree_DecayDecay stage 4   0.444563   0.538617   0.825   0.4092    
+    Treedata.Tree_DecayDecay stage 5   0.912894   0.549150   1.662   0.0964 .  
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 6, observations = 516, p-value = 0.3149
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.004278863 0.025136262
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01162791 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.96377, p-value = 0.552
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0217, p-value = 0.512
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-19-1.png)
+
+## WoodpeckerConcavities - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    WoodpeckerConcavities ~ GroupedTreeSpecies + Treedata.DBH_cm +  
+        Treedata.Tree_Decay + (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        522.6     556.6    -253.3     506.6       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.6265   0.7915  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -3.698558   0.622866  -5.938 2.89e-09 ***
+    GroupedTreeSpeciesConiferous spp. -0.007123   0.353760  -0.020  0.98394    
+    Treedata.DBH_cm                    0.044682   0.005417   8.249  < 2e-16 ***
+    Treedata.Tree_DecayDecay stage 2  -1.353833   0.499229  -2.712  0.00669 ** 
+    Treedata.Tree_DecayDecay stage 3  -0.518659   0.508051  -1.021  0.30731    
+    Treedata.Tree_DecayDecay stage 4   0.130508   0.489215   0.267  0.78965    
+    Treedata.Tree_DecayDecay stage 5   0.532056   0.496544   1.072  0.28394    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 8, observations = 516, p-value = 0.07342
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.00671662 0.03031935
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01550388 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.1357, p-value = 0.32
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0242, p-value = 0.456
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-23-1.png)
+
+## Rotholes - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    Rotholes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        469.9     503.8    -226.9     453.9       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.585    0.7648  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)  
+    (Intercept)                       -0.288910   0.593008  -0.487   0.6261  
+    GroupedTreeSpeciesConiferous spp. -0.726771   0.289720  -2.509   0.0121 *
+    Treedata.DBH_cm                   -0.011549   0.008136  -1.419   0.1558  
+    Treedata.Tree_DecayDecay stage 2  -0.854544   0.518914  -1.647   0.0996 .
+    Treedata.Tree_DecayDecay stage 3  -0.441953   0.486866  -0.908   0.3640  
+    Treedata.Tree_DecayDecay stage 4  -0.975267   0.526355  -1.853   0.0639 .
+    Treedata.Tree_DecayDecay stage 5  -1.327949   0.565518  -2.348   0.0189 *
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 6, observations = 516, p-value = 0.3149
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.004278863 0.025136262
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01162791 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.0947, p-value = 0.56
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0375, p-value = 0.216
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-27-1.png)
+
+## InsectGalleries - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    InsectGalleries ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        382.6     416.6    -183.3     366.6       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.2369   0.4868  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)   
+    (Intercept)                       -3.112023   1.131334  -2.751  0.00595 **
+    GroupedTreeSpeciesConiferous spp.  0.600842   0.433394   1.386  0.16564   
+    Treedata.DBH_cm                   -0.008739   0.008506  -1.027  0.30425   
+    Treedata.Tree_DecayDecay stage 2   1.721055   1.022730   1.683  0.09241 . 
+    Treedata.Tree_DecayDecay stage 3   1.084826   1.034801   1.048  0.29448   
+    Treedata.Tree_DecayDecay stage 4  -1.102351   1.238251  -0.890  0.37333   
+    Treedata.Tree_DecayDecay stage 5  -0.740608   1.170958  -0.632  0.52707   
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 4, observations = 516, p-value = 1
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.002116064 0.019728274
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.007751938 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.6609, p-value = 0.096
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.98943, p-value = 0.672
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-31-1.png)
+
+## ExposedSapwood - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    ExposedSapwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       1462.8    1496.8    -723.4    1446.8       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.02268  0.1506  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                        0.1599290  0.2268588   0.705    0.481
+    GroupedTreeSpeciesConiferous spp.  0.0956562  0.1119436   0.855    0.393
+    Treedata.DBH_cm                    0.0017716  0.0024517   0.723    0.470
+    Treedata.Tree_DecayDecay stage 2   0.2193905  0.1833714   1.196    0.232
+    Treedata.Tree_DecayDecay stage 3  -0.0001834  0.1909646  -0.001    0.999
+    Treedata.Tree_DecayDecay stage 4  -0.1911678  0.1984062  -0.964    0.335
+    Treedata.Tree_DecayDecay stage 5  -0.2436479  0.2020255  -1.206    0.228
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 16, observations = 516, p-value =
+    6.013e-06
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.01782537 0.04986713
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.03100775 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.1131, p-value = 0.128
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.22062, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### plot
+
+    DHARMa:testOutliers with type = binomial may have inflated Type I error rates for integer-valued distributions. To get a more exact result, it is recommended to re-run testOutliers with type = 'bootstrap'. See ?testOutliers for details
+
+![](all_models_files/figure-html/unnamed-chunk-35-1.png)
+
+## ExposedHeartwood - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    ExposedHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        118.9     152.8     -51.4     102.9       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 7.484    2.736   
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -23.557024        NaN     NaN      NaN
+    GroupedTreeSpeciesConiferous spp.  -0.888706        NaN     NaN      NaN
+    Treedata.DBH_cm                    -0.006473        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 2  -17.330523        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 3   18.586463        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 4   17.304104        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 5   18.657613        NaN     NaN      NaN
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 2, observations = 516, p-value = 0.453
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.000469743 0.013930627
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.003875969 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.092164, p-value = 0.992
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99817, p-value = 0.736
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-39-1.png)
+
+## ExposedSapwoodHeartwood - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    ExposedSapwoodHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm +  
+        Treedata.Tree_Decay + (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       1480.9    1514.9    -732.5    1464.9       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.02292  0.1514  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                        0.175104   0.225580   0.776    0.438
+    GroupedTreeSpeciesConiferous spp.  0.076932   0.110568   0.696    0.487
+    Treedata.DBH_cm                    0.001824   0.002431   0.750    0.453
+    Treedata.Tree_DecayDecay stage 2   0.220139   0.183331   1.201    0.230
+    Treedata.Tree_DecayDecay stage 3   0.030507   0.189980   0.161    0.872
+    Treedata.Tree_DecayDecay stage 4  -0.188040   0.198103  -0.949    0.343
+    Treedata.Tree_DecayDecay stage 5  -0.205046   0.200788  -1.021    0.307
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 14, observations = 516, p-value =
+    9.264e-05
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.01491086 0.04510383
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.02713178 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.1166, p-value = 0.128
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.2263, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### plot
+
+    DHARMa:testOutliers with type = binomial may have inflated Type I error rates for integer-valued distributions. To get a more exact result, it is recommended to re-run testOutliers with type = 'bootstrap'. See ?testOutliers for details
+
+    qu = 0.75, log(sigma) = -2.010579 : outer Newton did not converge fully.
+
+![](all_models_files/figure-html/unnamed-chunk-43-1.png)
+
+## PerennialFungi - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    PerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        926.1     960.0    -455.0     910.1       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 2.268    1.506   
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                      Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -0.28613    0.45241  -0.632    0.527    
+    GroupedTreeSpeciesConiferous spp. -1.46234    0.22485  -6.504 7.83e-11 ***
+    Treedata.DBH_cm                    0.03438    0.00522   6.586 4.53e-11 ***
+    Treedata.Tree_DecayDecay stage 2  -1.67489    0.23914  -7.004 2.49e-12 ***
+    Treedata.Tree_DecayDecay stage 3  -1.34106    0.22680  -5.913 3.36e-09 ***
+    Treedata.Tree_DecayDecay stage 4  -2.62414    0.30256  -8.673  < 2e-16 ***
+    Treedata.Tree_DecayDecay stage 5  -4.28432    0.55310  -7.746 9.49e-15 ***
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 3, observations = 516, p-value = 0.8042
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.001200586 0.016896118
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.005813953 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.16256, p-value = 0.864
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.1555, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-47-1.png)
+
+## Ephermalfungi - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    Ephermalfungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        199.6     233.5     -91.8     183.6       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.05241  0.2289  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -1.619e+01  7.800e+02  -0.021    0.983
+    GroupedTreeSpeciesConiferous spp. -2.462e-01  5.330e-01  -0.462    0.644
+    Treedata.DBH_cm                   -3.190e-03  1.397e-02  -0.228    0.819
+    Treedata.Tree_DecayDecay stage 2   1.343e+01  7.800e+02   0.017    0.986
+    Treedata.Tree_DecayDecay stage 3   1.399e+01  7.800e+02   0.018    0.986
+    Treedata.Tree_DecayDecay stage 4   1.341e+01  7.800e+02   0.017    0.986
+    Treedata.Tree_DecayDecay stage 5  -7.712e+00  1.774e+04   0.000    1.000
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 6, observations = 516, p-value = 0.3149
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.004278863 0.025136262
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01162791 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.2124, p-value = 0.28
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0036, p-value = 0.816
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-51-1.png)
+
+## EphrmalPerennialFungi - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    EphrmalPerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm +  
+        Treedata.Tree_Decay + (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        998.6    1032.6    -491.3     982.6       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 1.811    1.346   
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                        0.132946   0.408978   0.325    0.745    
+    GroupedTreeSpeciesConiferous spp. -1.472745   0.213611  -6.895 5.41e-12 ***
+    Treedata.DBH_cm                    0.029423   0.004853   6.063 1.34e-09 ***
+    Treedata.Tree_DecayDecay stage 2  -1.604890   0.229991  -6.978 2.99e-12 ***
+    Treedata.Tree_DecayDecay stage 3  -1.256214   0.218549  -5.748 9.03e-09 ***
+    Treedata.Tree_DecayDecay stage 4  -2.450441   0.281028  -8.720  < 2e-16 ***
+    Treedata.Tree_DecayDecay stage 5  -4.301855   0.548078  -7.849 4.19e-15 ***
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 5, observations = 516, p-value = 0.6141
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.003153566 0.022467241
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.009689922 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.35458, p-value = 0.728
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.1456, p-value = 0.016
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-55-1.png)
+
+## Epiphytes - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    Epiphytes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       1068.4    1102.4    -526.2    1052.4       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev. 
+     Plot   (Intercept) 3.13e-10 1.769e-05
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)   
+    (Intercept)                       -0.578073   0.279566  -2.068  0.03866 * 
+    GroupedTreeSpeciesConiferous spp. -0.151045   0.113855  -1.327  0.18463   
+    Treedata.DBH_cm                    0.009287   0.002857   3.251  0.00115 **
+    Treedata.Tree_DecayDecay stage 2  -0.210440   0.253925  -0.829  0.40725   
+    Treedata.Tree_DecayDecay stage 3   0.233434   0.243010   0.961  0.33676   
+    Treedata.Tree_DecayDecay stage 4   0.366401   0.242959   1.508  0.13153   
+    Treedata.Tree_DecayDecay stage 5   0.452892   0.243944   1.857  0.06338 . 
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 2, observations = 516, p-value = 0.453
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.000469743 0.013930627
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.003875969 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.24358, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.46669, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-59-1.png)
+
+## DeadwoodShelter - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    DeadwoodShelter ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        835.4     869.4    -409.7     819.4       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.1565   0.3956  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -3.981486   1.059618  -3.757 0.000172 ***
+    GroupedTreeSpeciesConiferous spp.  0.510113   0.241119   2.116 0.034378 *  
+    Treedata.DBH_cm                    0.007833   0.005053   1.550 0.121112    
+    Treedata.Tree_DecayDecay stage 2   1.215381   1.035073   1.174 0.240316    
+    Treedata.Tree_DecayDecay stage 3   2.376304   1.018547   2.333 0.019646 *  
+    Treedata.Tree_DecayDecay stage 4   2.669075   1.018875   2.620 0.008803 ** 
+    Treedata.Tree_DecayDecay stage 5   2.291663   1.022354   2.242 0.024990 *  
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 8, observations = 516, p-value = 0.07342
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.00671662 0.03031935
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01550388 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.4404, p-value = 0.032
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0622, p-value = 0.064
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-63-1.png)
+
+## StumpStructures - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    StumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        452.1     486.1    -218.1     436.1       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.4305   0.6562  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -2.290e+01  7.084e+03  -0.003  0.99742    
+    GroupedTreeSpeciesConiferous spp. -7.788e-01  2.382e-01  -3.270  0.00108 ** 
+    Treedata.DBH_cm                    4.717e-02  6.306e-03   7.480 7.43e-14 ***
+    Treedata.Tree_DecayDecay stage 2   1.783e+01  7.084e+03   0.003  0.99799    
+    Treedata.Tree_DecayDecay stage 3   1.937e+01  7.084e+03   0.003  0.99782    
+    Treedata.Tree_DecayDecay stage 4   1.986e+01  7.084e+03   0.003  0.99776    
+    Treedata.Tree_DecayDecay stage 5   2.061e+01  7.084e+03   0.003  0.99768    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     4.906432e-05 1.075005e-02
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.001937984 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.70588, p-value = 0.44
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.98107, p-value = 0.536
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-67-1.png)
+
+## DeadwoodShelterStumpStructures - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    DeadwoodShelterStumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm +  
+        Treedata.Tree_Decay + (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       1008.7    1042.7    -496.3     992.7       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.07186  0.2681  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -4.105519   1.032563  -3.976 7.01e-05 ***
+    GroupedTreeSpeciesConiferous spp. -0.206379   0.148797  -1.387  0.16545    
+    Treedata.DBH_cm                    0.021827   0.003769   5.792 6.98e-09 ***
+    Treedata.Tree_DecayDecay stage 2   1.643973   1.026556   1.601  0.10928    
+    Treedata.Tree_DecayDecay stage 3   2.894206   1.014555   2.853  0.00434 ** 
+    Treedata.Tree_DecayDecay stage 4   3.180927   1.014174   3.136  0.00171 ** 
+    Treedata.Tree_DecayDecay stage 5   3.336550   1.014699   3.288  0.00101 ** 
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 7, observations = 516, p-value = 0.1379
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.005471123 0.027750225
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01356589 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.1387, p-value = 0.232
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0418, p-value = 0.304
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-71-1.png)
+
+## LogStructures - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    LogStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        699.9     733.8    -341.9     683.9       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.6828   0.8263  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -2.124e+01  5.820e+03  -0.004    0.997
+    GroupedTreeSpeciesConiferous spp.  4.366e-01  3.003e-01   1.454    0.146
+    Treedata.DBH_cm                    5.356e-03  6.236e-03   0.859    0.390
+    Treedata.Tree_DecayDecay stage 2   1.842e+01  5.820e+03   0.003    0.997
+    Treedata.Tree_DecayDecay stage 3   1.957e+01  5.820e+03   0.003    0.997
+    Treedata.Tree_DecayDecay stage 4   1.876e+01  5.820e+03   0.003    0.997
+    Treedata.Tree_DecayDecay stage 5   1.926e+01  5.820e+03   0.003    0.997
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 9, observations = 516, p-value = 0.02436
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.008005764 0.032851009
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01744186 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.6766, p-value = 0.12
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0576, p-value = 0.216
+    alternative hypothesis: two.sided
+
+### plot
+
+    DHARMa:testOutliers with type = binomial may have inflated Type I error rates for integer-valued distributions. To get a more exact result, it is recommended to re-run testOutliers with type = 'bootstrap'. See ?testOutliers for details
+
+![](all_models_files/figure-html/unnamed-chunk-75-1.png)
+
+## WoodyDebris - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    WoodyDebris ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        367.8     401.7    -175.9     351.8       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.2487   0.4987  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)  
+    (Intercept)                        -20.51283 6901.12514  -0.003   0.9976  
+    GroupedTreeSpeciesConiferous spp.    0.68027    0.46339   1.468   0.1421  
+    Treedata.DBH_cm                     -0.02461    0.01096  -2.244   0.0248 *
+    Treedata.Tree_DecayDecay stage 2    16.49263 6901.12458   0.002   0.9981  
+    Treedata.Tree_DecayDecay stage 3    18.65573 6901.12494   0.003   0.9978  
+    Treedata.Tree_DecayDecay stage 4    18.95788 6901.12486   0.003   0.9978  
+    Treedata.Tree_DecayDecay stage 5    19.15224 6901.12494   0.003   0.9978  
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 4, observations = 516, p-value = 1
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.002116064 0.019728274
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.007751938 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.98272, p-value = 0.984
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99383, p-value = 0.712
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-79-1.png)
+
+## ExposedRoots - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    ExposedRoots ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        222.7     256.6    -103.3     206.7       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.5261   0.7253  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -2.151e+01  1.084e+04  -0.002    0.998
+    GroupedTreeSpeciesConiferous spp. -2.144e-01  5.565e-01  -0.385    0.700
+    Treedata.DBH_cm                   -1.948e-02  1.450e-02  -1.343    0.179
+    Treedata.Tree_DecayDecay stage 2   1.950e+01  1.084e+04   0.002    0.999
+    Treedata.Tree_DecayDecay stage 3   1.917e+01  1.084e+04   0.002    0.999
+    Treedata.Tree_DecayDecay stage 4   1.881e+01  1.084e+04   0.002    0.999
+    Treedata.Tree_DecayDecay stage 5   1.931e+01  1.084e+04   0.002    0.999
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     4.906432e-05 1.075005e-02
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.001937984 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.92705, p-value = 0.856
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99528, p-value = 0.688
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-83-1.png)
+
+## Abundance - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    Abundance ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       3399.9    3433.8   -1691.9    3383.9       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.03243  0.1801  
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                        2.014423   0.098860  20.376  < 2e-16 ***
+    GroupedTreeSpeciesConiferous spp. -0.296383   0.050600  -5.857 4.70e-09 ***
+    Treedata.DBH_cm                    0.011046   0.001093  10.103  < 2e-16 ***
+    Treedata.Tree_DecayDecay stage 2  -0.359284   0.078139  -4.598 4.27e-06 ***
+    Treedata.Tree_DecayDecay stage 3  -0.220082   0.079256  -2.777  0.00549 ** 
+    Treedata.Tree_DecayDecay stage 4  -0.361601   0.082654  -4.375 1.21e-05 ***
+    Treedata.Tree_DecayDecay stage 5  -0.307646   0.083254  -3.695  0.00022 ***
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 33, observations = 516, p-value < 2.2e-16
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.04442795 0.08864515
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.06395349 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 4.0018, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.62657, p-value = 0.992
+    alternative hypothesis: two.sided
+
+### plot
+
+    DHARMa:testOutliers with type = binomial may have inflated Type I error rates for integer-valued distributions. To get a more exact result, it is recommended to re-run testOutliers with type = 'bootstrap'. See ?testOutliers for details
+
+![](all_models_files/figure-html/unnamed-chunk-87-1.png)
+
+## Richness - poisson model
+
+### summary
+
+     Family: poisson  ( log )
+    Formula:          
+    Richness ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       2024.3    2058.2   -1004.1    2008.3       508 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.001455 0.03815 
+    Number of obs: 516, groups:  Plot, 23
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                        0.941475   0.133666   7.044 1.87e-12 ***
+    GroupedTreeSpeciesConiferous spp. -0.067723   0.053046  -1.277    0.202    
+    Treedata.DBH_cm                    0.006587   0.001292   5.096 3.46e-07 ***
+    Treedata.Tree_DecayDecay stage 2   0.129649   0.120371   1.077    0.281    
+    Treedata.Tree_DecayDecay stage 3   0.499433   0.118715   4.207 2.59e-05 ***
+    Treedata.Tree_DecayDecay stage 4   0.466568   0.119589   3.901 9.56e-05 ***
+    Treedata.Tree_DecayDecay stage 5   0.534892   0.120268   4.448 8.69e-06 ***
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     4.906432e-05 1.075005e-02
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.001937984 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.53405, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.13873, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-91-1.png)
+
+## DecomposedCrack - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    DecomposedCrack ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+         28.4      66.6      -5.2      10.4       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance  Std.Dev. 
+     Plot   (Intercept) 1.998e-08 0.0001413
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 1.55e+07 
+
+    Conditional model:
+                                      Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -23.5362        NaN     NaN      NaN
+    GroupedTreeSpeciesConiferous spp. -28.0121        NaN     NaN      NaN
+    Treedata.DBH_cm                     0.1182        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 2   -5.6610        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 3  -14.6147        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 4  -13.9493        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 5   15.1218        NaN     NaN      NaN
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 4, observations = 516, p-value = 1
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.002116064 0.019728274
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.007751938 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.88511, p-value = 0.776
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99947, p-value = 1
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-95-1.png)
+
+## WoodpeckerCavities - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    WoodpeckerCavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+           NA        NA        NA        NA       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.5459   0.7388  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 4.67e+07 
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                        -16.69523 1519.75271  -0.011    0.991
+    GroupedTreeSpeciesConiferous spp.   15.22273 1519.75210   0.010    0.992
+    Treedata.DBH_cm                     -0.03006    0.03181  -0.945    0.345
+    Treedata.Tree_DecayDecay stage 2    -2.39516    1.48858  -1.609    0.108
+    Treedata.Tree_DecayDecay stage 3    -1.35115    1.30054  -1.039    0.299
+    Treedata.Tree_DecayDecay stage 4    -2.06083    1.50826  -1.366    0.172
+    Treedata.Tree_DecayDecay stage 5   -19.89065 7411.74948  -0.003    0.998
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 5, observations = 516, p-value = 0.6141
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.003153566 0.022467241
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.009689922 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.91796, p-value = 1
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1, p-value = 0.992
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-99-1.png)
+
+## Concavities - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    Concavities ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        473.2     511.4    -227.6     455.2       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.6948   0.8336  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family ():  1.1 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -4.334812   0.793607  -5.462 4.70e-08 ***
+    GroupedTreeSpeciesConiferous spp. -0.114663   0.414699  -0.276   0.7822    
+    Treedata.DBH_cm                    0.054224   0.007778   6.971 3.15e-12 ***
+    Treedata.Tree_DecayDecay stage 2  -1.339010   0.624675  -2.144   0.0321 *  
+    Treedata.Tree_DecayDecay stage 3  -0.390945   0.634523  -0.616   0.5378    
+    Treedata.Tree_DecayDecay stage 4   0.268251   0.622893   0.431   0.6667    
+    Treedata.Tree_DecayDecay stage 5   0.773888   0.623134   1.242   0.2143    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 3, observations = 516, p-value = 0.8042
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.001200586 0.016896118
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.005813953 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.65284, p-value = 0.944
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0035, p-value = 0.912
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-103-1.png)
+
+## WoodpeckerConcavities - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    WoodpeckerConcavities ~ GroupedTreeSpecies + Treedata.DBH_cm +  
+        Treedata.Tree_Decay + (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        510.8     549.0    -246.4     492.8       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.5218   0.7224  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 1.07 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -3.748864   0.727392  -5.154 2.55e-07 ***
+    GroupedTreeSpeciesConiferous spp.  0.058675   0.394681   0.149   0.8818    
+    Treedata.DBH_cm                    0.048298   0.007222   6.688 2.27e-11 ***
+    Treedata.Tree_DecayDecay stage 2  -1.441544   0.585513  -2.462   0.0138 *  
+    Treedata.Tree_DecayDecay stage 3  -0.565393   0.583715  -0.969   0.3327    
+    Treedata.Tree_DecayDecay stage 4  -0.073342   0.573638  -0.128   0.8983    
+    Treedata.Tree_DecayDecay stage 5   0.362695   0.572898   0.633   0.5267    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 6, observations = 516, p-value = 0.3149
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.004278863 0.025136262
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01162791 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.78014, p-value = 0.904
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0052, p-value = 0.976
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-107-1.png)
+
+## Rotholes - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    Rotholes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        457.4     495.7    -219.7     439.4       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.5539   0.7442  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 0.587 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)  
+    (Intercept)                       -0.103495   0.741049  -0.140   0.8889  
+    GroupedTreeSpeciesConiferous spp. -0.735046   0.347690  -2.114   0.0345 *
+    Treedata.DBH_cm                   -0.011990   0.009756  -1.229   0.2191  
+    Treedata.Tree_DecayDecay stage 2  -1.058966   0.659073  -1.607   0.1081  
+    Treedata.Tree_DecayDecay stage 3  -0.574547   0.634224  -0.906   0.3650  
+    Treedata.Tree_DecayDecay stage 4  -1.091135   0.674355  -1.618   0.1057  
+    Treedata.Tree_DecayDecay stage 5  -1.479823   0.705199  -2.098   0.0359 *
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 6, observations = 516, p-value = 0.3149
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.004278863 0.025136262
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01162791 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.67468, p-value = 0.64
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0126, p-value = 0.648
+    alternative hypothesis: two.sided
+
+### plot
+
+    Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,
+    : Fitting terminated with step failure - check results carefully
+
+![](all_models_files/figure-html/unnamed-chunk-111-1.png)
+
+## InsectGalleries - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    InsectGalleries ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        384.6     422.8    -183.3     366.6       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.2369   0.4868  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 1.01e+08 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)   
+    (Intercept)                       -3.111948   1.131302  -2.751  0.00595 **
+    GroupedTreeSpeciesConiferous spp.  0.600838   0.433394   1.386  0.16564   
+    Treedata.DBH_cm                   -0.008739   0.008506  -1.027  0.30425   
+    Treedata.Tree_DecayDecay stage 2   1.720985   1.022695   1.683  0.09241 . 
+    Treedata.Tree_DecayDecay stage 3   1.084752   1.034766   1.048  0.29450   
+    Treedata.Tree_DecayDecay stage 4  -1.102445   1.238226  -0.890  0.37328   
+    Treedata.Tree_DecayDecay stage 5  -0.740691   1.170929  -0.633  0.52702   
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 4, observations = 516, p-value = 1
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.002116064 0.019728274
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.007751938 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.65094, p-value = 0.048
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99313, p-value = 0.784
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-115-1.png)
+
+## ExposedSapwood - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    ExposedSapwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       1464.4    1502.7    -723.2    1446.4       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.02206  0.1485  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 54.7 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                        0.161607   0.230007   0.703    0.482
+    GroupedTreeSpeciesConiferous spp.  0.096235   0.112932   0.852    0.394
+    Treedata.DBH_cm                    0.001754   0.002486   0.706    0.481
+    Treedata.Tree_DecayDecay stage 2   0.219403   0.186023   1.179    0.238
+    Treedata.Tree_DecayDecay stage 3  -0.001539   0.193587  -0.008    0.994
+    Treedata.Tree_DecayDecay stage 4  -0.191442   0.201010  -0.952    0.341
+    Treedata.Tree_DecayDecay stage 5  -0.244376   0.204621  -1.194    0.232
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 12, observations = 516, p-value = 0.001089
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.01207302 0.04027060
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.02325581 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.0736, p-value = 0.4
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.21682, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### plot
+
+    DHARMa:testOutliers with type = binomial may have inflated Type I error rates for integer-valued distributions. To get a more exact result, it is recommended to re-run testOutliers with type = 'bootstrap'. See ?testOutliers for details
+
+![](all_models_files/figure-html/unnamed-chunk-119-1.png)
+
+## ExposedHeartwood - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    ExposedHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        120.9     159.1     -51.4     102.9       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 7.484    2.736   
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 2.62e+07 
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -19.562736        NaN     NaN      NaN
+    GroupedTreeSpeciesConiferous spp.  -0.888741        NaN     NaN      NaN
+    Treedata.DBH_cm                    -0.006473        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 2  -16.301600        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 3   14.592193        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 4   13.309841        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 5   14.663349        NaN     NaN      NaN
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     4.906432e-05 1.075005e-02
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.001937984 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.019768, p-value = 1
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99737, p-value = 0.76
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-123-1.png)
+
+## ExposedSapwoodHeartwood - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    ExposedSapwoodHeartwood ~ GroupedTreeSpecies + Treedata.DBH_cm +  
+        Treedata.Tree_Decay + (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       1482.5    1520.7    -732.2    1464.5       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.02225  0.1492  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 50.5 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                        0.176661   0.229002   0.771    0.440
+    GroupedTreeSpeciesConiferous spp.  0.077674   0.111662   0.696    0.487
+    Treedata.DBH_cm                    0.001807   0.002469   0.732    0.464
+    Treedata.Tree_DecayDecay stage 2   0.220227   0.186198   1.183    0.237
+    Treedata.Tree_DecayDecay stage 3   0.029394   0.192802   0.152    0.879
+    Treedata.Tree_DecayDecay stage 4  -0.188200   0.200915  -0.937    0.349
+    Treedata.Tree_DecayDecay stage 5  -0.205675   0.203591  -1.010    0.312
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 12, observations = 516, p-value = 0.001089
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.01207302 0.04027060
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.02325581 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.0702, p-value = 0.352
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.22232, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### plot
+
+    DHARMa:testOutliers with type = binomial may have inflated Type I error rates for integer-valued distributions. To get a more exact result, it is recommended to re-run testOutliers with type = 'bootstrap'. See ?testOutliers for details
+
+![](all_models_files/figure-html/unnamed-chunk-127-1.png)
+
+## PerennialFungi - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    PerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        578.3     616.5    -280.1     560.3       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.6409   0.8005  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 0.104 
+
+    Conditional model:
+                                      Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                        0.78134    1.07491   0.727  0.46729    
+    GroupedTreeSpeciesConiferous spp. -1.10345    0.51748  -2.132  0.03298 *  
+    Treedata.DBH_cm                    0.01219    0.01495   0.815  0.41489    
+    Treedata.Tree_DecayDecay stage 2  -1.38918    0.83822  -1.657  0.09746 .  
+    Treedata.Tree_DecayDecay stage 3  -1.39370    0.86538  -1.611  0.10729    
+    Treedata.Tree_DecayDecay stage 4  -2.27716    0.87710  -2.596  0.00943 ** 
+    Treedata.Tree_DecayDecay stage 5  -3.99111    1.00550  -3.969 7.21e-05 ***
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     4.906432e-05 1.075005e-02
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.001937984 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.51753, p-value = 0.936
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0063, p-value = 0.856
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-131-1.png)
+
+## Ephermalfungi - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    Ephermalfungi ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        197.9     236.1     -89.9     179.9       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance  Std.Dev. 
+     Plot   (Intercept) 2.681e-10 1.637e-05
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 0.308 
+
+    Conditional model:
+                                      Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -21.2637        NaN     NaN      NaN
+    GroupedTreeSpeciesConiferous spp.  -0.2114        NaN     NaN      NaN
+    Treedata.DBH_cm                    -0.0029        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 2   18.4979        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 3   19.0555        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 4   18.4904        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 5  -11.1275        NaN     NaN      NaN
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 3, observations = 516, p-value = 0.8042
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.001200586 0.016896118
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.005813953 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.9551, p-value = 0.96
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0007, p-value = 1
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-135-1.png)
+
+## EphrmalPerennialFungi - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    EphrmalPerennialFungi ~ GroupedTreeSpecies + Treedata.DBH_cm +  
+        Treedata.Tree_Decay + (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        673.1     711.3    -327.5     655.1       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.7831   0.8849  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 0.17 
+
+    Conditional model:
+                                      Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                        0.88187    0.88862   0.992  0.32100    
+    GroupedTreeSpeciesConiferous spp. -1.17004    0.44297  -2.641  0.00826 ** 
+    Treedata.DBH_cm                    0.01181    0.01193   0.990  0.32224    
+    Treedata.Tree_DecayDecay stage 2  -1.27690    0.70625  -1.808  0.07060 .  
+    Treedata.Tree_DecayDecay stage 3  -1.30664    0.71731  -1.822  0.06852 .  
+    Treedata.Tree_DecayDecay stage 4  -2.19974    0.73243  -3.003  0.00267 ** 
+    Treedata.Tree_DecayDecay stage 5  -4.05650    0.88741  -4.571 4.85e-06 ***
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 0, observations = 516, p-value = 0.04047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.000000000 0.007123498
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                         0 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.37351, p-value = 0.984
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0059, p-value = 0.912
+    alternative hypothesis: two.sided
+
+### plot
+
+    DHARMa:testOutliers with type = binomial may have inflated Type I error rates for integer-valued distributions. To get a more exact result, it is recommended to re-run testOutliers with type = 'bootstrap'. See ?testOutliers for details
+
+    Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,
+    : Fitting terminated with step failure - check results carefully
+
+![](all_models_files/figure-html/unnamed-chunk-139-1.png)
+
+## Epiphytes - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    Epiphytes ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+           NA        NA        NA        NA       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance  Std.Dev. 
+     Plot   (Intercept) 8.953e-10 2.992e-05
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 6.96e+07 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)   
+    (Intercept)                       -0.578062   0.279566  -2.068  0.03867 * 
+    GroupedTreeSpeciesConiferous spp. -0.151051   0.113855  -1.327  0.18461   
+    Treedata.DBH_cm                    0.009287   0.002857   3.251  0.00115 **
+    Treedata.Tree_DecayDecay stage 2  -0.210438   0.253925  -0.829  0.40725   
+    Treedata.Tree_DecayDecay stage 3   0.233434   0.243010   0.961  0.33676   
+    Treedata.Tree_DecayDecay stage 4   0.366408   0.242959   1.508  0.13153   
+    Treedata.Tree_DecayDecay stage 5   0.452884   0.243944   1.857  0.06338 . 
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     4.906432e-05 1.075005e-02
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.001937984 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.24305, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.46666, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-143-1.png)
+
+## DeadwoodShelter - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    DeadwoodShelter ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        807.5     845.7    -394.7     789.5       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.1184   0.3441  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 0.93 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -3.958343   1.103078  -3.588 0.000333 ***
+    GroupedTreeSpeciesConiferous spp.  0.528457   0.277704   1.903 0.057047 .  
+    Treedata.DBH_cm                    0.006830   0.006289   1.086 0.277478    
+    Treedata.Tree_DecayDecay stage 2   1.210967   1.063773   1.138 0.254966    
+    Treedata.Tree_DecayDecay stage 3   2.391355   1.047930   2.282 0.022490 *  
+    Treedata.Tree_DecayDecay stage 4   2.715510   1.048645   2.590 0.009610 ** 
+    Treedata.Tree_DecayDecay stage 5   2.315097   1.053225   2.198 0.027942 *  
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     4.906432e-05 1.075005e-02
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.001937984 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.95238, p-value = 0.936
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0022, p-value = 0.936
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-147-1.png)
+
+## StumpStructures - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    StumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+           NA        NA        NA        NA       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.4306   0.6562  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 7.78e+07 
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -33.136037        NaN     NaN      NaN    
+    GroupedTreeSpeciesConiferous spp.  -0.778828   0.238194   -3.27  0.00108 ** 
+    Treedata.DBH_cm                     0.047168   0.006306    7.48 7.43e-14 ***
+    Treedata.Tree_DecayDecay stage 2   28.059640        NaN     NaN      NaN    
+    Treedata.Tree_DecayDecay stage 3   29.600292        NaN     NaN      NaN    
+    Treedata.Tree_DecayDecay stage 4   30.091329        NaN     NaN      NaN    
+    Treedata.Tree_DecayDecay stage 5   30.840450        NaN     NaN      NaN    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 3, observations = 516, p-value = 0.8042
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.001200586 0.016896118
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.005813953 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.66301, p-value = 0.4
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.98484, p-value = 0.616
+    alternative hypothesis: two.sided
+
+### plot
+
+    Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,
+    : Fitting terminated with step failure - check results carefully
+
+![](all_models_files/figure-html/unnamed-chunk-151-1.png)
+
+## DeadwoodShelterStumpStructures - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    DeadwoodShelterStumpStructures ~ GroupedTreeSpecies + Treedata.DBH_cm +  
+        Treedata.Tree_Decay + (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       1005.3    1043.5    -493.6     987.3       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.057    0.2388  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 4.38 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                       -4.131552   1.042424  -3.963 7.39e-05 ***
+    GroupedTreeSpeciesConiferous spp. -0.206982   0.161628  -1.281 0.200332    
+    Treedata.DBH_cm                    0.021963   0.004186   5.246 1.55e-07 ***
+    Treedata.Tree_DecayDecay stage 2   1.650112   1.032382   1.598 0.109964    
+    Treedata.Tree_DecayDecay stage 3   2.917187   1.020398   2.859 0.004252 ** 
+    Treedata.Tree_DecayDecay stage 4   3.210656   1.019960   3.148 0.001645 ** 
+    Treedata.Tree_DecayDecay stage 5   3.372274   1.020827   3.303 0.000955 ***
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 7, observations = 516, p-value = 0.1379
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.005471123 0.027750225
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01356589 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.95358, p-value = 0.84
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 1.0058, p-value = 0.896
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-155-1.png)
+
+## LogStructures - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    LogStructures ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        639.8     678.1    -310.9     621.8       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.5684   0.7539  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 0.464 
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -2.081e+01  4.941e+03  -0.004    0.997
+    GroupedTreeSpeciesConiferous spp.  4.092e-01  3.996e-01   1.024    0.306
+    Treedata.DBH_cm                    5.600e-03  9.014e-03   0.621    0.534
+    Treedata.Tree_DecayDecay stage 2   1.794e+01  4.941e+03   0.004    0.997
+    Treedata.Tree_DecayDecay stage 3   1.925e+01  4.941e+03   0.004    0.997
+    Treedata.Tree_DecayDecay stage 4   1.841e+01  4.941e+03   0.004    0.997
+    Treedata.Tree_DecayDecay stage 5   1.894e+01  4.941e+03   0.004    0.997
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 2, observations = 516, p-value = 0.453
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.000469743 0.013930627
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.003875969 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.87545, p-value = 0.96
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99614, p-value = 0.968
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-159-1.png)
+
+## WoodyDebris - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    WoodyDebris ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        369.8     408.0    -175.9     351.8       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.2487   0.4987  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 1.15e+07 
+
+    Conditional model:
+                                        Estimate Std. Error z value Pr(>|z|)  
+    (Intercept)                       -2.446e+01  4.879e+04   0.000   0.9996  
+    GroupedTreeSpeciesConiferous spp.  6.803e-01  4.634e-01   1.468   0.1421  
+    Treedata.DBH_cm                   -2.461e-02  1.097e-02  -2.244   0.0248 *
+    Treedata.Tree_DecayDecay stage 2   2.044e+01  4.879e+04   0.000   0.9997  
+    Treedata.Tree_DecayDecay stage 3   2.260e+01  4.879e+04   0.000   0.9996  
+    Treedata.Tree_DecayDecay stage 4   2.290e+01  4.879e+04   0.000   0.9996  
+    Treedata.Tree_DecayDecay stage 5   2.310e+01  4.879e+04   0.000   0.9996  
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 2, observations = 516, p-value = 0.453
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.000469743 0.013930627
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.003875969 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.95436, p-value = 0.872
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99868, p-value = 0.952
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-163-1.png)
+
+## ExposedRoots - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    ExposedRoots ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+        224.7     262.9    -103.3     206.7       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.526    0.7253  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 1.8e+08 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                       -16.06307  711.32402  -0.023    0.982
+    GroupedTreeSpeciesConiferous spp.  -0.21435    0.55654  -0.385    0.700
+    Treedata.DBH_cm                    -0.01948    0.01450  -1.343    0.179
+    Treedata.Tree_DecayDecay stage 2   14.05015  711.32362   0.020    0.984
+    Treedata.Tree_DecayDecay stage 3   13.72147  711.32367   0.019    0.985
+    Treedata.Tree_DecayDecay stage 4   13.36088  711.32382   0.019    0.985
+    Treedata.Tree_DecayDecay stage 5   13.86198  711.32370   0.020    0.984
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 6, observations = 516, p-value = 0.3149
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.004278863 0.025136262
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01162791 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.90005, p-value = 0.768
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.99701, p-value = 0.816
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-167-1.png)
+
+## Abundance - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    Abundance ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+       2883.2    2921.4   -1432.6    2865.2       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance Std.Dev.
+     Plot   (Intercept) 0.01869  0.1367  
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family ():  4.1 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)                        1.924128   0.165141  11.651  < 2e-16 ***
+    GroupedTreeSpeciesConiferous spp. -0.207520   0.079477  -2.611  0.00903 ** 
+    Treedata.DBH_cm                    0.010699   0.001896   5.644 1.66e-08 ***
+    Treedata.Tree_DecayDecay stage 2  -0.313725   0.138204  -2.270  0.02321 *  
+    Treedata.Tree_DecayDecay stage 3  -0.175642   0.139957  -1.255  0.20949    
+    Treedata.Tree_DecayDecay stage 4  -0.306219   0.143640  -2.132  0.03302 *  
+    Treedata.Tree_DecayDecay stage 5  -0.255578   0.145156  -1.761  0.07829 .  
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 9, observations = 516, p-value = 0.02436
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     0.008005764 0.032851009
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                                0.01744186 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 1.6316, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.09608, p-value = 0.008
+    alternative hypothesis: two.sided
+
+### plot
+
+    DHARMa:testOutliers with type = binomial may have inflated Type I error rates for integer-valued distributions. To get a more exact result, it is recommended to re-run testOutliers with type = 'bootstrap'. See ?testOutliers for details
+
+![](all_models_files/figure-html/unnamed-chunk-171-1.png)
+
+## Richness - nbinom2 model
+
+### summary
+
+     Family: nbinom2  ( log )
+    Formula:          
+    Richness ~ GroupedTreeSpecies + Treedata.DBH_cm + Treedata.Tree_Decay +  
+        (1 | Plot)
+    Data: TreMs
+
+          AIC       BIC    logLik -2*log(L)  df.resid 
+           NA        NA        NA        NA       507 
+
+    Random effects:
+
+    Conditional model:
+     Groups Name        Variance  Std.Dev. 
+     Plot   (Intercept) 1.213e-12 1.101e-06
+    Number of obs: 516, groups:  Plot, 23
+
+    Dispersion parameter for nbinom2 family (): 4.18e+07 
+
+    Conditional model:
+                                       Estimate Std. Error z value Pr(>|z|)
+    (Intercept)                        0.935651        NaN     NaN      NaN
+    GroupedTreeSpeciesConiferous spp. -0.064228        NaN     NaN      NaN
+    Treedata.DBH_cm                    0.006498        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 2   0.131667        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 3   0.509192        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 4   0.472815        NaN     NaN      NaN
+    Treedata.Tree_DecayDecay stage 5   0.543066        NaN     NaN      NaN
+
+### test outliers
+
+        DHARMa outlier test based on exact binomial test with approximate
+        expectations
+
+    data:  purrr::pluck(mod_residuals, 1)
+    outliers at both margin(s) = 1, observations = 516, p-value = 0.2047
+    alternative hypothesis: true probability of success is not equal to 0.007968127
+    95 percent confidence interval:
+     4.906432e-05 1.075005e-02
+    sample estimates:
+    frequency of outliers (expected: 0.00796812749003984 ) 
+                                               0.001937984 
+
+### test dispersion
+
+        DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+        simulated
+
+    data:  simulationOutput
+    dispersion = 0.53309, p-value < 2.2e-16
+    alternative hypothesis: two.sided
+
+### test zero inflation
+
+        DHARMa zero-inflation test via comparison to expected zeros with
+        simulation under H0 = fitted model
+
+    data:  simulationOutput
+    ratioObsSim = 0.13565, p-value = 0.008
+    alternative hypothesis: two.sided
+
+### plot
+
+![](all_models_files/figure-html/unnamed-chunk-175-1.png)
